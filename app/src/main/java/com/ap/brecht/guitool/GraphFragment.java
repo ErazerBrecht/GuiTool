@@ -1,28 +1,8 @@
 package com.ap.brecht.guitool;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-
-import java.util.Random;
-
 /**
  * Created by hannelore on 22/04/2015.
- */
+
 public class GraphFragment extends Fragment implements View.OnClickListener{
 
     private View view;
@@ -97,6 +77,6 @@ public class GraphFragment extends Fragment implements View.OnClickListener{
         int randomNum = rand.nextInt((max - min) + 1) + min;
 
         return randomNum;
-    }
+    }*/
 
 
