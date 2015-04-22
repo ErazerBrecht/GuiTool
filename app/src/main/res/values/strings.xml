@@ -19,11 +19,6 @@
     <string name="sensor_z">z</string>
     <string name="sensor_samplerate">Sample rate</string>
 
-    <string name="user_tag">Name</string>
-    <string name="user_password">Password</string>
-    <string name="register_button">Register</string>
-    <string name="login_button">Login</string>
-
     <string-array name="SensorList">
         <item>Stopwatch</item>
         <item>Login</item>

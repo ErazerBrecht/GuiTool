@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Created by Airien on 22/04/2015.
  */
-public class Register extends Activity implements View.OnClickListener {
+public class Register extends Activity  {
 
     Button btnRegister;
 
@@ -42,21 +42,28 @@ public class Register extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.register);
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
-        btnRegister.setOnClickListener(this);
+        Name=(EditText) findViewById(R.id.etName);
+        Password=(EditText) findViewById(R.id.etPassword);
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MyAsyncTask().execute();
+            }
+        });
 
         Name = (EditText) findViewById(R.id.etName);
         Password = (EditText) findViewById(R.id.etPassword);
     }
 
-    @Override
-    public void onClick(View v) {
-        new MyAsyncTask().execute();
-    }
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+        private ProgressDialog progressDialog = new ProgressDialog(Register.this);
         InputStream inputStream = null;
         String result = "";
 
@@ -124,11 +131,15 @@ public class Register extends Activity implements View.OnClickListener {
                 //Close the progressDialog!
                 this.progressDialog.dismiss();
                 if (jsonResponse.optString("success").toString().equals("1")) {
-                    Toast.makeText(getApplicationContext(), "You have created a new account", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "You have created a new account", Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(Register.this,Login.class);
+                    Intent intent = new Intent(Register.this, Login.class);
+                    intent.putExtra("Username", String.valueOf(Name.getText()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Register.this.startActivity(intent);
                 }
                 else if(jsonResponse.optString("error").toString().equals("1")){
-                    Toast.makeText(getApplicationContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -137,7 +148,7 @@ public class Register extends Activity implements View.OnClickListener {
 
         @Override
         protected void onCancelled() {
-            Toast.makeText(getApplicationContext(), "Can't register", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Register.this, "Can't register", Toast.LENGTH_SHORT).show();
         }
     }
 }
