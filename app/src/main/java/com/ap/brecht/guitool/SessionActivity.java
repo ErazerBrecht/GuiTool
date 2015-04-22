@@ -49,7 +49,7 @@ public class SessionActivity extends FragmentActivity implements ActionBar.TabLi
 
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionbar.addTab(StopwatchTab);
-
+        actionbar.addTab(GraphTab);
 
 
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
