@@ -21,9 +21,7 @@ public class SessionActivity extends FragmentActivity implements ActionBar.TabLi
     ViewPager viewPager;
     SwipePageAdapter swipe;
     ActionBar.Tab StopwatchTab;
-    ActionBar.Tab RotationTab;
-    ActionBar.Tab LoginTab;
-    ActionBar.Tab AccelerometerTab;
+    ActionBar.Tab DescriptionTab;
     ActionBar.Tab GraphTab;
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -44,12 +42,17 @@ public class SessionActivity extends FragmentActivity implements ActionBar.TabLi
 
 
         GraphTab = actionbar.newTab();
-        GraphTab.setText("GRAPH");
+        GraphTab.setIcon(R.drawable.graph);
         GraphTab.setTabListener(this);
+
+        DescriptionTab = actionbar.newTab();
+        DescriptionTab.setIcon(R.drawable.description);
+        DescriptionTab.setTabListener(this);
 
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionbar.addTab(StopwatchTab);
         actionbar.addTab(GraphTab);
+        actionbar.addTab(DescriptionTab);
 
 
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {

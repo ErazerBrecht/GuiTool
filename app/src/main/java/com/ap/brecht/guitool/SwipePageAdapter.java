@@ -17,6 +17,10 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
         switch (i) {
             case 0:
                 return new StopwatchFragment();
+            case 1:
+                return new GraphFragment();
+            case 2:
+                return new DescriptionFragment();
             default:
                 break;
         }
@@ -26,6 +30,6 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 3;
     }
 }
