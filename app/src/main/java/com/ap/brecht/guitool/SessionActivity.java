@@ -20,10 +20,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
     ViewPager viewPager;
     SwipePageAdapter swipe;
     ActionBar.Tab StopwatchTab;
-<<<<<<< Updated upstream
-    ActionBar.Tab DescriptionTab;
-=======
->>>>>>> Stashed changes
     ActionBar.Tab GraphTab;
     ActionBar.Tab DescriptionTab;
 
