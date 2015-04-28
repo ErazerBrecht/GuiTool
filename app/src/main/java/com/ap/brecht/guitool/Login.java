@@ -1,11 +1,12 @@
 package com.ap.brecht.guitool;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,7 @@ import java.util.List;
 /**
  * Created by Airien on 22/04/2015.
  */
-public class Login extends Activity {
+public class Login extends ActionBarActivity {
 
         Button btnLogin;
         Button btnRegister;
@@ -49,6 +50,8 @@ public class Login extends Activity {
 
             setContentView(R.layout.login);
 
+            ActionBar actionBar = getSupportActionBar();
+
             Name = (EditText) findViewById(R.id.etName);
             Password = (EditText) findViewById(R.id.etPassword);
             btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -56,7 +59,7 @@ public class Login extends Activity {
 
             btnRegister.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v){
-                    Intent i = new Intent(Login.this, Register.class);
+                    Intent i = new Intent(Login.this, RegisterActivity.class);
                     i.putExtra("Username", String.valueOf(Name.getText()));
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Login.this.startActivity(i);
@@ -145,7 +148,7 @@ public class Login extends Activity {
                     this.progressDialog.dismiss();
                     if (jsonResponse.optString("success").toString().equals("1")) {
                         super.onPostExecute(v);
-                        Intent intent = new Intent(Login.this, Welcome.class);
+                        Intent intent = new Intent(Login.this, WelcomeActivity.class);
                         intent.putExtra("Username", String.valueOf(Name.getText()));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Login.this.startActivity(intent);

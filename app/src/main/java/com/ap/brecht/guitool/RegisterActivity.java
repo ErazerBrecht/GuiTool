@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Created by Airien on 22/04/2015.
  */
-public class Register extends Activity  {
+public class RegisterActivity extends Activity  {
 
     Button btnRegister;
 
@@ -63,7 +63,7 @@ public class Register extends Activity  {
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(Register.this);
+        private ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
         InputStream inputStream = null;
         String result = "";
 
@@ -131,15 +131,15 @@ public class Register extends Activity  {
                 //Close the progressDialog!
                 this.progressDialog.dismiss();
                 if (jsonResponse.optString("success").toString().equals("1")) {
-                    Toast.makeText(Register.this, "You have created a new account", Toast.LENGTH_SHORT).show();
-                    Intent i=new Intent(Register.this,Login.class);
-                    Intent intent = new Intent(Register.this, Login.class);
+                    Toast.makeText(RegisterActivity.this, "You have created a new account", Toast.LENGTH_SHORT).show();
+                    Intent i=new Intent(RegisterActivity.this,Login.class);
+                    Intent intent = new Intent(RegisterActivity.this, Login.class);
                     intent.putExtra("Username", String.valueOf(Name.getText()));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Register.this.startActivity(intent);
+                    RegisterActivity.this.startActivity(intent);
                 }
                 else if(jsonResponse.optString("error").toString().equals("1")){
-                    Toast.makeText(Register.this, jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -148,7 +148,7 @@ public class Register extends Activity  {
 
         @Override
         protected void onCancelled() {
-            Toast.makeText(Register.this, "Can't register", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterActivity.this, "Can't register", Toast.LENGTH_SHORT).show();
         }
     }
 }

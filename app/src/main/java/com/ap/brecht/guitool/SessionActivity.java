@@ -1,10 +1,9 @@
 package com.ap.brecht.guitool;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,24 +15,29 @@ import java.lang.reflect.Field;
  * Created by hannelore on 22/04/2015.
  */
 
-public class SessionActivity extends FragmentActivity implements ActionBar.TabListener{
+public class SessionActivity extends ActionBarActivity implements ActionBar.TabListener{
     ActionBar actionbar;
     ViewPager viewPager;
     SwipePageAdapter swipe;
     ActionBar.Tab StopwatchTab;
+<<<<<<< Updated upstream
     ActionBar.Tab DescriptionTab;
+=======
+>>>>>>> Stashed changes
     ActionBar.Tab GraphTab;
+    ActionBar.Tab DescriptionTab;
 
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG =SessionActivity.class.getSimpleName();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_session);
         viewPager = (ViewPager) findViewById(R.id.pager);
         swipe = new SwipePageAdapter(getSupportFragmentManager());
-        actionbar = getActionBar();
+
+        actionbar = getSupportActionBar();
         viewPager.setAdapter(swipe);
 
         StopwatchTab = actionbar.newTab();
@@ -116,20 +120,17 @@ public class SessionActivity extends FragmentActivity implements ActionBar.TabLi
 */
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+    public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
         viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        //Method needs to be implemented (interface)
-        //But we don't need it! So it's empty
+    public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
+
     }
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        //Method needs to be implemented (interface)
-        //But we don't need it! So it's empty
-    }
+    public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
 
+    }
 }
