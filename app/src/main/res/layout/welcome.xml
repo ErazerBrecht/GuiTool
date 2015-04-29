@@ -7,9 +7,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:paddingBottom="40dp"
+        android:paddingTop="10dp"
         android:textSize="40sp"
         android:textColor="@android:color/black"
+        android:layout_gravity="center"
         android:id="@+id/tvWelcome"
         />
 
@@ -17,18 +18,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:paddingTop="40dp"
+        android:paddingBottom="40dp"
         android:textSize="30sp"
+        android:layout_gravity="center"
         android:id="@+id/tvUsername"
         />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/NewSession"
         android:text="New Session"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/History"
         android:text="History"/>

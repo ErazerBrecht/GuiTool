@@ -1,6 +1,7 @@
 package com.ap.brecht.guitool;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -39,9 +40,9 @@ public class WelcomeActivity extends ActionBarActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.welcome);
 
+        Bundle bundle = getIntent().getExtras();
 
         btnNewSession = (Button) findViewById(R.id.NewSession);
         btnHistory = (Button) findViewById(R.id.History);
@@ -66,7 +67,7 @@ public class WelcomeActivity extends ActionBarActivity  {
 
 
 
-        String test = savedInstanceState.getString("jsonobject");
+        String test = bundle.getString("jsonobject");
 
         try {
             jsonObject = new JSONObject(test);
@@ -86,7 +87,7 @@ public class WelcomeActivity extends ActionBarActivity  {
 
         UsernameTextView.setText(String.valueOf(Username));
 
-       /* mHandler.postDelayed(new Runnable() {
+       mHandler.postDelayed(new Runnable() {
             public void run() {
                 i = i + j;
                 Welkom.setShadowLayer(i, 0,0, Color.BLACK);
@@ -98,7 +99,7 @@ public class WelcomeActivity extends ActionBarActivity  {
 
                 mHandler.postDelayed(this, 200);
             }
-        }, 100);*/
+        }, 100);
 
     }
 
