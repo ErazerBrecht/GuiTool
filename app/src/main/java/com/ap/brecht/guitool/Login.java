@@ -60,7 +60,7 @@ public class Login extends ActionBarActivity {
             btnRegister.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v){
                     Intent i = new Intent(Login.this, RegisterActivity.class);
-                    i.putExtra("Username", String.valueOf(Name.getText()));
+                    i.putExtra("name", String.valueOf(Name.getText()));
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Login.this.startActivity(i);
                 }
@@ -139,17 +139,19 @@ public class Login extends ActionBarActivity {
                 try {
                     jsonResponse = new JSONObject(result);
 
-                    String tag = jsonResponse.optString("tag").toString();
+                    /*String tag = jsonResponse.optString("tag").toString();
                     String success = jsonResponse.optString("success").toString();
                     String error = jsonResponse.optString("error").toString();
-                    String error_msg = jsonResponse.optString("error_msg").toString();
+                    String error_msg = jsonResponse.optString("error_msg").toString();*/
+
+                    String jsonTemp = jsonResponse.toString();
 
                     //Close the progressDialog!
                     this.progressDialog.dismiss();
                     if (jsonResponse.optString("success").toString().equals("1")) {
                         super.onPostExecute(v);
                         Intent intent = new Intent(Login.this, WelcomeActivity.class);
-                        intent.putExtra("Username", String.valueOf(Name.getText()));
+                        intent.putExtra("jsonobject", jsonTemp);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Login.this.startActivity(intent);
                     }

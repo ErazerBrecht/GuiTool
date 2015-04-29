@@ -2,6 +2,7 @@ package com.ap.brecht.guitool;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -10,6 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 
@@ -21,6 +26,15 @@ public class WelcomeActivity extends ActionBarActivity  {
     Button btnNewSession;
     Button btnHistory;
     public static final String TAG =WelcomeActivity.class.getSimpleName();
+
+    String Username;
+    TextView Welkom;
+    TextView UsernameTextView;
+    JSONObject jsonObject;
+
+    private Handler mHandler = new Handler();
+    int i = 1;
+    int j = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +63,42 @@ public class WelcomeActivity extends ActionBarActivity  {
         });
         makeActionOverflowMenuShown();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+
+
+        String test = savedInstanceState.getString("jsonobject");
+
+        try {
+            jsonObject = new JSONObject(test);
+
+
+            Username = jsonObject.getJSONObject("user").getString("name");
+
+
+
+
+        } catch (JSONException e) {
+            //some exception handler code.
+        }
+
+        Welkom = (TextView) findViewById(R.id.tvWelcome);
+        UsernameTextView = (TextView) findViewById(R.id.tvUsername);
+
+        UsernameTextView.setText(String.valueOf(Username));
+
+       /* mHandler.postDelayed(new Runnable() {
+            public void run() {
+                i = i + j;
+                Welkom.setShadowLayer(i, 0,0, Color.BLACK);
+
+                if(i > 8)
+                    j = -1;
+                else if (i < 2)
+                    j = 1;
+
+                mHandler.postDelayed(this, 200);
+            }
+        }, 100);*/
 
     }
 
