@@ -1,53 +1,42 @@
 package com.ap.brecht.guitool;
 
-import android.content.Intent;
+import android.app.ActionBar;
+import android.app.ListActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.Button;
+import android.widget.ListView;
 
 import java.lang.reflect.Field;
 
 /**
- * Created by Airien on 22/04/2015.
+ * Created by Airien on 29/04/2015.
  */
-public class WelcomeActivity extends ActionBarActivity  {
+public class HistoryActivity extends ListActivity {
+    ActionBar actionbar;
+    ListView list;
 
-    Button btnNewSession;
-    Button btnHistory;
-    public static final String TAG =WelcomeActivity.class.getSimpleName();
+    public static final String TAG =HistoryActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.welcome);
+        list=getListView();
+        setContentView(list);
 
+        actionbar = getActionBar();
 
-        btnNewSession = (Button) findViewById(R.id.NewSession);
-        btnHistory = (Button) findViewById(R.id.History);
-
-        btnNewSession.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent i = new Intent(WelcomeActivity.this, SessionActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                WelcomeActivity.this.startActivity(i);
-            }
-        });
         makeActionOverflowMenuShown();
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -59,12 +48,6 @@ public class WelcomeActivity extends ActionBarActivity  {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //return true;
-            Intent i = new Intent(WelcomeActivity.this, SettingsActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            WelcomeActivity.this.startActivity(i);
-        }
-        if (id == R.id.action_logout) {
             return true;
         }
 
@@ -85,6 +68,7 @@ public class WelcomeActivity extends ActionBarActivity  {
             Log.d(TAG, e.getLocalizedMessage());
         }
     }
+
 
 
 }

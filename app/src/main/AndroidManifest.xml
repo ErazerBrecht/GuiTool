@@ -19,11 +19,10 @@
         </activity>
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".Login"/>
-        <activity android:name=".MainActivity" />
         <activity android:name=".SessionActivity"
             android:parentActivityName=".WelcomeActivity" />
         <activity android:name=".SettingsActivity"
-            android:parentActivityName=".WelcomeActivity" />
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar"/>
     </application>
 
 

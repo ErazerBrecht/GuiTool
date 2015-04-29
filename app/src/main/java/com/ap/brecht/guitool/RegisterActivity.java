@@ -1,5 +1,6 @@
 package com.ap.brecht.guitool;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -7,7 +8,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,6 +30,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,15 +41,21 @@ public class RegisterActivity extends Activity  {
 
     Button btnRegister;
 
+    ActionBar actionBar;
+
     EditText Name;
     EditText Password;
     JSONObject jsonResponse;
+
+    public static final String TAG =RegisterActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.register);
+
+        actionBar=getActionBar();
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
         Name=(EditText) findViewById(R.id.etName);
@@ -59,8 +70,46 @@ public class RegisterActivity extends Activity  {
 
         Name = (EditText) findViewById(R.id.etName);
         Password = (EditText) findViewById(R.id.etPassword);
+
+        makeActionOverflowMenuShown();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void makeActionOverflowMenuShown() {
+        //Devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        //This code adds the overflow menu manually
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.getLocalizedMessage());
+        }
+    }
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
