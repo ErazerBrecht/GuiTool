@@ -2,6 +2,7 @@ package com.ap.brecht.guitool;
 
 import android.app.ActionBar;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +29,7 @@ public class HistoryActivity extends ListActivity {
         setContentView(list);
 
         actionbar = getActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
         makeActionOverflowMenuShown();
     }
@@ -48,7 +50,9 @@ public class HistoryActivity extends ListActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent i = new Intent(HistoryActivity.this, SettingsActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            HistoryActivity.this.startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

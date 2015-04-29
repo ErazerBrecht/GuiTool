@@ -2,7 +2,6 @@ package com.ap.brecht.guitool;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +34,14 @@ public class WelcomeActivity extends ActionBarActivity  {
         btnNewSession.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent i = new Intent(WelcomeActivity.this, SessionActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                WelcomeActivity.this.startActivity(i);
+            }
+        });
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(WelcomeActivity.this,HistoryActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 WelcomeActivity.this.startActivity(i);
             }
