@@ -7,7 +7,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import java.lang.reflect.Field;
 
@@ -16,6 +19,7 @@ import java.lang.reflect.Field;
  */
 public class HistoryActivity extends ActionBarActivity {
     ActionBar actionbar;
+    ListView list;
 
     public static final String TAG =HistoryActivity.class.getSimpleName();
 
@@ -24,6 +28,22 @@ public class HistoryActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_history);
+
+        list= (ListView) findViewById(R.id.historyData);
+
+        list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(HistoryActivity.this, SessionActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                HistoryActivity.this.startActivity(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);

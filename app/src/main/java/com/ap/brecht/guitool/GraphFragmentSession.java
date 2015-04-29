@@ -1,15 +1,9 @@
 package com.ap.brecht.guitool;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +17,7 @@ import java.util.Random;
 
 //Created by hannelore on 22/04/2015.
 
-public class GraphFragment extends Fragment implements View.OnClickListener {
+public class GraphFragmentSession extends Fragment implements View.OnClickListener {
 
     private View view;
 
@@ -35,7 +29,7 @@ public class GraphFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_graph, container, false);
+        view = inflater.inflate(R.layout.fragment_graph_session, container, false);
         btnRandom = (Button) view.findViewById(R.id.btnRandom);
         btnRandom.setOnClickListener(this);
         graphView = (GraphView) view.findViewById(R.id.graph);

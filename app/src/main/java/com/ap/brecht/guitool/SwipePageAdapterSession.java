@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 /**
  * Created by hannelore on 22/04/2015.
  */
-public class SwipePageAdapter extends FragmentPagerAdapter {
-    public SwipePageAdapter(FragmentManager fm) {
+public class SwipePageAdapterSession extends FragmentPagerAdapter {
+    public SwipePageAdapterSession(FragmentManager fm) {
         super(fm);
     }
 
@@ -18,9 +18,9 @@ public class SwipePageAdapter extends FragmentPagerAdapter {
             case 0:
                 return new StopwatchFragment();
             case 1:
-                return new GraphFragment();
+                return new GraphFragmentSession();
             case 2:
-                return new DescriptionFragment();
+                return new DescriptionFragmentSession();
             default:
                 break;
         }

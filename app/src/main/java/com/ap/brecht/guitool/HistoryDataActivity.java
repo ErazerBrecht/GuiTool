@@ -1,8 +1,6 @@
 package com.ap.brecht.guitool;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -14,36 +12,27 @@ import android.view.ViewConfiguration;
 import java.lang.reflect.Field;
 
 /**
- * Created by hannelore on 22/04/2015.
+ * Created by Airien on 29/04/2015.
  */
-
-public class SessionActivity extends ActionBarActivity implements ActionBar.TabListener{
+public class HistoryDataActivity extends ActionBarActivity implements ActionBar.TabListener{
     ActionBar actionbar;
     ViewPager viewPager;
-    SwipePageAdapterSession swipe;
-    ActionBar.Tab StopwatchTab;
+    SwipePageAdapterData swipe;
     ActionBar.Tab GraphTab;
     ActionBar.Tab DescriptionTab;
 
-    String AlertTime;
-
-    public static final String TAG =SessionActivity.class.getSimpleName();
+    public static final String TAG =HistoryDataActivity.class.getSimpleName();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_session);
+        setContentView(R.layout.activity_history_data);
         viewPager = (ViewPager) findViewById(R.id.pager);
-        swipe = new SwipePageAdapterSession(getSupportFragmentManager());
+        swipe = new SwipePageAdapterData(getSupportFragmentManager());
 
         actionbar = getSupportActionBar();
         viewPager.setAdapter(swipe);
-
-        StopwatchTab = actionbar.newTab();
-        StopwatchTab.setIcon(R.drawable.stopwatch);
-        StopwatchTab.setTabListener(this);
-
 
         GraphTab = actionbar.newTab();
         GraphTab.setIcon(R.drawable.graph);
@@ -54,7 +43,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         DescriptionTab.setTabListener(this);
 
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionbar.addTab(StopwatchTab);
         actionbar.addTab(GraphTab);
         actionbar.addTab(DescriptionTab);
 
@@ -67,16 +55,12 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         });
 
         makeActionOverflowMenuShown();
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        AlertTime = sharedPref.getString("AlertTime","30s");
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_session, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -89,7 +73,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-           return true;
+            return true;
 
         }
 

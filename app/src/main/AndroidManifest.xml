@@ -25,6 +25,8 @@
             android:parentActivityName=".WelcomeActivity" />
         <activity android:name=".HistoryActivity"
             android:parentActivityName=".WelcomeActivity"/>
+        <activity android:name=".HistoryDataActivity"
+            android:parentActivityName=".WelcomeActivity"/>
     </application>
 
 
