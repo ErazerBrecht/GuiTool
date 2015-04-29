@@ -1,7 +1,9 @@
 package com.ap.brecht.guitool;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -234,11 +236,32 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
         //Check if we need to speak the minutes
         //@ the moment it's every minute
-        currentmin=String.valueOf(mins);
-        if(lastmin!=currentmin) {
-            speakText();
+        String alertTime=((SessionActivity)getActivity()).AlertTime;
+        if(alertTime.equals("30s")) {
+            if ((secs == 0 && mins > 0) || secs == 30) {
+                speakText();
+            }
+        }else if(alertTime.equals("1m")) {
+            currentmin = String.valueOf(mins);
+            if (lastmin != currentmin) {
+                speakText();
+            }
+            lastmin = currentmin;
+        }else if(alertTime.equals("5m")) {
+            currentmin = String.valueOf(mins);
+            if (lastmin != currentmin && (mins%5)==0) {
+                speakText();
+            }
+            lastmin = currentmin;
+
+        }else if(alertTime.equals("10m")){
+            currentmin = String.valueOf(mins);
+            if (lastmin != currentmin && (mins%10)==0) {
+                speakText();
+            }
+            lastmin = currentmin;
         }
-        lastmin=currentmin;
+
     }
 
 
@@ -251,15 +274,27 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     };
 
     public void speakText(){
-        if (mins > 0) {
-            String toSpeak;
-            if (mins == 1)
-                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute";
-            else
-                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
 
-            Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-            SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
-        }
+             String toSpeak="";
+
+                if (secs==30) {
+                    if (mins == 0) {
+                        toSpeak = "You have been climbing for "+String.valueOf(secs)+" seconds";
+                    } else if(mins==1) {
+                        toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute and " + String.valueOf(secs) + " seconds";
+                    }else
+                        toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute and " + String.valueOf(secs) + " seconds";
+                }else if(secs==0)
+                {
+                    if (mins == 1) {
+                        toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute";
+                    } else
+                        toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
+                }else  toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes and "+String.valueOf(secs)+" seconds";
+
+                Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+                SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+
+
     }
 }

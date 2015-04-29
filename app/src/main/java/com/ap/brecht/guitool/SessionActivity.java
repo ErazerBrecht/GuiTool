@@ -1,6 +1,8 @@
 package com.ap.brecht.guitool;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -22,6 +24,8 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
     ActionBar.Tab StopwatchTab;
     ActionBar.Tab GraphTab;
     ActionBar.Tab DescriptionTab;
+
+    String AlertTime;
 
     public static final String TAG =SessionActivity.class.getSimpleName();
 
@@ -63,6 +67,10 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         });
 
         makeActionOverflowMenuShown();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        AlertTime = sharedPref.getString("AlertTime","30s");
+
     }
 
     @Override

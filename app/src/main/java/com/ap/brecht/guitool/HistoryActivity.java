@@ -51,6 +51,9 @@ public class HistoryActivity extends ActionBarActivity {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             HistoryActivity.this.startActivity(i);
         }
+        if (id == R.id.action_logout) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
