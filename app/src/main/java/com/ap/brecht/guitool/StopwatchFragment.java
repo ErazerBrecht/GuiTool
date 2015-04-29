@@ -60,7 +60,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         if (savedInstanceState != null)   {
             ((TextView) view.findViewById(R.id.timer)).setText(savedInstanceState.getCharSequence("hours") + ":" + savedInstanceState.getCharSequence("minutes") + ":" + savedInstanceState.getCharSequence("seconds"));
 
-            secs=savedInstanceState.getLong("secs");
+            /*secs=savedInstanceState.getLong("secs");
             mins=savedInstanceState.getLong("mins");
             hrs=savedInstanceState.getLong("hrs");
 
@@ -88,19 +88,16 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
             ((TextView) view.findViewById(R.id.Height)).setVisibility(savedInstanceState.getInt("height"));
             ((TextView) view.findViewById(R.id.Height)).setText(savedInstanceState.getCharSequence("heightString"));
+            */
         }
 
         return view;
-    }
-    @Override
-    public void onStop(){
-        super.onStop();
-        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState)
     {
+        /*
         savedInstanceState.putCharSequence("minutes",minutes);
         savedInstanceState.putCharSequence("seconds",seconds);
         savedInstanceState.putCharSequence("hours",hours);
@@ -126,6 +123,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         savedInstanceState.putCharSequence("heightString", ((TextView) view.findViewById(R.id.Height)).getText());
 
         super.onSaveInstanceState(savedInstanceState);
+        */
     }
 
     @Override
