@@ -1,23 +1,21 @@
 package com.ap.brecht.guitool;
 
-import android.app.ActionBar;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
-import android.widget.ListView;
 
 import java.lang.reflect.Field;
 
 /**
  * Created by Airien on 29/04/2015.
  */
-public class HistoryActivity extends ListActivity {
+public class HistoryActivity extends ActionBarActivity {
     ActionBar actionbar;
-    ListView list;
 
     public static final String TAG =HistoryActivity.class.getSimpleName();
 
@@ -25,10 +23,9 @@ public class HistoryActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        list=getListView();
-        setContentView(list);
+        setContentView(R.layout.activity_history);
 
-        actionbar = getActionBar();
+        actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         makeActionOverflowMenuShown();
