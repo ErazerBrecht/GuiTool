@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <CheckBoxPreference
+        android:key="pref_Alert"
+        android:title="Speech Alerts On"
+        android:defaultValue="true"
+        />
+    <ListPreference     android:title="Speech Alert"
+        android:summary="Amount of time between alerts"
+        android:key="AlertTime"
+        android:defaultValue="1m"
+        android:entries="@array/updateInterval"
+        android:entryValues="@array/updateIntervalValues"
+        android:dependency="pref_Alert"
+        />
+
+</PreferenceScreen>
