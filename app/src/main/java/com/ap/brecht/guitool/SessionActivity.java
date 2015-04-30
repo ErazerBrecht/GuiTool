@@ -81,6 +81,11 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -110,19 +115,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
             Log.d(TAG, e.getLocalizedMessage());
         }
     }
-
-    /*
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            AcceleroFragment.OnKeyDown(keyCode);
-
-            //and so on...
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-*/
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {

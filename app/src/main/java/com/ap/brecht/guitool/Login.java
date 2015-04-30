@@ -33,6 +33,7 @@ import java.util.List;
 /**
  * Created by Airien on 22/04/2015.
  */
+
 public class Login extends ActionBarActivity {
 
         Button btnLogin;
@@ -41,8 +42,6 @@ public class Login extends ActionBarActivity {
         EditText Password;
 
         JSONObject jsonResponse;
-
-
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -138,20 +137,17 @@ public class Login extends ActionBarActivity {
 
                 try {
                     jsonResponse = new JSONObject(result);
-
+                    SaveLoginClass.userData = jsonResponse;
                     /*String tag = jsonResponse.optString("tag").toString();
                     String success = jsonResponse.optString("success").toString();
                     String error = jsonResponse.optString("error").toString();
                     String error_msg = jsonResponse.optString("error_msg").toString();*/
-
-                    String jsonTemp = jsonResponse.toString();
 
                     //Close the progressDialog!
                     this.progressDialog.dismiss();
                     if (jsonResponse.optString("success").toString().equals("1")) {
                         super.onPostExecute(v);
                         Intent intent = new Intent(Login.this, WelcomeActivity.class);
-                        intent.putExtra("jsonobject", jsonTemp);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Login.this.startActivity(intent);
                     }

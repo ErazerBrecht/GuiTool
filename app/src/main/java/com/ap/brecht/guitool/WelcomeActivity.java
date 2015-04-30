@@ -42,8 +42,6 @@ public class WelcomeActivity extends ActionBarActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
 
-        Bundle bundle = getIntent().getExtras();
-
         btnNewSession = (Button) findViewById(R.id.NewSession);
         btnHistory = (Button) findViewById(R.id.History);
 
@@ -65,19 +63,9 @@ public class WelcomeActivity extends ActionBarActivity  {
         makeActionOverflowMenuShown();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-
-
-        String test = bundle.getString("jsonobject");
-
         try {
-            jsonObject = new JSONObject(test);
-
-
+            jsonObject = SaveLoginClass.userData;
             Username = jsonObject.getJSONObject("user").getString("name");
-
-
-
-
         } catch (JSONException e) {
             //some exception handler code.
         }
