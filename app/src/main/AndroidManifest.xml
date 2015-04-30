@@ -9,23 +9,41 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".Login"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
              <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity"/>
-        <activity android:name=".WelcomeActivity"/>
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".WelcomeActivity"
+            android:screenOrientation="portrait"
+            />
+
         <activity android:name=".SessionActivity"
-            android:parentActivityName=".WelcomeActivity" />
+            android:parentActivityName=".WelcomeActivity"
+            android:screenOrientation="portrait"
+            />
+
         <activity android:name=".SettingsActivity"
-            android:parentActivityName=".WelcomeActivity" />
+            android:parentActivityName=".WelcomeActivity"
+            android:screenOrientation="portrait"
+            />
+
         <activity android:name=".HistoryActivity"
-            android:parentActivityName=".WelcomeActivity"/>
+            android:parentActivityName=".WelcomeActivity"
+            android:screenOrientation="portrait"
+            />
+
         <activity android:name=".HistoryDataActivity"
-            android:parentActivityName=".WelcomeActivity"/>
+            android:parentActivityName=".WelcomeActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
