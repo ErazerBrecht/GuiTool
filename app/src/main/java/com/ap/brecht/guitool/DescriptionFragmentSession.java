@@ -61,7 +61,8 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
             // NEWLY ADDED CODE STARTS HERE [
             Bitmap originalBitmap = BitmapFactory.decodeFile(SessionActivity.mCurrentPhotoPath2);
-            Canvas canvas = new Canvas(originalBitmap);
+            Bitmap copyBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888,true);
+            Canvas canvas = new Canvas(copyBitmap);
 
             Paint paint = new Paint();
             paint.setColor(Color.WHITE); // Text Color
@@ -70,11 +71,11 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)); // Text Overlapping Pattern
             // some more settings...
 
-            canvas.drawBitmap(originalBitmap, 0, 0, paint);
+            canvas.drawBitmap(copyBitmap, 0, 0, paint);
             canvas.drawText("Testing...", 10, 10, paint);
             // NEWLY ADDED CODE ENDS HERE ]
 
-            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            copyBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
         } catch (Exception e) {
