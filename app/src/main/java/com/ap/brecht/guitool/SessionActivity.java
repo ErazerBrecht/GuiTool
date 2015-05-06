@@ -4,6 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +25,7 @@ import android.view.MenuItem;
 import android.view.ViewConfiguration;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -41,6 +49,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
+    static String mCurrentPhotoPath2;
     String mCurrentPhotoPath;
 
     @Override
@@ -73,6 +82,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
             });
             pictureAlert.setCancelable(true);
             pictureAlert.create().show();
+
         }
 
 
@@ -195,11 +205,13 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
+
+
     }
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "JPEG_" + timeStamp;
         File storageDir = new File(Environment.getExternalStorageDirectory().toString()+"/ClimbUP/");
         storageDir.mkdirs();
         File image = File.createTempFile(
@@ -210,6 +222,9 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        mCurrentPhotoPath2=image.getAbsolutePath();
         return image;
     }
+
+
 }
