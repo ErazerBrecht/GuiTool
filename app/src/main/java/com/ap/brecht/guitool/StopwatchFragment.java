@@ -306,9 +306,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 // Set up HTTP post
                 List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
                 jsonArray.add(new BasicNameValuePair("tag", "addSession"));
-                jsonArray.add(new BasicNameValuePair("uid",Uid));
-                jsonArray.add(new BasicNameValuePair("place",getActivity().findViewById(R.id.location).toString()));
-                jsonArray.add(new BasicNameValuePair("description", getActivity().findViewById(R.id.description).toString()));
+                jsonArray.add(new BasicNameValuePair("uid",new String(""+Uid)));
+                jsonArray.add(new BasicNameValuePair("place",DescriptionFragmentSession.loc));
+                jsonArray.add(new BasicNameValuePair("description", DescriptionFragmentSession.des));
                 jsonArray.add(new BasicNameValuePair("altitude", "No hight yet"));
                 jsonArray.add(new BasicNameValuePair("duration", String.valueOf(elapsedTime)));
 
@@ -357,7 +357,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                     SaveLoginClass.userData=jsonResponse;
                     Toast.makeText(getView().getContext(), "You have wrote your time to the database", Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(getView().getContext(),WelcomeActivity.class);
-                    i.putExtra("Username", Login.Name.toString());
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().startActivity(i);
                 }
