@@ -1,5 +1,6 @@
 package com.ap.brecht.guitool;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -89,7 +90,10 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-           return true;
+           SaveLoginClass.userData=null;
+            Intent i = new Intent(SessionActivity.this, Login.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            SessionActivity.this.startActivity(i);
 
         }
 

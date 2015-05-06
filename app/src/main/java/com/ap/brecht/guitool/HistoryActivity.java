@@ -72,7 +72,10 @@ public class HistoryActivity extends ActionBarActivity {
             HistoryActivity.this.startActivity(i);
         }
         if (id == R.id.action_logout) {
-            return true;
+            SaveLoginClass.userData=null;
+            Intent i = new Intent(HistoryActivity.this, Login.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            HistoryActivity.this.startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
