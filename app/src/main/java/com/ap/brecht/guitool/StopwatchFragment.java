@@ -291,12 +291,24 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
             String url_select = "http://php-brechtcarlier.rhcloud.com/";
 
+            int Uid= Integer.parseInt(null);
+
+            try {
+                Uid=SaveLoginClass.userData.getInt("uid");
+                Toast.makeText(getView().getContext(),Uid , Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             try {
                 // Set up HTTP post
                 List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
-                jsonArray.add(new BasicNameValuePair("tag", "time"));
-                jsonArray.add(new BasicNameValuePair("name", Login.Name.toString()));
-                jsonArray.add(new BasicNameValuePair("time", String.valueOf(elapsedTime)));
+                jsonArray.add(new BasicNameValuePair("tag", "addSession"));
+                jsonArray.add(new BasicNameValuePair("uid",new String(""+Uid)));
+                jsonArray.add(new BasicNameValuePair("place",getActivity().findViewById(R.id.location).toString()));
+                jsonArray.add(new BasicNameValuePair("description", getActivity().findViewById(R.id.description).toString()));
+                jsonArray.add(new BasicNameValuePair("altitude", "No hight yet"));
+                jsonArray.add(new BasicNameValuePair("duration", String.valueOf(elapsedTime)));
 
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(url_select);
@@ -340,6 +352,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 //Close the progressDialog!
                 this.progressDialog.dismiss();
                 if (jsonResponse.optString("success").toString().equals("1")) {
+                    SaveLoginClass.userData=jsonResponse;
                     Toast.makeText(getView().getContext(), "You have wrote your time to the database", Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(getView().getContext(),WelcomeActivity.class);
                     i.putExtra("Username", Login.Name.toString());
