@@ -145,13 +145,13 @@ public class Login extends ActionBarActivity {
 
                     //Close the progressDialog!
                     this.progressDialog.dismiss();
-                    if (jsonResponse.optString("success").toString().equals("1")) {
+                    if (SaveLoginClass.userData.optString("success").toString().equals("1")) {
                         super.onPostExecute(v);
                         Intent intent = new Intent(Login.this, WelcomeActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Login.this.startActivity(intent);
                     }
-                    else if(jsonResponse.optString("error").toString().equals("1")){
+                    else if(SaveLoginClass.userData.optString("error").toString().equals("1")){
                         Toast.makeText(Login.this, jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {

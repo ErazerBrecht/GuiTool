@@ -47,6 +47,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private Button stopButton;
     private Button resetButton;
 
+    String Uid;
+
     JSONObject jsonResponse;
 
     private Handler mHandler = new Handler();
@@ -291,11 +293,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
             String url_select = "http://php-brechtcarlier.rhcloud.com/";
 
-            int Uid= Integer.parseInt(null);
+
 
             try {
-                Uid=SaveLoginClass.userData.getInt("uid");
-                Toast.makeText(getView().getContext(),Uid , Toast.LENGTH_SHORT).show();
+                Uid=SaveLoginClass.userData.getString("uid");
+                //Toast.makeText(getView().getContext(),Uid , Toast.LENGTH_SHORT).show();
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -304,7 +306,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 // Set up HTTP post
                 List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
                 jsonArray.add(new BasicNameValuePair("tag", "addSession"));
-                jsonArray.add(new BasicNameValuePair("uid",new String(""+Uid)));
+                jsonArray.add(new BasicNameValuePair("uid",Uid));
                 jsonArray.add(new BasicNameValuePair("place",getActivity().findViewById(R.id.location).toString()));
                 jsonArray.add(new BasicNameValuePair("description", getActivity().findViewById(R.id.description).toString()));
                 jsonArray.add(new BasicNameValuePair("altitude", "No hight yet"));
