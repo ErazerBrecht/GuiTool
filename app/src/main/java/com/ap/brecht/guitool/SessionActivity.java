@@ -56,7 +56,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         if(SaveLoginClass.PhotoString==null) {
             AlertDialog.Builder pictureAlert = new AlertDialog.Builder(this);
             pictureAlert.setMessage("Do you want to make a picture?");
-            pictureAlert.setTitle("App Title");
+            pictureAlert.setTitle("ClimbUP");
             pictureAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

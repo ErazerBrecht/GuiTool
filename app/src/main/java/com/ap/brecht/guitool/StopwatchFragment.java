@@ -1,9 +1,9 @@
 package com.ap.brecht.guitool;
 
-import android.content.SharedPreferences;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -71,7 +71,22 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 startClick();
                 break;
             case R.id.stopButton:
-                stopClick();
+                AlertDialog.Builder stopAlert=new AlertDialog.Builder(v.getContext());
+                stopAlert.setMessage("Do you want to quit your session?");
+                stopAlert.setTitle("ClimbUP");
+                stopAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                stopAlert.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        stopClick();
+                    }
+                });
+
                 break;
             case R.id.btnReset:
                 resetClick();
