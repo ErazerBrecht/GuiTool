@@ -57,74 +57,10 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                     }
                 });
 
-        if (savedInstanceState != null)   {
-            ((TextView) view.findViewById(R.id.timer)).setText(savedInstanceState.getCharSequence("hours") + ":" + savedInstanceState.getCharSequence("minutes") + ":" + savedInstanceState.getCharSequence("seconds"));
-
-            /*secs=savedInstanceState.getLong("secs");
-            mins=savedInstanceState.getLong("mins");
-            hrs=savedInstanceState.getLong("hrs");
-
-            lastmin=savedInstanceState.getString("lastmin");
-            currentmin=savedInstanceState.getString("currentstring");
-            stopped=savedInstanceState.getBoolean("stopped");
-            startTime=savedInstanceState.getLong("starttime");
-            elapsedTime=savedInstanceState.getLong("elapsedTime");
-            start=savedInstanceState.getBoolean("START");
-            stop=savedInstanceState.getBoolean("STOP");
-
-            if(savedInstanceState.getBoolean("START"))
-            {
-                mHandler.removeCallbacks(startTimer);
-                mHandler.postDelayed(startTimer, 0);
-            }
-
-            if(savedInstanceState.getBoolean("STOP")) {
-                mHandler.removeCallbacks(startTimer);
-            }
-
-            startButton.setVisibility(savedInstanceState.getInt("start"));
-            stopButton.setVisibility(savedInstanceState.getInt("stop"));
-            resetButton.setVisibility(savedInstanceState.getInt("reset"));
-
-            ((TextView) view.findViewById(R.id.Height)).setVisibility(savedInstanceState.getInt("height"));
-            ((TextView) view.findViewById(R.id.Height)).setText(savedInstanceState.getCharSequence("heightString"));
-            */
-        }
 
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState)
-    {
-        /*
-        savedInstanceState.putCharSequence("minutes",minutes);
-        savedInstanceState.putCharSequence("seconds",seconds);
-        savedInstanceState.putCharSequence("hours",hours);
-
-        savedInstanceState.putLong("secs",secs);
-        savedInstanceState.putLong("mins",mins);
-        savedInstanceState.putLong("hrs",hrs);
-
-        savedInstanceState.putString("lastmin", lastmin);
-        savedInstanceState.putString("currentmin", currentmin);
-
-        savedInstanceState.putBoolean("stopped",stopped);
-        savedInstanceState.putBoolean("START",start);
-        savedInstanceState.putBoolean("STOP",stop);
-        savedInstanceState.putLong("starttime",startTime);
-        savedInstanceState.putLong("elapsedTime",elapsedTime);
-
-        savedInstanceState.putInt("start",startButton.getVisibility());
-        savedInstanceState.putInt("stop",stopButton.getVisibility());
-        savedInstanceState.putInt("reset",resetButton.getVisibility());
-
-        savedInstanceState.putInt("height",((TextView) view.findViewById(R.id.Height)).getVisibility());
-        savedInstanceState.putCharSequence("heightString", ((TextView) view.findViewById(R.id.Height)).getText());
-
-        super.onSaveInstanceState(savedInstanceState);
-        */
-    }
 
     @Override
     public void onClick(View v)

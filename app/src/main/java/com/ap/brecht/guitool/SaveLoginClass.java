@@ -8,4 +8,5 @@ import org.json.JSONObject;
 
 public class SaveLoginClass {
     static JSONObject userData;
+    static String PhotoString;
 }

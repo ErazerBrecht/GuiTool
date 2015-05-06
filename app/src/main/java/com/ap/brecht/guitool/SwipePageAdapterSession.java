@@ -16,11 +16,11 @@ public class SwipePageAdapterSession extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return new StopwatchFragment();
-            case 1:
-                return new GraphFragmentSession();
-            case 2:
                 return new DescriptionFragmentSession();
+            case 1:
+                return new StopwatchFragment();
+            case 2:
+                return new GraphFragmentSession();
             default:
                 break;
         }
