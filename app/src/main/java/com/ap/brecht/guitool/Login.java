@@ -38,8 +38,8 @@ public class Login extends ActionBarActivity {
 
         Button btnLogin;
         Button btnRegister;
-        EditText Name;
-        EditText Password;
+        static EditText Name;
+        static EditText Password;
 
         JSONObject jsonResponse;
 
