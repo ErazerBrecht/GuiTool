@@ -26,7 +26,7 @@ public class WelcomeActivity extends ActionBarActivity  {
 
     Button btnNewSession;
     Button btnHistory;
-    public static final String TAG =WelcomeActivity.class.getSimpleName();
+    public static final String TAG = WelcomeActivity.class.getSimpleName();
 
     String Username;
     TextView Welkom;
@@ -60,6 +60,7 @@ public class WelcomeActivity extends ActionBarActivity  {
                 WelcomeActivity.this.startActivity(i);
             }
         });
+
         makeActionOverflowMenuShown();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
