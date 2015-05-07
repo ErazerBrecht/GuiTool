@@ -87,6 +87,11 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
 
         actionbar = getSupportActionBar();
+        actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        actionbar.setHomeButtonEnabled(true);
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setIcon(R.drawable.icon);
+
         viewPager.setAdapter(swipe);
 
         StopwatchTab = actionbar.newTab();

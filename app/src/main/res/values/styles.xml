@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarTabBarStyle">@style/LineRemover</item>
+        <item name="android:icon">@drawable/icon</item>
     </style>
 
     <style name="LineRemover" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">

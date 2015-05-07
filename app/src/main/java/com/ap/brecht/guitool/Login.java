@@ -50,6 +50,8 @@ public class Login extends ActionBarActivity {
             setContentView(R.layout.login);
 
             ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+            actionBar.setIcon(R.drawable.icon);
 
             Name = (EditText) findViewById(R.id.etName);
             Password = (EditText) findViewById(R.id.etPassword);

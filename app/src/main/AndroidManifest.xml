@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity android:name=".SplatchScreenActivity">
@@ -26,34 +26,41 @@
         <activity
             android:name=".Login"
             android:screenOrientation="portrait"
+            android:icon="@drawable/icon"
             />
 
         <activity android:name=".RegisterActivity"
             android:screenOrientation="portrait"
+            android:icon="@drawable/icon"
             />
 
         <activity android:name=".WelcomeActivity"
             android:screenOrientation="portrait"
+            android:icon="@drawable/icon"
             />
 
         <activity android:name=".SessionActivity"
             android:parentActivityName=".WelcomeActivity"
             android:screenOrientation="portrait"
+            android:icon="@drawable/icon"
             />
 
         <activity android:name=".SettingsActivity"
             android:parentActivityName=".WelcomeActivity"
             android:screenOrientation="portrait"
+            android:icon="@drawable/icon"
             />
 
         <activity android:name=".HistoryActivity"
             android:parentActivityName=".WelcomeActivity"
             android:screenOrientation="portrait"
+            android:icon="@drawable/icon"
             />
 
         <activity android:name=".HistoryDataActivity"
             android:parentActivityName=".WelcomeActivity"
             android:screenOrientation="portrait"
+            android:icon="@drawable/icon"
             />
     </application>
 

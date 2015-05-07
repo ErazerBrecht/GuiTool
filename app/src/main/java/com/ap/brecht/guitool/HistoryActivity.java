@@ -46,7 +46,11 @@ public class HistoryActivity extends ActionBarActivity {
         });
 
         actionbar = getSupportActionBar();
+        actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        actionbar.setHomeButtonEnabled(true);
         actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setIcon(R.drawable.icon);
+
 
         makeActionOverflowMenuShown();
     }

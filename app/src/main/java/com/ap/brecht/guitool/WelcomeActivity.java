@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +27,7 @@ public class WelcomeActivity extends ActionBarActivity  {
 
     Button btnNewSession;
     Button btnHistory;
+    ActionBar actionbar;
     public static final String TAG = WelcomeActivity.class.getSimpleName();
 
     String Username;
@@ -41,6 +43,10 @@ public class WelcomeActivity extends ActionBarActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
+
+        actionbar = getSupportActionBar();
+        actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        actionbar.setIcon(R.drawable.icon);
 
         btnNewSession = (Button) findViewById(R.id.NewSession);
         btnHistory = (Button) findViewById(R.id.History);
