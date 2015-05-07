@@ -27,18 +27,18 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
     private View view;
     private Button SavePicButton;
-    EditText Location=(EditText) getActivity().findViewById(R.id.location);
-    EditText Description= (EditText) getActivity().findViewById(R.id.description);
+
+    /*
     static String loc;
     static String des;
-
+    */
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_description_session, container, false);
 
-        loc=String.valueOf(Location.getText());
-        des=String.valueOf(Description.getText());
+        //loc=String.valueOf(Location.getText());
+        //des=String.valueOf(Description.getText());
 
         SavePicButton = (Button) view.findViewById(R.id.savePicture);
         SavePicButton.setOnClickListener(this);

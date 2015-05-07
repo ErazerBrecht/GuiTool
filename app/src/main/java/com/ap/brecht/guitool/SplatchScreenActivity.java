@@ -1,9 +1,13 @@
 package com.ap.brecht.guitool;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -41,6 +45,30 @@ public class SplatchScreenActivity extends Activity {
                 mHandler.postDelayed(this, 750);
             }
         }, 1000);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+
+        int action = MotionEventCompat.getActionMasked(event);
+
+        switch(action) {
+            case (MotionEvent.ACTION_DOWN) :
+                return true;
+            case (MotionEvent.ACTION_MOVE) :
+                return true;
+            case (MotionEvent.ACTION_UP) :
+                Intent i = new Intent(SplatchScreenActivity.this, Login.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                SplatchScreenActivity.this.startActivity(i);
+                return true;
+            case (MotionEvent.ACTION_CANCEL) :
+                return true;
+            case (MotionEvent.ACTION_OUTSIDE) :
+                return true;
+            default :
+                return super.onTouchEvent(event);
+        }
     }
 
 }

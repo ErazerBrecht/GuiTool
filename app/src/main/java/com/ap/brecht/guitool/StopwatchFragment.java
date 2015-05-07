@@ -307,8 +307,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
                 jsonArray.add(new BasicNameValuePair("tag", "addSession"));
                 jsonArray.add(new BasicNameValuePair("uid",new String(""+Uid)));
-                jsonArray.add(new BasicNameValuePair("place",DescriptionFragmentSession.loc));
-                jsonArray.add(new BasicNameValuePair("description", DescriptionFragmentSession.des));
+                //jsonArray.add(new BasicNameValuePair("place",DescriptionFragmentSession.loc));
+                //jsonArray.add(new BasicNameValuePair("description", DescriptionFragmentSession.des));
                 jsonArray.add(new BasicNameValuePair("altitude", "No hight yet"));
                 jsonArray.add(new BasicNameValuePair("duration", String.valueOf(elapsedTime)));
 
