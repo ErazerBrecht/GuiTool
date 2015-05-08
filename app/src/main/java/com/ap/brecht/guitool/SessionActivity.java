@@ -4,13 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +18,6 @@ import android.view.MenuItem;
 import android.view.ViewConfiguration;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -59,10 +51,10 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         viewPager = (ViewPager) findViewById(R.id.pager);
         swipe = new SwipePageAdapterSession(getSupportFragmentManager());
 
-        SaveLoginClass.PhotoString=null;
+        DatabaseData.PhotoString=null;
 
 
-        if(SaveLoginClass.PhotoString==null) {
+        if(DatabaseData.PhotoString==null) {
             AlertDialog.Builder pictureAlert = new AlertDialog.Builder(this);
             pictureAlert.setMessage("Do you want to make a picture?");
             pictureAlert.setTitle("ClimbUP");
@@ -143,7 +135,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-           SaveLoginClass.userData=null;
+           DatabaseData.userData=null;
             Intent i = new Intent(SessionActivity.this, Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SessionActivity.this.startActivity(i);
@@ -200,7 +192,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                SaveLoginClass.PhotoString="iets";
+                DatabaseData.PhotoString="iets";
             }
         }
     }

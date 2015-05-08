@@ -296,7 +296,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
 
             try {
-                Uid=SaveLoginClass.userData.getString("uid");
+                Uid= DatabaseData.userData.getString("uid");
                 //Toast.makeText(getView().getContext(),Uid , Toast.LENGTH_SHORT).show();
 
             } catch (JSONException e) {
@@ -354,7 +354,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 //Close the progressDialog!
                 this.progressDialog.dismiss();
                 if (jsonResponse.optString("success").toString().equals("1")) {
-                    SaveLoginClass.userData=jsonResponse;
+                    DatabaseData.userData=jsonResponse;
                     Toast.makeText(getView().getContext(), "You have wrote your time to the database", Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(getView().getContext(),WelcomeActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

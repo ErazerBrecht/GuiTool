@@ -6,7 +6,7 @@ import org.json.JSONObject;
  * Created by Brecht on 30/04/2015.
  */
 
-public class SaveLoginClass {
+public class DatabaseData {
     static JSONObject userData;
     static String PhotoString;
 }

@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 
@@ -33,7 +32,6 @@ public class WelcomeActivity extends ActionBarActivity  {
     String Username;
     TextView Welkom;
     TextView UsernameTextView;
-    JSONObject jsonObject;
 
     private Handler mHandler = new Handler();
     int i = 1;
@@ -71,8 +69,7 @@ public class WelcomeActivity extends ActionBarActivity  {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         try {
-            jsonObject = SaveLoginClass.userData;
-            Username = jsonObject.getJSONObject("user").getString("name");
+            Username = DatabaseData.userData.getJSONObject("user").getString("name");
         } catch (JSONException e) {
             //some exception handler code.
         }
@@ -120,7 +117,7 @@ public class WelcomeActivity extends ActionBarActivity  {
             WelcomeActivity.this.startActivity(i);
         }
         if (id == R.id.action_logout) {
-            SaveLoginClass.userData=null;
+            DatabaseData.userData=null;
             Intent i = new Intent(WelcomeActivity.this, Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             WelcomeActivity.this.startActivity(i);

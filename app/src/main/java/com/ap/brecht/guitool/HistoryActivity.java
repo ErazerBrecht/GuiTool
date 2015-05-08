@@ -76,7 +76,7 @@ public class HistoryActivity extends ActionBarActivity {
             HistoryActivity.this.startActivity(i);
         }
         if (id == R.id.action_logout) {
-            SaveLoginClass.userData=null;
+            DatabaseData.userData=null;
             Intent i = new Intent(HistoryActivity.this, Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             HistoryActivity.this.startActivity(i);

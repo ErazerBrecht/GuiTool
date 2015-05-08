@@ -7,28 +7,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Airien on 22/04/2015.
@@ -38,8 +22,8 @@ public class Login extends ActionBarActivity {
 
         Button btnLogin;
         Button btnRegister;
-        static EditText Name;
-        static EditText Password;
+        EditText Name;
+        EditText Password;
 
         JSONObject jsonResponse;
 
@@ -77,8 +61,6 @@ public class Login extends ActionBarActivity {
         class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
             private ProgressDialog progressDialog = new ProgressDialog(Login.this);
-            InputStream inputStream = null;
-            String result = "";
 
             protected void onPreExecute() {
                 progressDialog.setMessage("Login...");
@@ -92,75 +74,27 @@ public class Login extends ActionBarActivity {
 
             @Override
             protected Void doInBackground(Void... params) {
-
-                String url_select = "http://php-brechtcarlier.rhcloud.com/";
-
-                try {// Set up HTTP post
-                    List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
-                    jsonArray.add(new BasicNameValuePair("tag", "login"));
-                    jsonArray.add(new BasicNameValuePair("name", String.valueOf(Name.getText())));
-                    jsonArray.add(new BasicNameValuePair("password", String.valueOf(Password.getText())));
-
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpPost httpPost = new HttpPost(url_select);
-                    httpPost.setEntity(new UrlEncodedFormEntity(jsonArray));
-                    HttpResponse httpResponse = httpClient.execute(httpPost);
-                    HttpEntity httpEntity = httpResponse.getEntity();
-
-                    // Read content & Log
-                    inputStream = httpEntity.getContent();
-                } catch (Exception e) {
-                    this.progressDialog.dismiss();
-                    cancel(true);
-                }
-
-                // Convert response to string using String Builder
-                try {
-                    BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
-                    StringBuilder sBuilder = new StringBuilder();
-
-                    String line = null;
-                    while ((line = bReader.readLine()) != null) {
-                        sBuilder.append(line + "\n");
-                    }
-
-                    inputStream.close();
-                    result = sBuilder.toString();
-                }
-
-                catch (Exception e) {
-                    Log.e("StringBuilding", "Error converting result " + e.toString());
-                }
+                DatabaseComClass.Login(String.valueOf(Name.getText()), String.valueOf(Password.getText()), progressDialog);
                 return null;
             }
 
             protected void onPostExecute(Void v) {
-                //parse JSON data
-
                 try {
-                    jsonResponse = new JSONObject(result);
-                    SaveLoginClass.userData = jsonResponse;
-                    /*String tag = jsonResponse.optString("tag").toString();
-                    String success = jsonResponse.optString("success").toString();
-                    String error = jsonResponse.optString("error").toString();
-                    String error_msg = jsonResponse.optString("error_msg").toString();*/
-
                     //Close the progressDialog!
                     this.progressDialog.dismiss();
-                    if (SaveLoginClass.userData.optString("success").toString().equals("1")) {
+                    if (DatabaseData.userData.optString("success").toString().equals("1")) {
                         super.onPostExecute(v);
                         Intent intent = new Intent(Login.this, WelcomeActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Login.this.startActivity(intent);
                     }
-                    else if(SaveLoginClass.userData.optString("error").toString().equals("1")){
+                    else if(DatabaseData.userData.optString("error").toString().equals("1")){
                         Toast.makeText(Login.this, jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             protected void onCancelled() {
                 Toast.makeText(Login.this, "Can't login", Toast.LENGTH_SHORT).show();
