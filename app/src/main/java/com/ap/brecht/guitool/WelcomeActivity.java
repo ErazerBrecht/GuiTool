@@ -77,7 +77,7 @@ public class WelcomeActivity extends ActionBarActivity  {
 
         UsernameTextView.setText(String.valueOf(Username));
 
-       mHandler.postDelayed(new Runnable() {
+       /*mHandler.postDelayed(new Runnable() {
             public void run() {
                 i = i + j;
                 Welkom.setShadowLayer(i, 0,0, Color.BLACK);
@@ -90,7 +90,7 @@ public class WelcomeActivity extends ActionBarActivity  {
                 mHandler.postDelayed(this, 200);
             }
         }, 100);
-
+*/
     }
 
     @Override
