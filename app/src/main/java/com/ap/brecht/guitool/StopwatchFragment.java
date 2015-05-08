@@ -28,6 +28,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -44,8 +45,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private View view;
 
     private ImageButton startButton;
+    private TextView txtStart;
     private ImageButton stopButton;
+    private TextView txtStop;
     private ImageButton resetButton;
+    private TextView txtReset;
 
     String Uid;
 
@@ -66,10 +70,14 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         view = inflater.inflate(R.layout.fragment_stopwatch, container, false);
         startButton = (ImageButton) view.findViewById(R.id.btnStart);
         startButton.setOnClickListener(this);
-        stopButton = (ImageButton) view.findViewById(R.id.stopButton);
+        stopButton = (ImageButton) view.findViewById(R.id.btnStop);
         stopButton.setOnClickListener(this);
         resetButton = (ImageButton) view.findViewById(R.id.btnReset);
         resetButton.setOnClickListener(this);
+
+        txtStart = (TextView) view.findViewById(R.id.txtStart);
+        txtReset = (TextView) view.findViewById(R.id.txtReset);
+        txtStop = (TextView) view.findViewById(R.id.txtStop);
 
         SayTime = new TextToSpeech(getActivity().getApplicationContext(),
                 new TextToSpeech.OnInitListener() {
@@ -94,7 +102,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             case R.id.btnStart:
                 startClick();
                 break;
-            case R.id.stopButton:
+            case R.id.btnStop:
                 QustomDialogBuilder stopAlert = new QustomDialogBuilder(v.getContext(), AlertDialog.THEME_HOLO_DARK);
                 stopAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(getActivity().getResources().getColor(R.color.white) & 0x00ffffff) +">Do you want to quit your session?"));
                 stopAlert.setTitle("ClimbUP");
@@ -123,7 +131,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     public void startClick (){
         showStopButton();
-        ((TextView) view.findViewById(R.id.Height)).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.Height).setVisibility(View.VISIBLE);
         start=true;
         stop=false;
         if(stopped){
@@ -155,8 +163,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     private void showStopButton(){
         startButton.setVisibility(View.GONE);
+        txtStart.setVisibility(View.GONE);
         resetButton.setVisibility(View.GONE);
+        txtReset.setVisibility(View.GONE);
         stopButton.setVisibility(View.VISIBLE);
+        txtStop.setVisibility(View.VISIBLE);
     }
 
     private void hideStopButton(){
