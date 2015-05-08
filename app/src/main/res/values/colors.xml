@@ -18,4 +18,5 @@
     <color name="black">#000000</color>
     <color name="orange">#E78728</color>
     <color name="Orange">#E98237</color>
+    <color name="defaultB">#EEEEEE</color>
 </resources>

@@ -195,7 +195,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseData.userData=null;
-                Intent i = new Intent(SessionActivity.this, Login.class);
+                Intent i = new Intent(SessionActivity.this, SplatchScreenActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 SessionActivity.this.startActivity(i);
                 Intent intent = new Intent(Intent.ACTION_MAIN);

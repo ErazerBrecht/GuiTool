@@ -44,7 +44,7 @@ public class SettingsActivity extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseData.userData=null;
-                Intent i = new Intent(SettingsActivity.this, Login.class);
+                Intent i = new Intent(SettingsActivity.this, SplatchScreenActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 SettingsActivity.this.startActivity(i);
                 Intent intent = new Intent(Intent.ACTION_MAIN);

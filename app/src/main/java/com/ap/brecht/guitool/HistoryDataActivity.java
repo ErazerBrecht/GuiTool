@@ -147,7 +147,7 @@ public class HistoryDataActivity extends ActionBarActivity implements ActionBar.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseData.userData=null;
-                Intent i = new Intent(HistoryDataActivity.this, Login.class);
+                Intent i = new Intent(HistoryDataActivity.this, SplatchScreenActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 HistoryDataActivity.this.startActivity(i);
                 Intent intent = new Intent(Intent.ACTION_MAIN);
