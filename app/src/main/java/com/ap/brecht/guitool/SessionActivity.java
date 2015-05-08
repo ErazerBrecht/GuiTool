@@ -67,6 +67,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+
                 }
             });
             pictureAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -84,10 +85,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
 
         actionbar = getSupportActionBar();
-        actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-        actionbar.setHomeButtonEnabled(true);
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setIcon(R.drawable.icon);
         actionbar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Orange)));
 
         viewPager.setAdapter(swipe);

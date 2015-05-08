@@ -42,8 +42,6 @@ public class RegisterActivity extends ActionBarActivity {
 
     Button btnRegister;
 
-    ActionBar actionBar;
-
     EditText Name;
     EditText Password;
     JSONObject jsonResponse;
@@ -55,10 +53,6 @@ public class RegisterActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.register);
-
-        actionBar=getActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-        actionBar.setIcon(R.drawable.icon);
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
         Name=(EditText) findViewById(R.id.etName);
