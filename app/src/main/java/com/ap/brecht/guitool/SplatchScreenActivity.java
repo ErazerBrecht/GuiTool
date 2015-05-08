@@ -71,4 +71,9 @@ public class SplatchScreenActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        BackPressed.CloseApp(this);
+    }
+
 }
