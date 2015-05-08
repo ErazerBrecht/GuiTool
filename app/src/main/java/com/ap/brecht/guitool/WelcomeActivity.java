@@ -43,7 +43,7 @@ public class WelcomeActivity extends ActionBarActivity  {
         setContentView(R.layout.welcome);
 
         actionbar = getSupportActionBar();
-        actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
+        actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
         actionbar.setIcon(R.drawable.icon);
 
         btnNewSession = (Button) findViewById(R.id.NewSession);
