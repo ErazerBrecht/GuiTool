@@ -61,8 +61,8 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
             //pictureAlert.setMessage("Do you want to make a picture?");
             pictureAlert.setMessage(Html.fromHtml("<font color='#FFFFFF'>Do you want to make a picture?"));
             pictureAlert.setTitle("ClimbUP");
-            pictureAlert.setTitleColor("#E98237");
-            pictureAlert.setDividerColor("#E98237");
+            pictureAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
+            pictureAlert.setDividerColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
             pictureAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
