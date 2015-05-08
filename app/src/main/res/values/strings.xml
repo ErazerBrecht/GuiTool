@@ -46,5 +46,8 @@
         <item>10m</item>
     </string-array>
 
+    <string name="main_button_text">See a hot new custom dialog!</string>
+    <string name="alert_image_content_description">Alert Image</string>
+
 
 </resources>

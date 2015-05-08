@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,9 +57,12 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
 
         if(DatabaseData.PhotoString==null) {
-            AlertDialog.Builder pictureAlert = new AlertDialog.Builder(this);
-            pictureAlert.setMessage("Do you want to make a picture?");
+            QustomDialogBuilder pictureAlert = new QustomDialogBuilder(this, AlertDialog.THEME_HOLO_DARK);
+            //pictureAlert.setMessage("Do you want to make a picture?");
+            pictureAlert.setMessage(Html.fromHtml("<font color='#FFFFFF'>Do you want to make a picture?"));
             pictureAlert.setTitle("ClimbUP");
+            pictureAlert.setTitleColor("#E98237");
+            pictureAlert.setDividerColor("#E98237");
             pictureAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
