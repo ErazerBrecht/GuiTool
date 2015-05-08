@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,9 +96,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 startClick();
                 break;
             case R.id.stopButton:
-                AlertDialog.Builder stopAlert=new AlertDialog.Builder(v.getContext());
-                stopAlert.setMessage("Do you want to quit your session?");
+                QustomDialogBuilder stopAlert = new QustomDialogBuilder(v.getContext(), AlertDialog.THEME_HOLO_DARK);
+                stopAlert.setMessage(Html.fromHtml("<font color='#FFFFFF'>Do you want to quit your session?"));
                 stopAlert.setTitle("ClimbUP");
+                stopAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
+                stopAlert.setDividerColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
                 stopAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -140,7 +143,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         stop=true;
         mHandler.removeCallbacks(startTimer);
         stopped = true;
-       new MyAsyncTask().execute();
+        new MyAsyncTask().execute();
     }
 
     public void resetClick (){

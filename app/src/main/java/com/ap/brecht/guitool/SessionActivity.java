@@ -58,7 +58,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
         if(DatabaseData.PhotoString==null) {
             QustomDialogBuilder pictureAlert = new QustomDialogBuilder(this, AlertDialog.THEME_HOLO_DARK);
-            //pictureAlert.setMessage("Do you want to make a picture?");
             pictureAlert.setMessage(Html.fromHtml("<font color='#FFFFFF'>Do you want to make a picture?"));
             pictureAlert.setTitle("ClimbUP");
             pictureAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
