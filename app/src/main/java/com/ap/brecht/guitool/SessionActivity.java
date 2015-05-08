@@ -178,6 +178,38 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
     }
 
+    @Override
+    public void onBackPressed() {
+        QustomDialogBuilder exitAlert = new QustomDialogBuilder(this, AlertDialog.THEME_HOLO_DARK);
+        //pictureAlert.setMessage("Do you want to make a picture?");
+        exitAlert.setMessage(Html.fromHtml("<font color='#FFFFFF'>Do you want to exit the app?"));
+        exitAlert.setTitle("ClimbUP");
+        exitAlert.setTitleColor("#E98237");
+        exitAlert.setDividerColor("#E98237");
+        exitAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        exitAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseData.userData=null;
+                Intent i = new Intent(SessionActivity.this, Login.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                SessionActivity.this.startActivity(i);
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+        exitAlert.setCancelable(true);
+        exitAlert.create().show();
+    }
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
