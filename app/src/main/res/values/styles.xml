@@ -2,12 +2,11 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">@color/black</item>
         <item name="actionBarTabBarStyle">@style/LineRemover</item>
-        <item name="android:icon">@drawable/icon</item>
     </style>
 
     <style name="LineRemover" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
-        <item name="background">@color/background_material_dark</item>
-
+        <!-- This empty style overrides standard style. This removs the Line between the tabs -->
     </style>
 </resources>
