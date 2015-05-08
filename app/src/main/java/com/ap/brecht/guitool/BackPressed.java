@@ -29,6 +29,7 @@ public class BackPressed {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseData.userData = null;
+                DatabaseData.PhotoString = null;
                 Intent i = new Intent(activity, SplatchScreenActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 activity.startActivity(i);

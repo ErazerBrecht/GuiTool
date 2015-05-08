@@ -41,10 +41,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
     public static final String TAG =SessionActivity.class.getSimpleName();
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
-    static String mCurrentPhotoPath2;
-    String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,36 +48,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         setContentView(R.layout.activity_session);
         viewPager = (ViewPager) findViewById(R.id.pager);
         swipe = new SwipePageAdapterSession(getSupportFragmentManager());
-
-        DatabaseData.PhotoString=null;
-
-
-        if(DatabaseData.PhotoString==null) {
-            QustomDialogBuilder pictureAlert = new QustomDialogBuilder(this, AlertDialog.THEME_HOLO_DARK);
-            pictureAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(getResources().getColor(R.color.white) & 0x00ffffff) +">Do you want to make a picture?"));
-            pictureAlert.setTitle("ClimbUP");
-            pictureAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
-            pictureAlert.setDividerColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
-            pictureAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-
-                }
-            });
-            pictureAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    dispatchTakePictureIntent();
-                    galleryAddPic();
-                }
-            });
-            pictureAlert.setCancelable(true);
-            pictureAlert.create().show();
-
-        }
-
 
         actionbar = getSupportActionBar();
         actionbar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Orange)));
@@ -91,7 +57,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         StopwatchTab = actionbar.newTab();
         StopwatchTab.setIcon(R.drawable.stopwatch);
         StopwatchTab.setTabListener(this);
-
 
         GraphTab = actionbar.newTab();
         GraphTab.setIcon(R.drawable.graph);
@@ -106,7 +71,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         actionbar.addTab(StopwatchTab);
         actionbar.addTab(GraphTab);
 
-
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -118,7 +82,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         AlertTime = sharedPref.getString("AlertTime","30s");
-
     }
 
     @Override
@@ -143,7 +106,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
             SessionActivity.this.startActivity(i);
 
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -169,66 +131,14 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
-
     }
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
-
     }
 
     @Override
     public void onBackPressed() {
        BackPressed.CloseApp(this);
     }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                DatabaseData.PhotoString="iets";
-            }
-        }
-    }
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-
-
-    }
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp;
-        File storageDir = new File(Environment.getExternalStorageDirectory().toString()+"/ClimbUP/");
-        storageDir.mkdirs();
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        mCurrentPhotoPath2=image.getAbsolutePath();
-        return image;
-    }
-
-
 }
