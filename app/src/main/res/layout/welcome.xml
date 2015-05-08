@@ -1,60 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/climb2">
+    android:background="@drawable/climb2"
+    android:orientation="vertical">
 
-    <TextView android:text="Welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingTop="10dp"
-        android:textSize="40sp"
-        android:textColor="@android:color/black"
-        android:layout_gravity="center"
+    <TextView
         android:id="@+id/tvWelcome"
-        />
-
-    <TextView android:text="Brecht"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:paddingBottom="40dp"
-        android:textSize="30sp"
         android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:text="Welcome"
+        android:textColor="@android:color/black"
+        android:textSize="40sp" />
+
+    <TextView
         android:id="@+id/tvUsername"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:paddingBottom="40dp"
+        android:text="Brecht"
+        android:textSize="30sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center|bottom"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/NewSession"
-        android:text="New Session ➨"
-        android:textSize="25dp"
-        android:background="@android:color/transparent"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:paddingRight="10dp"
-        />
+        <Button
+            android:id="@+id/NewSession"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:text="New Session ➨"
+            android:textSize="25dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:id="@+id/History"
-        android:text="History ➨"
-        android:textSize="25dp"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:paddingRight="10dp"
-        />
-        </LinearLayout>
+        <Button
+            android:id="@+id/History"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:text="History ➨"
+            android:textSize="25dp" />
+    </LinearLayout>
 
 </LinearLayout>
