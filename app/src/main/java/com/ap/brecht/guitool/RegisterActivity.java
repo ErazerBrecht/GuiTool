@@ -57,7 +57,7 @@ public class RegisterActivity extends ActionBarActivity {
         setContentView(R.layout.register);
 
         actionBar=getActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
         actionBar.setIcon(R.drawable.icon);
 
         btnRegister = (Button) findViewById(R.id.btnRegister);

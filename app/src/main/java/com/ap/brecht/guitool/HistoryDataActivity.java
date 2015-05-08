@@ -33,7 +33,7 @@ public class HistoryDataActivity extends ActionBarActivity implements ActionBar.
         swipe = new SwipePageAdapterData(getSupportFragmentManager());
 
         actionbar = getSupportActionBar();
-        actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
         actionbar.setHomeButtonEnabled(true);
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setIcon(R.drawable.icon);
