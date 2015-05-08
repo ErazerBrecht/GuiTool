@@ -274,9 +274,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     }
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(getView().getContext());
-        InputStream inputStream = null;
-        String result = "";
+        private ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
         protected void onPreExecute() {
             progressDialog.setMessage("Writing");
@@ -287,90 +285,45 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 }
             });
         }
-
         @Override
         protected Void doInBackground(Void... params) {
-
-            String url_select = "http://php-brechtcarlier.rhcloud.com/";
-
-
-
             try {
-                Uid= DatabaseData.userData.getString("uid");
-                //Toast.makeText(getView().getContext(),Uid , Toast.LENGTH_SHORT).show();
 
-            } catch (JSONException e) {
+                Uid= DatabaseData.userData.getString("uid");
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
-            try {
-                // Set up HTTP post
-                List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
-                jsonArray.add(new BasicNameValuePair("tag", "addSession"));
-                jsonArray.add(new BasicNameValuePair("uid",new String(""+Uid)));
-                //jsonArray.add(new BasicNameValuePair("place",DescriptionFragmentSession.loc));
-                //jsonArray.add(new BasicNameValuePair("description", DescriptionFragmentSession.des));
-                jsonArray.add(new BasicNameValuePair("altitude", "No hight yet"));
-                jsonArray.add(new BasicNameValuePair("duration", String.valueOf(elapsedTime)));
-
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(url_select);
-                httpPost.setEntity(new UrlEncodedFormEntity(jsonArray));
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
-
-                // Read content & Log
-                inputStream = httpEntity.getContent();
-            } catch (Exception e) {
-                this.progressDialog.dismiss();
-                cancel(true);
-            }
-
-            // Convert response to string using String Builder
-            try {
-                BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
-                StringBuilder sBuilder = new StringBuilder();
-
-                String line = null;
-                while ((line = bReader.readLine()) != null) {
-                    sBuilder.append(line + "\n");
-                }
-
-                inputStream.close();
-                result = sBuilder.toString();
-            }
-
-            catch (Exception e) {
-                Log.e("StringBuilding", "Error converting result " + e.toString());
-            }
+            DatabaseComClass.Session(Uid, DescriptionFragmentSession.loc.toString(), DescriptionFragmentSession.des.toString(), "0", String.valueOf(elapsedTime), progressDialog);
             return null;
         }
-
         protected void onPostExecute(Void v) {
-            //parse JSON data
-
             try {
-                jsonResponse = new JSONObject(result);
-
                 //Close the progressDialog!
                 this.progressDialog.dismiss();
-                if (jsonResponse.optString("success").toString().equals("1")) {
-                    DatabaseData.userData=jsonResponse;
-                    Toast.makeText(getView().getContext(), "You have wrote your time to the database", Toast.LENGTH_SHORT).show();
-                    Intent i=new Intent(getView().getContext(),WelcomeActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getActivity().startActivity(i);
+                if (DatabaseData.userData.optString("success").toString().equals("1")) {
+                    super.onPostExecute(v);
+                    Toast.makeText(getActivity(),"test",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(),WelcomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(intent);
+
                 }
-                else if(jsonResponse.optString("error").toString().equals("1")){
-                    Toast.makeText(getView().getContext(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
+                else if(DatabaseData.userData.optString("error").toString().equals("1")){
+                    Toast.makeText(getActivity(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        @Override
-        protected void onCancelled() {
-            Toast.makeText(getView().getContext(), "Can't write the data", Toast.LENGTH_SHORT).show();
+
+            @Override
+            protected void onCancelled() {
+                Toast.makeText(getView().getContext(), "Can't login", Toast.LENGTH_SHORT).show();
+            }
         }
+
     }
-}
+
+

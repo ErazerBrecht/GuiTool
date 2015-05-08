@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,24 +29,66 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
     private View view;
     private Button SavePicButton;
+    private EditText locatie;
+    private EditText descriptie;
 
-    /*
+
     static String loc;
     static String des;
-    */
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_description_session, container, false);
 
-        //loc=String.valueOf(Location.getText());
-        //des=String.valueOf(Description.getText());
-
         SavePicButton = (Button) view.findViewById(R.id.savePicture);
         SavePicButton.setOnClickListener(this);
+        locatie=(EditText) view.findViewById(R.id.location);
+        descriptie=(EditText) view.findViewById(R.id.description);
+        locatie.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                loc=String.valueOf(locatie.getText());
+
+            }
+        });
+        descriptie.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                des=String.valueOf(descriptie.getText());
+
+            }
+        });
+
+
 
         return view;
     }
+
 
     @Override
     public void onClick(View v) {
