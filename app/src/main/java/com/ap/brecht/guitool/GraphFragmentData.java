@@ -8,11 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,15 +29,29 @@ public class GraphFragmentData extends Fragment {
 
     private View view;
 
+    JSONArray a = null;
+    JSONObject o = null;
+
     Button btnRandom;
+
     GraphView graphView;
+
     LineGraphSeries<DataPoint> series;
+
     DataPoint newDataPoint;
     DataPoint oldDataPoint;
+
+    TextView height;
+    TextView speed;
+
+    String hoogte;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_graph_data, container, false);
+        height = (TextView) view.findViewById(R.id.heightData);
+        speed = (TextView) view.findViewById(R.id.Speed);
+
         btnRandom = (Button) view.findViewById(R.id.btnRandom1);
         btnRandom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +62,8 @@ public class GraphFragmentData extends Fragment {
                         break;
                     default:
                         break;
-            }}
+                }
+            }
         });
         graphView = (GraphView) view.findViewById(R.id.graph1);
         oldDataPoint = new DataPoint(0, 0);
@@ -59,7 +81,28 @@ public class GraphFragmentData extends Fragment {
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
         graphView.getViewport().setMaxY(40);
+        try {
+            a = DatabaseData.userData.getJSONArray("session");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        int arrSize = a.length();
+        for (int i = 0; i < arrSize; ++i) {
+            try {
+                o = a.getJSONObject(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (o.getString("sid").equals(DatabaseData.Sid)) {
+                    hoogte = o.getString("altitude");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        height.setText("Total height: " + hoogte);
         return view;
     }
 

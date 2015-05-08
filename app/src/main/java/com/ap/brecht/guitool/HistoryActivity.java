@@ -3,6 +3,7 @@ package com.ap.brecht.guitool;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -35,18 +36,19 @@ public class HistoryActivity extends ActionBarActivity {
     ArrayList<String> list1;
     ArrayAdapter<String> adapter;
     JSONArray a = null;
-    JSONObject o=null;
+    JSONObject o = null;
+    Object test = null;
 
-    public static final String TAG =HistoryActivity.class.getSimpleName();
+    public static final String TAG = HistoryActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_history);
-        list= (ListView) findViewById(R.id.historyData);
+        list = (ListView) findViewById(R.id.historyData);
 
-        list1=new ArrayList<>();
+        list1 = new ArrayList<>();
 
 
         try {
@@ -54,12 +56,12 @@ public class HistoryActivity extends ActionBarActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        int arrSize = a.length();
+        final int arrSize = a.length();
         List<String> datum = new ArrayList<String>(arrSize);
         List<String> plaats = new ArrayList<String>(arrSize);
         for (int i = 0; i < arrSize; ++i) {
             try {
-                o=a.getJSONObject(i);
+                o = a.getJSONObject(i);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -77,12 +79,11 @@ public class HistoryActivity extends ActionBarActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            tussenResultaat=String.valueOf(datum).replace('[',' ').replace(']',' ').trim() + "\n" + String.valueOf(plaats).replace('[',' ').replace(']',' ').trim();
+            tussenResultaat = String.valueOf(datum).replace('[', ' ').replace(']', ' ').trim() + "\n" + String.valueOf(plaats).replace('[', ' ').replace(']', ' ').trim();
             list1.add(tussenResultaat);
         }
-        adapter=new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item,list1);
+        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, list1);
         list.setAdapter(adapter);
-
 
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,7 +91,17 @@ public class HistoryActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(HistoryActivity.this, HistoryDataActivity.class);
                 try {
-                    i.putExtra("sid",o.getString("sid").toString());
+                    a = DatabaseData.userData.getJSONArray("session");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    for (int j = 0; j < arrSize; ++j) {
+                        if (list1.get(position).contains(a.getJSONObject(j).getString("datum"))) {
+                            DatabaseData.Sid = a.getJSONObject(j).getString("sid").toString();
+                        }
+                    }
+                    i.putExtra("sid", DatabaseData.Sid);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -100,6 +111,7 @@ public class HistoryActivity extends ActionBarActivity {
         });
 
         actionbar = getSupportActionBar();
+        actionbar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Orange)));
         actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
         actionbar.setHomeButtonEnabled(true);
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -130,7 +142,7 @@ public class HistoryActivity extends ActionBarActivity {
             HistoryActivity.this.startActivity(i);
         }
         if (id == R.id.action_logout) {
-            DatabaseData.userData=null;
+            DatabaseData.userData = null;
             Intent i = new Intent(HistoryActivity.this, Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             HistoryActivity.this.startActivity(i);

@@ -11,11 +11,10 @@ import android.text.Html;
  */
 public class BackPressed {
 
-    static void CloseApp(final Activity activity)
-    {
+    static void CloseApp(final Activity activity) {
 
         QustomDialogBuilder exitAlert = new QustomDialogBuilder(activity, AlertDialog.THEME_HOLO_DARK);
-        exitAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(activity.getResources().getColor(R.color.white) & 0x00ffffff) +">Do you want to exit the app?"));
+        exitAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(activity.getResources().getColor(R.color.white) & 0x00ffffff) + ">Do you want to exit the app?"));
         exitAlert.setTitle("ClimbUP");
         exitAlert.setTitleColor("#" + Integer.toHexString(activity.getResources().getColor(R.color.Orange) & 0x00ffffff));
         exitAlert.setDividerColor("#" + Integer.toHexString(activity.getResources().getColor(R.color.Orange) & 0x00ffffff));

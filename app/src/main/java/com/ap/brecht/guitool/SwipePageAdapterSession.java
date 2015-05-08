@@ -24,7 +24,6 @@ public class SwipePageAdapterSession extends FragmentPagerAdapter {
             default:
                 break;
         }
-
         return null;
     }
 

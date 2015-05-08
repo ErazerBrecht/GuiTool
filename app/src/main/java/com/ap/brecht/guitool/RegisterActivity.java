@@ -49,7 +49,7 @@ public class RegisterActivity extends ActionBarActivity {
     EditText Password;
     JSONObject jsonResponse;
 
-    public static final String TAG =RegisterActivity.class.getSimpleName();
+    public static final String TAG = RegisterActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +58,9 @@ public class RegisterActivity extends ActionBarActivity {
         setContentView(R.layout.register);
 
 
-
         btnRegister = (Button) findViewById(R.id.btnRegister);
-        Name=(EditText) findViewById(R.id.etName);
-        Password=(EditText) findViewById(R.id.etPassword);
+        Name = (EditText) findViewById(R.id.etName);
+        Password = (EditText) findViewById(R.id.etPassword);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +111,7 @@ public class RegisterActivity extends ActionBarActivity {
             Log.d(TAG, e.getLocalizedMessage());
         }
     }
+
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
@@ -165,9 +165,7 @@ public class RegisterActivity extends ActionBarActivity {
 
                 inputStream.close();
                 result = sBuilder.toString();
-            }
-
-            catch (Exception e) {
+            } catch (Exception e) {
                 Log.e("StringBuilding", "Error converting result " + e.toString());
             }
             return null;
@@ -183,14 +181,13 @@ public class RegisterActivity extends ActionBarActivity {
                 this.progressDialog.dismiss();
                 if (jsonResponse.optString("success").toString().equals("1")) {
                     Toast.makeText(RegisterActivity.this, "You have created a new account", Toast.LENGTH_SHORT).show();
-                    Intent i=new Intent(RegisterActivity.this,Login.class);
+                    Intent i = new Intent(RegisterActivity.this, Login.class);
                     Intent intent = new Intent(RegisterActivity.this, Login.class);
                     intent.putExtra("Username", String.valueOf(Name.getText()));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     RegisterActivity.this.startActivity(intent);
                     finish();
-                }
-                else if(jsonResponse.optString("error").toString().equals("1")){
+                } else if (jsonResponse.optString("error").toString().equals("1")) {
                     Toast.makeText(RegisterActivity.this, jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {

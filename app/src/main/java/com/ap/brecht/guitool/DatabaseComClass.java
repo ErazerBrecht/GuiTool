@@ -31,7 +31,7 @@ public class DatabaseComClass {
 
     private static List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
 
-    private static void Worker(ProgressDialog p){
+    private static void Worker(ProgressDialog p) {
 
         try {// Set up HTTP post
             HttpClient httpClient = new DefaultHttpClient();
@@ -46,7 +46,7 @@ public class DatabaseComClass {
             p.cancel();
         }
 
-        try{
+        try {
             BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
             StringBuilder sBuilder = new StringBuilder();
 
@@ -59,15 +59,13 @@ public class DatabaseComClass {
             result = sBuilder.toString();
 
             DatabaseData.userData = new JSONObject(result);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.e("StringBuilding", "Error converting result " + e.toString());
         }
     }
 
 
-
-    public static void Login(String name, String password, ProgressDialog p){
+    public static void Login(String name, String password, ProgressDialog p) {
         jsonArray.add(new BasicNameValuePair("tag", "login"));
         jsonArray.add(new BasicNameValuePair("name", name));
         jsonArray.add(new BasicNameValuePair("password", password));
@@ -75,8 +73,8 @@ public class DatabaseComClass {
         Worker(p);
 
     }
-    public static void Session(String uid, String place, String description, String altitude, String duration, ProgressDialog p)
-    {
+
+    public static void Session(String uid, String place, String description, String altitude, String duration, ProgressDialog p) {
         jsonArray.clear();
         jsonArray.add(new BasicNameValuePair("tag", "addSession"));
         jsonArray.add(new BasicNameValuePair("uid", uid));

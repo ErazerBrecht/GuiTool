@@ -3,6 +3,7 @@ package com.ap.brecht.guitool;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -18,14 +19,14 @@ import java.lang.reflect.Field;
 /**
  * Created by Airien on 29/04/2015.
  */
-public class HistoryDataActivity extends ActionBarActivity implements ActionBar.TabListener{
+public class HistoryDataActivity extends ActionBarActivity implements ActionBar.TabListener {
     ActionBar actionbar;
     ViewPager viewPager;
     SwipePageAdapterData swipe;
     ActionBar.Tab GraphTab;
     ActionBar.Tab DescriptionTab;
 
-    public static final String TAG =HistoryDataActivity.class.getSimpleName();
+    public static final String TAG = HistoryDataActivity.class.getSimpleName();
 
 
     @Override
@@ -36,6 +37,7 @@ public class HistoryDataActivity extends ActionBarActivity implements ActionBar.
         swipe = new SwipePageAdapterData(getSupportFragmentManager());
 
         actionbar = getSupportActionBar();
+        actionbar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Orange)));
         viewPager.setAdapter(swipe);
 
         GraphTab = actionbar.newTab();
@@ -77,7 +79,7 @@ public class HistoryDataActivity extends ActionBarActivity implements ActionBar.
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            DatabaseData.userData=null;
+            DatabaseData.userData = null;
             Intent i = new Intent(HistoryDataActivity.this, Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             HistoryDataActivity.this.startActivity(i);

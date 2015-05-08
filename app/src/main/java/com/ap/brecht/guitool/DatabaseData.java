@@ -9,4 +9,5 @@ import org.json.JSONObject;
 public class DatabaseData {
     static JSONObject userData;
     static String PhotoString;
+    static String Sid;
 }

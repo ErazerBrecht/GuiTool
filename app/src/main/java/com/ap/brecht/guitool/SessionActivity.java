@@ -29,18 +29,20 @@ import java.util.Date;
  * Created by hannelore on 22/04/2015.
  */
 
-public class SessionActivity extends ActionBarActivity implements ActionBar.TabListener{
+public class SessionActivity extends ActionBarActivity implements ActionBar.TabListener {
     ActionBar actionbar;
+
     ViewPager viewPager;
+
     SwipePageAdapterSession swipe;
+
     ActionBar.Tab StopwatchTab;
     ActionBar.Tab GraphTab;
     ActionBar.Tab DescriptionTab;
 
     String AlertTime;
 
-    public static final String TAG =SessionActivity.class.getSimpleName();
-
+    public static final String TAG = SessionActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
         makeActionOverflowMenuShown();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        AlertTime = sharedPref.getString("AlertTime","30s");
+        AlertTime = sharedPref.getString("AlertTime", "30s");
     }
 
     @Override
@@ -100,7 +102,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-           DatabaseData.userData=null;
+            DatabaseData.userData = null;
             Intent i = new Intent(SessionActivity.this, Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SessionActivity.this.startActivity(i);
@@ -139,6 +141,6 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
     @Override
     public void onBackPressed() {
-       BackPressed.CloseApp(this);
+        BackPressed.CloseApp(this);
     }
 }

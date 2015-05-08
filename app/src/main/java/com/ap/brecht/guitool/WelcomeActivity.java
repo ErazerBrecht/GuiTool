@@ -25,10 +25,11 @@ import java.lang.reflect.Field;
 /**
  * Created by Airien on 22/04/2015.
  */
-public class WelcomeActivity extends ActionBarActivity  {
+public class WelcomeActivity extends ActionBarActivity {
 
     Button btnNewSession;
     Button btnHistory;
+
     public static final String TAG = WelcomeActivity.class.getSimpleName();
 
     String Username;
@@ -36,19 +37,21 @@ public class WelcomeActivity extends ActionBarActivity  {
     TextView UsernameTextView;
 
     private Handler mHandler = new Handler();
+
     int i = 1;
     int j = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.welcome);
 
         btnNewSession = (Button) findViewById(R.id.NewSession);
         btnHistory = (Button) findViewById(R.id.History);
 
-        btnNewSession.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        btnNewSession.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 Intent i = new Intent(WelcomeActivity.this, SessionActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 WelcomeActivity.this.startActivity(i);
@@ -57,13 +60,14 @@ public class WelcomeActivity extends ActionBarActivity  {
         btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(WelcomeActivity.this,HistoryActivity.class);
+                Intent i = new Intent(WelcomeActivity.this, HistoryActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 WelcomeActivity.this.startActivity(i);
             }
         });
 
         makeActionOverflowMenuShown();
+
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         try {
@@ -74,7 +78,6 @@ public class WelcomeActivity extends ActionBarActivity  {
 
         Welkom = (TextView) findViewById(R.id.tvWelcome);
         UsernameTextView = (TextView) findViewById(R.id.tvUsername);
-
         UsernameTextView.setText(String.valueOf(Username));
 
        /*mHandler.postDelayed(new Runnable() {
@@ -115,7 +118,7 @@ public class WelcomeActivity extends ActionBarActivity  {
             WelcomeActivity.this.startActivity(i);
         }
         if (id == R.id.action_logout) {
-            DatabaseData.userData=null;
+            DatabaseData.userData = null;
             Intent i = new Intent(WelcomeActivity.this, Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             WelcomeActivity.this.startActivity(i);

@@ -45,7 +45,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
     static String loc;
     static String des;
 
-   String mCurrentPhotoPath;
+    String mCurrentPhotoPath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,8 +53,8 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
         SavePicButton = (Button) view.findViewById(R.id.savePicture);
         SavePicButton.setOnClickListener(this);
-        locatie=(EditText) view.findViewById(R.id.location);
-        descriptie=(EditText) view.findViewById(R.id.description);
+        locatie = (EditText) view.findViewById(R.id.location);
+        descriptie = (EditText) view.findViewById(R.id.description);
 
         locatie.addTextChangedListener(new TextWatcher() {
             @Override
@@ -71,7 +71,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             @Override
             public void afterTextChanged(Editable editable) {
 
-                loc=String.valueOf(locatie.getText());
+                loc = String.valueOf(locatie.getText());
 
             }
         });
@@ -89,7 +89,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
             @Override
             public void afterTextChanged(Editable editable) {
-                des=String.valueOf(descriptie.getText());
+                des = String.valueOf(descriptie.getText());
             }
         });
 
@@ -101,7 +101,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if(DatabaseData.PhotoString==null) {
+            if (DatabaseData.PhotoString == null) {
                 QustomDialogBuilder pictureAlert = new QustomDialogBuilder(getActivity(), AlertDialog.THEME_HOLO_DARK);
                 pictureAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(getResources().getColor(R.color.white) & 0x00ffffff) + ">Do you want to make a picture?"));
                 pictureAlert.setTitle("ClimbUP");
@@ -137,10 +137,9 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
         }
     }
 
-    private void save()
-    {
+    private void save() {
         try {
-            File Drawn = new File(Environment.getExternalStorageDirectory().toString()+"/ClimbUP/");
+            File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/");
             Drawn.mkdirs();
             File Drawing = File.createTempFile(
                     "tryout",  /* prefix */
@@ -151,7 +150,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
             // NEWLY ADDED CODE STARTS HERE [
             Bitmap originalBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            Bitmap copyBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888,true);
+            Bitmap copyBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
             Canvas canvas = new Canvas(copyBitmap);
 
             Paint paint = new Paint();
@@ -172,7 +171,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             e.printStackTrace();
         }
     }
-    
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -190,10 +189,11 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, 1337);
-                DatabaseData.PhotoString="iets";
+                DatabaseData.PhotoString = "iets";
             }
         }
     }
+
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(mCurrentPhotoPath);
@@ -207,7 +207,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp;
-        File storageDir = new File(Environment.getExternalStorageDirectory().toString()+"/ClimbUP/");
+        File storageDir = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/");
         storageDir.mkdirs();
         File image = File.createTempFile(
                 imageFileName,  /* prefix */

@@ -18,9 +18,10 @@ import java.util.List;
 public class SplatchScreenActivity extends Activity {
 
     private Handler mHandler = new Handler();
+
     int[] imgIds = {R.drawable.splashpagina_one, R.drawable.splashpagina_two, R.drawable.splashpagina_three};
     int pointer = 1;
-    int i= 1;
+    int i = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,32 +42,31 @@ public class SplatchScreenActivity extends Activity {
                     i = -1;
                 else if (pointer < 1)
                     i = 1;
-
                 mHandler.postDelayed(this, 750);
             }
         }, 1000);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){
+    public boolean onTouchEvent(MotionEvent event) {
 
         int action = MotionEventCompat.getActionMasked(event);
 
-        switch(action) {
-            case (MotionEvent.ACTION_DOWN) :
+        switch (action) {
+            case (MotionEvent.ACTION_DOWN):
                 return true;
-            case (MotionEvent.ACTION_MOVE) :
+            case (MotionEvent.ACTION_MOVE):
                 return true;
-            case (MotionEvent.ACTION_UP) :
+            case (MotionEvent.ACTION_UP):
                 Intent i = new Intent(SplatchScreenActivity.this, Login.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 SplatchScreenActivity.this.startActivity(i);
                 return true;
-            case (MotionEvent.ACTION_CANCEL) :
+            case (MotionEvent.ACTION_CANCEL):
                 return true;
-            case (MotionEvent.ACTION_OUTSIDE) :
+            case (MotionEvent.ACTION_OUTSIDE):
                 return true;
-            default :
+            default:
                 return super.onTouchEvent(event);
         }
     }
@@ -75,5 +75,4 @@ public class SplatchScreenActivity extends Activity {
     public void onBackPressed() {
         BackPressed.CloseApp(this);
     }
-
 }

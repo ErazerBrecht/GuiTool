@@ -13,18 +13,28 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class QustomDialogBuilder extends AlertDialog.Builder{
+public class QustomDialogBuilder extends AlertDialog.Builder {
 
-    /** The custom_body layout */
+    /**
+     * The custom_body layout
+     */
     private View mDialogView;
 
-    /** optional dialog title layout */
+    /**
+     * optional dialog title layout
+     */
     private TextView mTitle;
-    /** optional alert dialog image */
+    /**
+     * optional alert dialog image
+     */
     private ImageView mIcon;
-    /** optional message displayed below title if title exists*/
+    /**
+     * optional message displayed below title if title exists
+     */
     private TextView mMessage;
-    /** The colored holo divider. You can set its color with the setDividerColor method */
+    /**
+     * The colored holo divider. You can set its color with the setDividerColor method
+     */
     private View mDivider;
 
     public QustomDialogBuilder(Context context, int theme) {
@@ -90,18 +100,19 @@ public class QustomDialogBuilder extends AlertDialog.Builder{
      * in the dialog. As an example you can look at example_ip_address_layout.xml and how
      * I added it in TestDialogActivity.java
      *
-     * @param resId  of the layout you would like to add
+     * @param resId   of the layout you would like to add
      * @param context
      */
     public QustomDialogBuilder setCustomView(int resId, Context context) {
         View customView = View.inflate(context, resId, null);
-        ((FrameLayout)mDialogView.findViewById(R.id.customPanel)).addView(customView);
+        ((FrameLayout) mDialogView.findViewById(R.id.customPanel)).addView(customView);
         return this;
     }
 
     @Override
     public AlertDialog show() {
-        if (mTitle.getText().equals("")) mDialogView.findViewById(R.id.topPanel).setVisibility(View.GONE);
+        if (mTitle.getText().equals(""))
+            mDialogView.findViewById(R.id.topPanel).setVisibility(View.GONE);
         return super.show();
     }
 
