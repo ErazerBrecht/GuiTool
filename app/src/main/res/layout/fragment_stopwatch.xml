@@ -20,56 +20,59 @@
     <View android:layout_width="fill_parent"
         android:layout_below="@+id/timer"
         android:layout_height="2dp"
-        android:layout_marginTop="50dp"
         android:background="#000000" />
 
-    <Button
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:text="@string/stopText"
         android:background="@color/defaultB"
         android:textColor="@color/black"
-        android:drawableTop="@drawable/end"
+        android:src="@drawable/stop"
+        android:scaleType="fitCenter"
         android:gravity="top|center_horizontal"
         android:id="@+id/stopButton"
         android:visibility="gone"
         android:layout_below="@+id/timer"
-        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         >
-    </Button>
+    </ImageButton>
 
-    <Button
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:text="@string/startText"
         android:id="@+id/btnStart"
         android:background="@color/defaultB"
         android:textColor="@color/black"
-        android:drawableTop="@drawable/play"
-        android:gravity="top|center_horizontal"
+        android:src="@drawable/start"
+        android:scaleType="fitCenter"
+        android:gravity="center"
+
         android:layout_below="@+id/timer"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         >
-    </Button>
-    <Button
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
+    </ImageButton>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:scaleType="fitCenter"
         android:text="@string/resetText"
         android:id="@+id/btnReset"
         android:background="@color/defaultB"
-        android:drawableTop="@drawable/clock"
+        android:src="@drawable/reset"
         android:textColor="@color/black"
         android:gravity="top|center_horizontal"
         android:layout_alignTop="@+id/btnStart"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
-    </Button>
+    </ImageButton>
 
     <TextView
         android:layout_width="wrap_content"

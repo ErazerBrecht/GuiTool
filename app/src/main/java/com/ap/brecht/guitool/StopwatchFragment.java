@@ -11,11 +11,10 @@ import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,9 +43,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     private View view;
 
-    private Button startButton;
-    private Button stopButton;
-    private Button resetButton;
+    private ImageButton startButton;
+    private ImageButton stopButton;
+    private ImageButton resetButton;
 
     String Uid;
 
@@ -65,11 +64,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_stopwatch, container, false);
-        startButton = (Button) view.findViewById(R.id.btnStart);
+        startButton = (ImageButton) view.findViewById(R.id.btnStart);
         startButton.setOnClickListener(this);
-        stopButton = (Button) view.findViewById(R.id.stopButton);
+        stopButton = (ImageButton) view.findViewById(R.id.stopButton);
         stopButton.setOnClickListener(this);
-        resetButton = (Button) view.findViewById(R.id.btnReset);
+        resetButton = (ImageButton) view.findViewById(R.id.btnReset);
         resetButton.setOnClickListener(this);
 
         SayTime = new TextToSpeech(getActivity().getApplicationContext(),
@@ -97,7 +96,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.stopButton:
                 QustomDialogBuilder stopAlert = new QustomDialogBuilder(v.getContext(), AlertDialog.THEME_HOLO_DARK);
-                stopAlert.setMessage(Html.fromHtml("<font color='#FFFFFF'>Do you want to quit your session?"));
+                stopAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(getActivity().getResources().getColor(R.color.white) & 0x00ffffff) +">Do you want to quit your session?"));
                 stopAlert.setTitle("ClimbUP");
                 stopAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
                 stopAlert.setDividerColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
