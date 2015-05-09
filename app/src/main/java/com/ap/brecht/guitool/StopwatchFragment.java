@@ -131,7 +131,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     public void startClick() {
         showStopButton();
-        view.findViewById(R.id.Height).setVisibility(View.VISIBLE);
         start = true;
         stop = false;
         if (stopped) {
@@ -157,7 +156,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         start = false;
         stop = false;
         ((TextView) getView().findViewById(R.id.timer)).setText("00:00:00");
-        ((TextView) view.findViewById(R.id.Height)).setVisibility(View.GONE);
     }
 
     private void showStopButton() {
@@ -218,7 +216,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
 		/* Setting the timer text to the elapsed time */
         ((TextView) view.findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
-        ((TextView) view.findViewById(R.id.Height)).setText("Current Height:" + System.getProperty("line.separator") + "meter");
 
 
         //Check if we need to speak the minutes
