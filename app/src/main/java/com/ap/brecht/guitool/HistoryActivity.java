@@ -3,6 +3,7 @@ package com.ap.brecht.guitool;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -46,7 +48,7 @@ public class HistoryActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_history);
-        list = (ListView) findViewById(R.id.historyData);
+        list = (ListView) findViewById(R.id.list);
 
         list1 = new ArrayList<>();
 
@@ -82,8 +84,14 @@ public class HistoryActivity extends ActionBarActivity {
             tussenResultaat = String.valueOf(datum).replace('[', ' ').replace(']', ' ').trim() + "\n" + String.valueOf(plaats).replace('[', ' ').replace(']', ' ').trim();
             list1.add(tussenResultaat);
         }
-        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, list1);
+        adapter =  new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, list1);
+
+
         list.setAdapter(adapter);
+
+
+
 
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -171,5 +179,6 @@ public class HistoryActivity extends ActionBarActivity {
     public void onBackPressed() {
         BackPressed.CloseApp(this);
     }
+
 
 }
