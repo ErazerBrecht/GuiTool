@@ -32,7 +32,7 @@ public class WelcomeActivity extends ActionBarActivity {
 
     public static final String TAG = WelcomeActivity.class.getSimpleName();
 
-    String Username;
+     static String Username;
     TextView Welkom;
     TextView UsernameTextView;
 

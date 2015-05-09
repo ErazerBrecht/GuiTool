@@ -52,6 +52,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private TextView txtReset;
     private TextView txtHeight;
     private TextView txtSnelheid;
+    private String locatie;
+    private String descriptie;
 
     String Uid;
 
@@ -80,7 +82,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         txtStart = (TextView) view.findViewById(R.id.txtStart);
         txtReset = (TextView) view.findViewById(R.id.txtReset);
         txtStop = (TextView) view.findViewById(R.id.txtStop);
-        txtHeight= (TextView) view.findViewById(R.id.txtHeight);
+        txtHeight = (TextView) view.findViewById(R.id.txtHeight);
         txtHeight.setText("21m");
         //txtSnelheid= (TextView) view.findViewById(R.id.SpeedStop);
 
@@ -293,6 +295,16 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                     MyAsyncTask.this.cancel(true);
                 }
             });
+            if (DescriptionFragmentSession.loc.toString() != null) {
+                locatie = DescriptionFragmentSession.loc.toString();
+            } else {
+                locatie = " ";
+            }
+            if (DescriptionFragmentSession.des.toString() != null) {
+                descriptie = DescriptionFragmentSession.des.toString();
+            } else {
+                descriptie = " ";
+            }
         }
 
         @Override
@@ -303,7 +315,18 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            DatabaseComClass.Session(Uid, DescriptionFragmentSession.loc.toString(), DescriptionFragmentSession.des.toString(), "0", String.valueOf(elapsedTime), progressDialog);
+
+            if (WelcomeActivity.Username==null)
+            {
+                try {
+                    WelcomeActivity.Username=DatabaseData.userData.getString("name").toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {//gewoon zo laten :)
+            }
+            DatabaseComClass.Session(Uid, locatie, descriptie, "0", String.valueOf(elapsedTime), progressDialog);
             return null;
         }
 
