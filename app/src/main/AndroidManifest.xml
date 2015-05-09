@@ -59,7 +59,7 @@
             />
 
         <activity android:name=".HistoryDataActivity"
-            android:parentActivityName=".WelcomeActivity"
+            android:parentActivityName=".HistoryActivity"
             android:screenOrientation="portrait"
             android:icon="@drawable/icon"
             />
