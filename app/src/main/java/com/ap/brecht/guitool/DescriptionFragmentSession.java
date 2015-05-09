@@ -9,11 +9,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,6 +49,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
     private Button SavePicButton;
     private EditText locatie;
     private EditText descriptie;
+    private ImageView ivPicture;
 
     static int TAKE_PICTURE = 1337;
 
@@ -56,6 +60,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_description_session, container, false);
 
+        ivPicture = (ImageView) view.findViewById(R.id.ivPicture);
         SavePicButton = (Button) view.findViewById(R.id.savePicture);
         SavePicButton.setOnClickListener(this);
         locatie = (EditText) view.findViewById(R.id.location);
@@ -128,6 +133,17 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
                 pictureAlert.setCancelable(true);
                 pictureAlert.create().show();
             }
+            else {
+                try {
+                    //Save photo in ImageView
+                    Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse("file://" + DatabaseData.PhotoString));
+                    ivPicture.setImageBitmap(photo);
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), "Unable to access temporally picture", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
@@ -196,7 +212,25 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
         if( requestCode == 1337 ) {
             try {
                 Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse("file://" + DatabaseData.PhotoString));
-                ((ImageView)view.findViewById(R.id.ivPicture)).setImageBitmap(photo);
+                ExifInterface ei = new ExifInterface(DatabaseData.PhotoString);
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+                switch(orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        photo = RotateBitmap(photo, 90);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        photo = RotateBitmap(photo, 180);
+                        break;
+                    // etc.
+                }
+
+                //If the bitmap is changed (rotated) we override the bitmap!
+                File f =new File(DatabaseData.PhotoString);
+                FileOutputStream fOut = new FileOutputStream(f);
+                photo.compress(Bitmap.CompressFormat.JPEG, 90, fOut);
+                fOut.flush();
+                fOut.close();
             }
             catch (Exception e)
             {
@@ -204,6 +238,13 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             }
 
         }
+    }
+
+    private Bitmap RotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
     private void TakePicture() {
