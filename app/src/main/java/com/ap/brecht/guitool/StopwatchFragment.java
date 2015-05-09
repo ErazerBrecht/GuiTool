@@ -36,6 +36,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 /**
  * Created by hannelore on 22/04/2015.
@@ -224,7 +225,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         //@ the moment it's every minute
         String alertTime = ((SessionActivity) getActivity()).AlertTime;
         if (alertTime.equals("30s")) {
-            if ((secs == 0 && mins > 0) || secs == 30) {
+            if (secs == 0  || secs == 30) {
                 speakText();
             }
         } else if (alertTime.equals("1m")) {
@@ -270,14 +271,41 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             } else
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute and " + String.valueOf(secs) + " seconds";
         } else if (secs == 0) {
-            if (mins == 1) {
+            if (mins == 0) {
+                Random r = new Random();
+                int fun = r.nextInt(6);//random number from 0-5
+                switch (fun){
+                    case 0:
+                        toSpeak = "Happy Climbing";
+                        break;
+                    case 1:
+                        toSpeak = "Have fun climbing";
+                        break;
+                    case 2:
+                        toSpeak = "Let's climb";
+                        break;
+                    case 3:
+                        toSpeak = "Enjoy your climb";
+                        break;
+                    case 4:
+                        toSpeak = "You Will climb and I Will follow";
+                        break;
+                    case 5:
+                        toSpeak = "Let's go";
+                        break;
+                    default:
+                        break;
+
+                }
+
+            }
+            else if (mins == 1) {
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute";
             } else
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
         } else
             toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes and " + String.valueOf(secs) + " seconds";
 
-        Toast.makeText(getActivity().getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
         SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
 
 
