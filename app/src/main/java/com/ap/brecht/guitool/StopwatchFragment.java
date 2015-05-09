@@ -50,7 +50,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private TextView txtStop;
     private ImageButton resetButton;
     private TextView txtReset;
-    private TextView txtHoogte;
+    private TextView txtHeight;
     private TextView txtSnelheid;
 
     String Uid;
@@ -80,8 +80,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         txtStart = (TextView) view.findViewById(R.id.txtStart);
         txtReset = (TextView) view.findViewById(R.id.txtReset);
         txtStop = (TextView) view.findViewById(R.id.txtStop);
-        txtHoogte= (TextView) view.findViewById(R.id.HeightStop);
-        txtSnelheid= (TextView) view.findViewById(R.id.SpeedStop);
+        txtHeight= (TextView) view.findViewById(R.id.txtHeight);
+        txtHeight.setText("21m");
+        //txtSnelheid= (TextView) view.findViewById(R.id.SpeedStop);
 
         SayTime = new TextToSpeech(getActivity().getApplicationContext(),
                 new TextToSpeech.OnInitListener() {
