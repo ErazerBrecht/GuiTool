@@ -158,13 +158,11 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
     private void save() {
         try {
-            File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/");
+            String username =  DatabaseData.userData.getJSONObject("user").getString("name");
+            String session = String.valueOf(Integer.valueOf(DatabaseData.userData.getJSONArray("session").getJSONObject(DatabaseData.userData.getJSONArray("session").length() - 1).getString("sid")) + 1);
+            File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
             Drawn.mkdirs();
-            File Drawing = File.createTempFile(
-                    "tryout",  /* prefix */
-                    ".jpg",         /* suffix */
-                    Drawn      /* directory */
-            );
+            File Drawing = new File(Drawn, session + ".jpg");
             FileOutputStream out = new FileOutputStream(Drawing);
 
             Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
