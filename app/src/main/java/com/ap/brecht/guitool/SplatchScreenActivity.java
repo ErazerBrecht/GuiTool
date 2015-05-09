@@ -24,9 +24,6 @@ public class SplatchScreenActivity extends Activity {
     int pointer = 1;
     int i = 1;
 
-    private float x1,x2;
-    static final int MIN_DISTANCE = 50;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +63,7 @@ public class SplatchScreenActivity extends Activity {
                 SplatchScreenActivity.this.startActivity(i);
                break;
         }
-
         return super.onTouchEvent(event);
-
     }
 
     @Override

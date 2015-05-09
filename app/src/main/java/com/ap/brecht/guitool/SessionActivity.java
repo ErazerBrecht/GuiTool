@@ -102,11 +102,7 @@ public class SessionActivity extends ActionBarActivity implements ActionBar.TabL
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            DatabaseData.userData = null;
-            Intent i = new Intent(SessionActivity.this, Login.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            SessionActivity.this.startActivity(i);
-
+            Logout.LogOut(this);
         }
         return super.onOptionsItemSelected(item);
     }

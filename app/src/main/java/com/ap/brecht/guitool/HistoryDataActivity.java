@@ -92,10 +92,7 @@ public class HistoryDataActivity extends ActionBarActivity implements ActionBar.
             HistoryDataActivity.this.startActivity(i);
         }
         if (id == R.id.action_logout) {
-            DatabaseData.userData = null;
-            Intent i = new Intent(HistoryDataActivity.this, Login.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            HistoryDataActivity.this.startActivity(i);
+            Logout.LogOut(this);
         }
 
         return super.onOptionsItemSelected(item);

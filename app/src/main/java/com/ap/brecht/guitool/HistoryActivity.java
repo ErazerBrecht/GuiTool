@@ -90,10 +90,6 @@ public class HistoryActivity extends ActionBarActivity {
 
         list.setAdapter(adapter);
 
-
-
-
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -150,10 +146,7 @@ public class HistoryActivity extends ActionBarActivity {
             HistoryActivity.this.startActivity(i);
         }
         if (id == R.id.action_logout) {
-            DatabaseData.userData = null;
-            Intent i = new Intent(HistoryActivity.this, Login.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            HistoryActivity.this.startActivity(i);
+            Logout.LogOut(this);
         }
 
         return super.onOptionsItemSelected(item);

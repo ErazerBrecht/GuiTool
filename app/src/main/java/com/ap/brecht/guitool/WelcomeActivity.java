@@ -118,10 +118,7 @@ public class WelcomeActivity extends ActionBarActivity {
             WelcomeActivity.this.startActivity(i);
         }
         if (id == R.id.action_logout) {
-            DatabaseData.userData = null;
-            Intent i = new Intent(WelcomeActivity.this, Login.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            WelcomeActivity.this.startActivity(i);
+            Logout.LogOut(this);
         }
 
         return super.onOptionsItemSelected(item);
