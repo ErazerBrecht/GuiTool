@@ -25,6 +25,7 @@ public class HistoryDataActivity extends ActionBarActivity implements ActionBar.
     SwipePageAdapterData swipe;
     ActionBar.Tab GraphTab;
     ActionBar.Tab DescriptionTab;
+    ActionBar.Tab ImageTab;
 
     public static final String TAG = HistoryDataActivity.class.getSimpleName();
 
@@ -40,17 +41,24 @@ public class HistoryDataActivity extends ActionBarActivity implements ActionBar.
         actionbar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Orange)));
         viewPager.setAdapter(swipe);
 
-        GraphTab = actionbar.newTab();
-        GraphTab.setIcon(R.drawable.graph);
-        GraphTab.setTabListener(this);
-
         DescriptionTab = actionbar.newTab();
         DescriptionTab.setIcon(R.drawable.description);
         DescriptionTab.setTabListener(this);
 
+        GraphTab = actionbar.newTab();
+        GraphTab.setIcon(R.drawable.graph);
+        GraphTab.setTabListener(this);
+
+        ImageTab = actionbar.newTab();
+        ImageTab.setIcon(R.drawable.gallery);
+        ImageTab.setTabListener(this);
+
+
+
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionbar.addTab(GraphTab);
         actionbar.addTab(DescriptionTab);
+        actionbar.addTab(GraphTab);
+        actionbar.addTab(ImageTab);
 
 
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {

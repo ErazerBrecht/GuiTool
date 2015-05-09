@@ -16,9 +16,11 @@ public class SwipePageAdapterData extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return new GraphFragmentData();
-            case 1:
                 return new DescriptionFragmentData();
+            case 1:
+                return new GraphFragmentData();
+            case 2:
+                return new ImageFragment();
             default:
                 break;
         }
@@ -27,7 +29,7 @@ public class SwipePageAdapterData extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }
 
