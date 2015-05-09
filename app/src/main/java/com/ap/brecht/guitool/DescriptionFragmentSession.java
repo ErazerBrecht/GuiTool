@@ -1,8 +1,10 @@
 package com.ap.brecht.guitool;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,6 +12,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -41,11 +45,10 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
     private EditText locatie;
     private EditText descriptie;
 
+    static int TAKE_PICTURE = 1;
 
     static String loc;
     static String des;
-
-    String mCurrentPhotoPath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,7 +87,6 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-
             }
 
             @Override
@@ -117,16 +119,15 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
                 pictureAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dispatchTakePictureIntent();
-                        galleryAddPic();
+                        TakePicture();
                     }
                 });
+
                 pictureAlert.setCancelable(true);
                 pictureAlert.create().show();
             }
         }
     }
-
 
     @Override
     public void onClick(View v) {
@@ -148,79 +149,97 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             );
             FileOutputStream out = new FileOutputStream(Drawing);
 
-            // NEWLY ADDED CODE STARTS HERE [
-            Bitmap originalBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            Bitmap copyBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-            Canvas canvas = new Canvas(copyBitmap);
+            Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
+            Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+            Canvas canvas = new Canvas(bitmap);
 
             Paint paint = new Paint();
-            paint.setColor(Color.WHITE); // Text Color
             paint.setStyle(Paint.Style.FILL);
-            paint.setStrokeWidth(16); // Text Size
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)); // Text Overlapping Pattern
-            // some more settings...
+            paint.setColor(Color.RED); // Text Color
+            paint.setTypeface(tf);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(convertToPixels(getActivity().getApplicationContext(), 84));
 
-            canvas.drawBitmap(copyBitmap, 0, 0, paint);
-            canvas.drawText("Testing...", 10, 10, paint);
-            // NEWLY ADDED CODE ENDS HERE ]
+            String text = "Brecht het is laat...";
+            Rect textRect = new Rect();
+            paint.getTextBounds(text, 0, text.length(), textRect);
 
-            copyBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            canvas.drawText(text, 700, 150, paint);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
+    public static int convertToPixels(Context context, int nDP)
+    {
+        final float conversionScale = context.getResources().getDisplayMetrics().density;
 
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, 1337);
-                DatabaseData.PhotoString = "iets";
-            }
+        return (int) ((nDP * conversionScale) + 0.5f) ;
+
+    }
+
+    private void TakePicture() {
+        if (hasCamera()) {
+            // create intent with ACTION_IMAGE_CAPTURE action
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, SavePic());
+
+            // start camera activity
+            startActivityForResult(intent, TAKE_PICTURE);
         }
     }
 
-    private void galleryAddPic() {
+    private boolean hasCamera(){
+        // method to check if you have a Camera
+        return getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    private Uri SavePic() {
+        File f = createImageFile();
+        Uri mCurrentPhoto = Uri.fromFile(f);
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
+        mediaScanIntent.setData(mCurrentPhoto);
         getActivity().sendBroadcast(mediaScanIntent);
+        DatabaseData.PhotoString = mCurrentPhoto.getPath();
 
+        return mCurrentPhoto;
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp;
-        File storageDir = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/");
-        storageDir.mkdirs();
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+    private File createImageFile(){
+        try {
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp;
+            File storageDir = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/");
+            storageDir.mkdirs();
+            File image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+            // Save a file: path for use with ACTION_VIEW intents
+            return image;
+        }
+
+        catch (IOException i)
+        {
+
+        }
+
+        catch (Exception e)
+        {
+
+        }
+
+        return null;
+
     }
-
-
 }
 
 
