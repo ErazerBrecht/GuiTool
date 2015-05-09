@@ -86,6 +86,11 @@ public class HistoryDataActivity extends ActionBarActivity implements ActionBar.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent i = new Intent(HistoryDataActivity.this, SettingsActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            HistoryDataActivity.this.startActivity(i);
+        }
         if (id == R.id.action_logout) {
             DatabaseData.userData = null;
             Intent i = new Intent(HistoryDataActivity.this, Login.class);
