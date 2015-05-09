@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,12 +19,13 @@ import java.util.List;
 public class SplatchScreenActivity extends Activity {
 
     private Handler mHandler = new Handler();
-
+    private RelativeLayout layout;
     int[] imgIds = {R.drawable.splashpagina0, R.drawable.splashpagina1, R.drawable.splashpagina2, R.drawable.splashpagina3, R.drawable.splashpagina4};
     int pointer = 1;
     int i = 1;
 
-    float b = 0;
+    private float x1,x2;
+    static final int MIN_DISTANCE = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,10 @@ public class SplatchScreenActivity extends Activity {
 
         setContentView(R.layout.activity_splatchscreen);
 
-       /* mHandler.postDelayed(new Runnable() {
+        layout = (RelativeLayout) findViewById(R.id.background);
+
+        /*
+       mHandler.postDelayed(new Runnable() {
             public void run() {
                 RelativeLayout layout = (RelativeLayout) findViewById(R.id.background);
                 layout.setBackground(getResources().getDrawable(imgIds[pointer]));
@@ -53,40 +58,16 @@ public class SplatchScreenActivity extends Activity {
     public boolean onTouchEvent(MotionEvent event) {
 
         int action = MotionEventCompat.getActionMasked(event);
-        float t = event.getY();
 
         switch (action) {
-            case (MotionEvent.ACTION_DOWN):
-                return true;
-            case (MotionEvent.ACTION_MOVE):
-                if (b > t )
-                {
-                    RelativeLayout layout = (RelativeLayout) findViewById(R.id.background);
-                    layout.setBackground(getResources().getDrawable(imgIds[pointer]));
-                    if (pointer > 3)
-                    {
-                        Intent i = new Intent(SplatchScreenActivity.this, Login.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        SplatchScreenActivity.this.startActivity(i);
-                    }
-                    else{
-                        pointer++;
-                    }
-                }
-                b = event.getY();
-                return true;
             case (MotionEvent.ACTION_UP):
-
-                return true;
-            case (MotionEvent.ACTION_CANCEL):
-                return true;
-            case (MotionEvent.ACTION_OUTSIDE):
-                return true;
-            default:
-                return super.onTouchEvent(event);
+                Intent i = new Intent(SplatchScreenActivity.this, Login.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                SplatchScreenActivity.this.startActivity(i);
+               break;
         }
 
-
+        return super.onTouchEvent(event);
 
     }
 
