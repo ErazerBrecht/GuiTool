@@ -323,13 +323,13 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                     MyAsyncTask.this.cancel(true);
                 }
             });
-            if (DescriptionFragmentSession.loc.toString() != null) {
-                locatie = DescriptionFragmentSession.loc.toString();
+            if (String.valueOf(DescriptionFragmentSession.loc) != null) {
+                locatie = String.valueOf(DescriptionFragmentSession.loc);
             } else {
                 locatie = " ";
             }
-            if (DescriptionFragmentSession.des.toString() != null) {
-                descriptie = DescriptionFragmentSession.des.toString();
+            if (String.valueOf(DescriptionFragmentSession.des) != null) {
+                descriptie = String.valueOf(DescriptionFragmentSession.des);
             } else {
                 descriptie = " ";
             }
@@ -347,7 +347,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             if (WelcomeActivity.Username==null)
             {
                 try {
-                    WelcomeActivity.Username=DatabaseData.userData.getString("name").toString();
+                    WelcomeActivity.Username=String.valueOf(DatabaseData.userData.getString("name"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
