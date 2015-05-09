@@ -28,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +47,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
     private EditText locatie;
     private EditText descriptie;
 
-    static int TAKE_PICTURE = 1;
+    static int TAKE_PICTURE = 1337;
 
     static String loc;
     static String des;
@@ -160,7 +162,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(convertToPixels(getActivity().getApplicationContext(), 84));
 
-            String text = "Brecht het is laat...";
+            String text = "Testing";
             Rect textRect = new Rect();
             paint.getTextBounds(text, 0, text.length(), textRect);
 
@@ -170,8 +172,13 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             out.flush();
             out.close();
 
+            //This part is used to add Generated picture to Album (Gallery)!
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(Uri.fromFile(Drawing));
+            getActivity().sendBroadcast(mediaScanIntent);
+
         } catch (Exception e) {
-            e.printStackTrace();
+            Toast.makeText(getActivity().getApplicationContext(), "Unable to edit picture", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -181,6 +188,22 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
         return (int) ((nDP * conversionScale) + 0.5f) ;
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if( requestCode == 1337 ) {
+            try {
+                Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse("file://" + DatabaseData.PhotoString));
+                ((ImageView)view.findViewById(R.id.ivPicture)).setImageBitmap(photo);
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(getActivity().getApplicationContext(), "Unable to access temporally picture", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
     private void TakePicture() {
@@ -202,9 +225,6 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
     private Uri SavePic() {
         File f = createImageFile();
         Uri mCurrentPhoto = Uri.fromFile(f);
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        mediaScanIntent.setData(mCurrentPhoto);
-        getActivity().sendBroadcast(mediaScanIntent);
         DatabaseData.PhotoString = mCurrentPhoto.getPath();
 
         return mCurrentPhoto;
@@ -212,10 +232,9 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
     private File createImageFile(){
         try {
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "JPEG_" + timeStamp;
-            File storageDir = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/");
+            // Create an temporally image
+            String imageFileName = "temp";
+            File storageDir = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/.temp");
             storageDir.mkdirs();
             File image = File.createTempFile(
                     imageFileName,  /* prefix */
@@ -227,14 +246,9 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             return image;
         }
 
-        catch (IOException i)
-        {
-
-        }
-
         catch (Exception e)
         {
-
+            Toast.makeText(getActivity().getApplicationContext(), "Unable to save temporally picture", Toast.LENGTH_SHORT).show();
         }
 
         return null;
