@@ -28,25 +28,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -430,7 +416,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             }
             else {//gewoon zo laten :)
             }
-            DatabaseComClass.Session(Uid, locatie, descriptie, "0", String.valueOf(elapsedTime), progressDialog);
+            DatabaseComClass.Session(Uid, locatie, descriptie, "0", String.valueOf(elapsedTime), DatabaseData.PhotoString, progressDialog);
             return null;
         }
 
