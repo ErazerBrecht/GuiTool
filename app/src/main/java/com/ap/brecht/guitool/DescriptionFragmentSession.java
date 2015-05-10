@@ -34,7 +34,7 @@ import java.util.Date;
 /**
  * Created by hannelore on 22/04/2015.
  */
-public class DescriptionFragmentSession extends Fragment{
+public class DescriptionFragmentSession extends Fragment {
 
     private View view;
     private EditText locatie;
@@ -51,6 +51,12 @@ public class DescriptionFragmentSession extends Fragment{
         view = inflater.inflate(R.layout.fragment_description_session, container, false);
 
         ivPicture = (ImageView) view.findViewById(R.id.ivPicture);
+        ivPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessageBox();
+            }
+        });
         locatie = (EditText) view.findViewById(R.id.location);
         descriptie = (EditText) view.findViewById(R.id.description);
 
@@ -99,52 +105,54 @@ public class DescriptionFragmentSession extends Fragment{
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (DatabaseData.PhotoString == null) {
-                QustomDialogBuilder pictureAlert = new QustomDialogBuilder(getActivity(), AlertDialog.THEME_HOLO_DARK);
-                pictureAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(getResources().getColor(R.color.white) & 0x00ffffff) + ">Do you want to make a picture?"));
-                pictureAlert.setTitle("ClimbUP");
-                pictureAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
-                pictureAlert.setDividerColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
-                pictureAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-                    }
-                });
-                pictureAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        TakePicture();
-                    }
-                });
-
-                pictureAlert.setCancelable(true);
-                pictureAlert.create().show();
-            }
-            else {
+                MessageBox();
+            } else if (!DatabaseData.PhotoString.equals("")) {
                 try {
                     //Save photo in ImageView
                     Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse("file://" + DatabaseData.PhotoString));
                     ivPicture.setImageBitmap(photo);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Unable to access temporally picture", Toast.LENGTH_SHORT).show();
                 }
             }
         }
     }
 
+    private void MessageBox()
+    {
+        QustomDialogBuilder pictureAlert = new QustomDialogBuilder(getActivity(), AlertDialog.THEME_HOLO_DARK);
+        pictureAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(getResources().getColor(R.color.white) & 0x00ffffff) + ">Do you want to make a picture?"));
+        pictureAlert.setTitle("ClimbUP");
+        pictureAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
+        pictureAlert.setDividerColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
+        pictureAlert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseData.PhotoString = "";
+                dialog.dismiss();
+            }
+        });
+        pictureAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TakePicture();
+            }
+        });
+
+        pictureAlert.setCancelable(true);
+        pictureAlert.create().show();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if( requestCode == 1337 ) {
+        if (requestCode == 1337) {
             try {
                 Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse("file://" + DatabaseData.PhotoString));
                 ExifInterface ei = new ExifInterface(DatabaseData.PhotoString);
                 int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
-                switch(orientation) {
+                switch (orientation) {
                     case ExifInterface.ORIENTATION_ROTATE_90:
                         photo = RotateBitmap(photo, 90, 1000);
                         break;
@@ -161,19 +169,18 @@ public class DescriptionFragmentSession extends Fragment{
                 fOut.flush();
                 fOut.close();
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
+                //If this was failed (as example when you don't take a picture, this happens when you press on back) clear PhotoString
+                DatabaseData.PhotoString = "";
                 Toast.makeText(getActivity().getApplicationContext(), "Unable to access temporally picture", Toast.LENGTH_SHORT).show();
             }
 
         }
     }
 
-    private Bitmap RotateBitmap(Bitmap source, float angle, int maxwidth)
-    {
+    private Bitmap RotateBitmap(Bitmap source, float angle, int maxwidth) {
         //Resize bitmap
-        if(source.getWidth() > maxwidth) {
+        if (source.getWidth() > maxwidth) {
             source = Bitmap.createScaledBitmap(source, maxwidth, source.getHeight() / (source.getWidth() / maxwidth), true);
         }
 
@@ -193,7 +200,7 @@ public class DescriptionFragmentSession extends Fragment{
         }
     }
 
-    private boolean hasCamera(){
+    private boolean hasCamera() {
         // method to check if you have a Camera
         return getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
@@ -205,7 +212,7 @@ public class DescriptionFragmentSession extends Fragment{
         return mCurrentPhoto;
     }
 
-    private File createImageFile(){
+    private File createImageFile() {
         try {
             // Create an temporally image
             String imageFileName = "temp";
@@ -219,10 +226,7 @@ public class DescriptionFragmentSession extends Fragment{
 
             // Save a file: path for use with ACTION_VIEW intents
             return image;
-        }
-
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Toast.makeText(getActivity().getApplicationContext(), "Unable to save temporally picture", Toast.LENGTH_SHORT).show();
         }
 
@@ -230,29 +234,25 @@ public class DescriptionFragmentSession extends Fragment{
 
     }
 
-    public static String getDescription()
-    {
+    public static String getDescription() {
         if (des != null) {
-            return  String.valueOf(des);
+            return String.valueOf(des);
         }
-        return  " ";
+        return " ";
     }
 
-    public static void setDescription(String value)
-    {
+    public static void setDescription(String value) {
         des = value;
     }
 
-    public static String getLocation()
-    {
+    public static String getLocation() {
         if (loc != null) {
-            return  String.valueOf(loc);
+            return String.valueOf(loc);
         }
-        return  " ";
+        return " ";
     }
 
-    public static void setLocation(String value)
-    {
+    public static void setLocation(String value) {
         loc = value;
     }
 }
