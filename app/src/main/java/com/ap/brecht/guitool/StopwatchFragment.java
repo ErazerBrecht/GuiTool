@@ -2,10 +2,20 @@ package com.ap.brecht.guitool;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
@@ -31,6 +41,8 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -146,11 +158,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     }
 
     public void stopClick() {
-        hideStopButton();
         start = false;
         stop = true;
         mHandler.removeCallbacks(startTimer);
         stopped = true;
+        savePicture();
         new MyAsyncTask().execute();
     }
 
@@ -168,12 +180,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         txtReset.setVisibility(View.GONE);
         stopButton.setVisibility(View.VISIBLE);
         txtStop.setVisibility(View.VISIBLE);
-    }
-
-    private void hideStopButton() {
-        startButton.setVisibility(View.VISIBLE);
-        resetButton.setVisibility(View.VISIBLE);
-        stopButton.setVisibility(View.GONE);
     }
 
 
@@ -217,7 +223,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             hours = "0" + hours;
         }
 
-		/* Setting the timer text to the elapsed time */
+		/* Set the timer text to the elapsed time */
         ((TextView) view.findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
 
 
@@ -297,7 +303,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                         break;
 
                 }
-
             }
             else if (mins == 1) {
                 toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute";
@@ -307,8 +312,79 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes and " + String.valueOf(secs) + " seconds";
 
         SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+    }
 
+    private void savePicture() {
+        try {
+            if (DatabaseData.PhotoString == null)
+                return;
 
+            String username =  DatabaseData.userData.getJSONObject("user").getString("name");
+            String session = String.valueOf(Integer.valueOf(DatabaseData.userData.getJSONArray("session").getJSONObject(DatabaseData.userData.getJSONArray("session").length() - 1).getString("sid")) + 1);
+            File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
+            Drawn.mkdirs();
+            File Drawing = new File(Drawn, session + ".jpg");
+            FileOutputStream out = new FileOutputStream(Drawing);
+
+            Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
+            Typeface tf = Typeface.create("sans-serif-condensed", Typeface.BOLD);
+            int x = 50;
+            int y = 75;
+            int size = 32;
+            Canvas canvas = new Canvas(bitmap);
+
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.WHITE); // Text Color
+            paint.setTypeface(tf);
+            paint.setTextSize(convertToPixels(getActivity().getApplicationContext(), size));
+
+            String text = "Testing";
+            Rect textRect = new Rect();
+            paint.getTextBounds(text, 0, text.length(), textRect);
+
+            String text2 = "Testing2";
+            Rect textRect2 = new Rect();
+            paint.getTextBounds(text2, 0, text2.length(), textRect2);
+
+            String text3 = "Testing3";
+
+            canvas.drawText(text, x, y, paint);
+            canvas.drawText(text2, x, y + textRect.height(), paint);
+            canvas.drawText(text3, x, y + textRect.height() + textRect2.height(), paint);
+
+            //Add outline to text!
+            Paint stkPaint = new Paint();
+            stkPaint.setTypeface(tf);
+            stkPaint.setStyle(Paint.Style.STROKE);
+            stkPaint.setStrokeWidth(size / 10);
+            stkPaint.setColor(Color.BLACK);
+            stkPaint.setTextSize(convertToPixels(getActivity().getApplicationContext(), size));
+            canvas.drawText(text, x, y, stkPaint);
+            canvas.drawText(text2, x, y + textRect.height(), stkPaint);
+            canvas.drawText(text3, x, y + textRect.height() + textRect2.height(), stkPaint);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+            //This part is used to add Generated picture to Album (Gallery)!
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(Uri.fromFile(Drawing));
+            getActivity().sendBroadcast(mediaScanIntent);
+
+            DatabaseData.PhotoString = Drawing.getPath();
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity().getApplicationContext(), "Unable to edit picture", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Method used from someone else!
+    private int convertToPixels(Context context, int nDP)
+    {
+        final float conversionScale = context.getResources().getDisplayMetrics().density;
+        return (int) ((nDP * conversionScale) + 0.5f);
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
