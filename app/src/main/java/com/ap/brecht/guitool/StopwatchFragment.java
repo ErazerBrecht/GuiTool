@@ -152,6 +152,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         stopped = true;
         savePicture();
         new MyAsyncTask().execute();
+
     }
 
     public void resetClick() {
@@ -360,10 +361,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             mediaScanIntent.setData(Uri.fromFile(Drawing));
             getActivity().sendBroadcast(mediaScanIntent);
-
             DatabaseData.PhotoString = Drawing.getPath();
 
-        } catch (Exception e) {
+       } catch (Exception e) {
             Toast.makeText(getActivity().getApplicationContext(), "Unable to edit picture", Toast.LENGTH_SHORT).show();
         }
     }
@@ -424,6 +424,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
         protected void onPostExecute(Void v) {
             try {
+
                 //Close the progressDialog!
                 this.progressDialog.dismiss();
                 if (DatabaseData.userData.optString("success").toString().equals("1")) {
@@ -432,6 +433,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                     Intent intent = new Intent(getActivity(), WelcomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().startActivity(intent);
+
 
                 } else if (DatabaseData.userData.optString("error").toString().equals("1")) {
                     Toast.makeText(getActivity(), jsonResponse.optString("error_msg").toString(), Toast.LENGTH_SHORT).show();

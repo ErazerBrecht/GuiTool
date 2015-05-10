@@ -172,6 +172,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
                 photo.compress(Bitmap.CompressFormat.JPEG, 90, fOut);
                 fOut.flush();
                 fOut.close();
+
             }
             catch (Exception e)
             {
