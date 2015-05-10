@@ -33,6 +33,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
@@ -306,10 +308,10 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 return;
 
             String username =  DatabaseData.userData.getJSONObject("user").getString("name");
-            String session = String.valueOf(Integer.valueOf(DatabaseData.userData.getJSONArray("session").getJSONObject(DatabaseData.userData.getJSONArray("session").length() - 1).getString("sid")) + 1);
+            String name = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
             File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
             Drawn.mkdirs();
-            File Drawing = new File(Drawn, session + ".jpg");
+            File Drawing = new File(Drawn, name + ".jpg");
             FileOutputStream out = new FileOutputStream(Drawing);
 
             Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
