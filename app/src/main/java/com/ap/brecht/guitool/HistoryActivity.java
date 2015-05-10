@@ -40,7 +40,8 @@ public class HistoryActivity extends ActionBarActivity {
     JSONObject o = null;
     Object test = null;
 
-    ArrayList<Session> sessions;
+    static ArrayList<Session> sessions;
+    SessionAdapter adapter;
     String date;
     String place;
     String day;
@@ -54,68 +55,8 @@ public class HistoryActivity extends ActionBarActivity {
         setContentView(R.layout.activity_history);
         list = (ListView) findViewById(R.id.list);
 
-        list1 = new ArrayList<>();
         sessions=new ArrayList<Session>();
-
-
-        try {
-            a = DatabaseData.userData.getJSONArray("session");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        final int arrSize = a.length();
-        for (int i = 0; i < arrSize; ++i) {
-
-            try {
-                o = a.getJSONObject(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
-                 date =o.getString("datum").toString();
-                String split[]= date.split(" ");
-                 day = split[0];
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
-
-                place=o.getString("place").toString();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            sessions.add(new Session(date,place,day));
-        }
-
-        SessionAdapter adapter = new SessionAdapter(this, sessions);
-        list.setAdapter(adapter);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(HistoryActivity.this, HistoryDataActivity.class);
-                try {
-                    a = DatabaseData.userData.getJSONArray("session");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    for (int j = 0; j < arrSize; ++j) {
-                        if (sessions.get(position).Date.equals(a.getJSONObject(j).getString("datum"))) {
-                            DatabaseData.Sid = a.getJSONObject(j).getString("sid").toString();
-                        }
-                    }
-                    i.putExtra("sid", DatabaseData.Sid);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                HistoryActivity.this.startActivity(i);
-            }
-        });
-
+        
         actionbar = getSupportActionBar();
         actionbar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Orange)));
         actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
@@ -175,5 +116,74 @@ public class HistoryActivity extends ActionBarActivity {
         BackPressed.CloseApp(this);
     }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        /*// Add item to adapter
+        sessions.add("Nathan", "San Diego");
+        adapter = new SessionAdapter(this, sessions);
+        list.setAdapter(adapter);*/
+
+
+        try {
+            a = DatabaseData.userData.getJSONArray("session");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final int arrSize = a.length();
+        for (int i = 0; i < arrSize; ++i) {
+
+            try {
+                o = a.getJSONObject(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                date =o.getString("datum").toString();
+                String split[]= date.split(" ");
+                day = split[0];
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+
+                place=o.getString("place").toString();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            sessions.add(new Session(date,place,day));
+        }
+
+        adapter = new SessionAdapter(this, sessions);
+        list.setAdapter(adapter);
+
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(HistoryActivity.this, HistoryDataActivity.class);
+                try {
+                    a = DatabaseData.userData.getJSONArray("session");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    for (int j = 0; j < arrSize; ++j) {
+                        if (sessions.get(position).Date.equals(a.getJSONObject(j).getString("datum"))) {
+                            DatabaseData.Sid = a.getJSONObject(j).getString("sid").toString();
+                        }
+                    }
+                    i.putExtra("sid", DatabaseData.Sid);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                HistoryActivity.this.startActivity(i);
+            }
+        });
+
+    }
 
 }
