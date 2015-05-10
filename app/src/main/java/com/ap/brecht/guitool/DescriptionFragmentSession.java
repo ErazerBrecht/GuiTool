@@ -166,7 +166,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             FileOutputStream out = new FileOutputStream(Drawing);
 
             Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
-            Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+            Typeface tf = Typeface.create("sans-serif-condensed", Typeface.BOLD);
             int x = 50;
             int y = 75;
             int size = 32;
@@ -174,7 +174,7 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
-            paint.setColor(Color.RED); // Text Color
+            paint.setColor(Color.WHITE); // Text Color
             paint.setTypeface(tf);
             paint.setTextSize(convertToPixels(getActivity().getApplicationContext(), size));
 
@@ -182,7 +182,15 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             Rect textRect = new Rect();
             paint.getTextBounds(text, 0, text.length(), textRect);
 
+            String text2 = "Testing2";
+            Rect textRect2 = new Rect();
+            paint.getTextBounds(text2, 0, text2.length(), textRect2);
+
+            String text3 = "Testing3";
+
             canvas.drawText(text, x, y, paint);
+            canvas.drawText(text2, x, y + textRect.height(), paint);
+            canvas.drawText(text3, x, y + textRect.height() + textRect2.height(), paint);
 
             //Add outline to text!
             Paint stkPaint = new Paint();
@@ -192,6 +200,8 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
             stkPaint.setColor(Color.BLACK);
             stkPaint.setTextSize(convertToPixels(getActivity().getApplicationContext(), size));
             canvas.drawText(text, x, y, stkPaint);
+            canvas.drawText(text2, x, y + textRect.height(), stkPaint);
+            canvas.drawText(text3, x, y + textRect.height() + textRect2.height(), stkPaint);
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
