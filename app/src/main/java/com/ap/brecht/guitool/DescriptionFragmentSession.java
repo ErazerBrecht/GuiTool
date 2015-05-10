@@ -34,10 +34,9 @@ import java.util.Date;
 /**
  * Created by hannelore on 22/04/2015.
  */
-public class DescriptionFragmentSession extends Fragment implements View.OnClickListener {
+public class DescriptionFragmentSession extends Fragment{
 
     private View view;
-    private Button SavePicButton;
     private EditText locatie;
     private EditText descriptie;
     private ImageView ivPicture;
@@ -52,8 +51,6 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
         view = inflater.inflate(R.layout.fragment_description_session, container, false);
 
         ivPicture = (ImageView) view.findViewById(R.id.ivPicture);
-        SavePicButton = (Button) view.findViewById(R.id.savePicture);
-        SavePicButton.setOnClickListener(this);
         locatie = (EditText) view.findViewById(R.id.location);
         descriptie = (EditText) view.findViewById(R.id.description);
 
@@ -135,15 +132,6 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
                     Toast.makeText(getActivity().getApplicationContext(), "Unable to access temporally picture", Toast.LENGTH_SHORT).show();
                 }
             }
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.savePicture:
-                //save();
-                break;
         }
     }
 

@@ -121,7 +121,6 @@
         android:id="@+id/btnReset"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/btnStart"
         android:layout_gravity="center"
@@ -144,13 +143,39 @@
         android:textSize="30sp" />
 
     <ImageButton
+        android:id="@+id/btnPauze"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@+id/line"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/pauze"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtPauze"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnReset"
+        android:layout_alignRight="@+id/btnReset"
+        android:layout_below="@+id/btnPauze"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="Pauze"
+        android:textSize="30sp"
+        android:visibility="gone" />
+
+    <ImageButton
         android:id="@+id/btnStop"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_below="@+id/line"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:background="@null"
         android:scaleType="fitCenter"
         android:src="@drawable/stop"
