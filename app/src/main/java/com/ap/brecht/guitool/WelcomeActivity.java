@@ -52,8 +52,8 @@ public class WelcomeActivity extends ActionBarActivity {
 
         btnNewSession.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                DescriptionFragmentSession.des = null;
-                DescriptionFragmentSession.loc = null;
+                DescriptionFragmentSession.setDescription(null);
+                DescriptionFragmentSession.setDescription(null);
                 DatabaseData.PhotoString = null;
                 Intent i = new Intent(WelcomeActivity.this, SessionActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

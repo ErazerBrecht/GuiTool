@@ -284,11 +284,14 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             paint.setTypeface(tf);
             paint.setTextSize(convertToPixels(getActivity().getApplicationContext(), size));
 
-            String text = "Testing";
+            locatie = DescriptionFragmentSession.getLocation();
+            descriptie = DescriptionFragmentSession.getDescription();
+
+            String text = locatie;
             Rect textRect = new Rect();
             paint.getTextBounds(text, 0, text.length(), textRect);
 
-            String text2 = "Testing2";
+            String text2 = descriptie;
             Rect textRect2 = new Rect();
             paint.getTextBounds(text2, 0, text2.length(), textRect2);
 
@@ -342,16 +345,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                     MyAsyncTask.this.cancel(true);
                 }
             });
-            if (DescriptionFragmentSession.loc != null) {
-                locatie = String.valueOf(DescriptionFragmentSession.loc);
-            } else {
-                locatie = " ";
-            }
-            if (DescriptionFragmentSession.des != null) {
-                descriptie = String.valueOf(DescriptionFragmentSession.des);
-            } else {
-                descriptie = " ";
-            }
+
+            //locatie = DescriptionFragmentSession.getLocation();
+            //descriptie = DescriptionFragmentSession.getDescription();
         }
 
         @Override

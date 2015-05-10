@@ -43,8 +43,8 @@ public class DescriptionFragmentSession extends Fragment{
 
     static int TAKE_PICTURE = 1337;
 
-    static String loc;
-    static String des;
+    private static String loc;
+    private static String des;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -228,6 +228,32 @@ public class DescriptionFragmentSession extends Fragment{
 
         return null;
 
+    }
+
+    public static String getDescription()
+    {
+        if (des != null) {
+            return  String.valueOf(des);
+        }
+        return  " ";
+    }
+
+    public static void setDescription(String value)
+    {
+        des = value;
+    }
+
+    public static String getLocation()
+    {
+        if (loc != null) {
+            return  String.valueOf(loc);
+        }
+        return  " ";
+    }
+
+    public static void setLocation(String value)
+    {
+        loc = value;
     }
 }
 
