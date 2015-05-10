@@ -213,7 +213,6 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
         File f = createImageFile();
         Uri mCurrentPhoto = Uri.fromFile(f);
         DatabaseData.PhotoString = mCurrentPhoto.getPath();
-
         return mCurrentPhoto;
     }
 
