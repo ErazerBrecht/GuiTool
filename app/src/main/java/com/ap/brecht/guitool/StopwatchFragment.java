@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,45 +45,51 @@ import java.util.Random;
  */
 public class StopwatchFragment extends Fragment implements View.OnClickListener {
 
+    private Chronometer chrono;
+    long timeWhenStopped = 0;
+
     private View view;
 
     private ImageButton startButton;
     private TextView txtStart;
+    private ImageButton pauzeButton;
+    private TextView txtPauze;
     private ImageButton stopButton;
     private TextView txtStop;
     private ImageButton resetButton;
     private TextView txtReset;
     private TextView txtHeight;
     private TextView txtSnelheid;
+
+    long elapsedMillis;
+    int secs, currentmin, lastmin;
+
     private String locatie;
     private String descriptie;
-
-    String Uid;
+    private String Uid;
 
     JSONObject jsonResponse;
 
-    private Handler mHandler = new Handler();
-    private long startTime;
-    private long elapsedTime;
-    private final int REFRESH_RATE = 100;
-    private String hours, minutes, seconds, currentmin, lastmin = "00";
-    private long secs, mins, hrs;
-    private boolean stopped = false, start, stop, reset;
+
     private TextToSpeech SayTime;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_stopwatch, container, false);
+        chrono = (Chronometer) view.findViewById(R.id.timer);
         startButton = (ImageButton) view.findViewById(R.id.btnStart);
         startButton.setOnClickListener(this);
         stopButton = (ImageButton) view.findViewById(R.id.btnStop);
         stopButton.setOnClickListener(this);
+        pauzeButton = (ImageButton) view.findViewById(R.id.btnPauze);
+        pauzeButton.setOnClickListener(this);
         resetButton = (ImageButton) view.findViewById(R.id.btnReset);
         resetButton.setOnClickListener(this);
 
         txtStart = (TextView) view.findViewById(R.id.txtStart);
         txtReset = (TextView) view.findViewById(R.id.txtReset);
+        txtPauze = (TextView) view.findViewById(R.id.txtPauze);
         txtStop = (TextView) view.findViewById(R.id.txtStop);
         txtHeight = (TextView) view.findViewById(R.id.txtHeight);
         txtHeight.setText("21m");
@@ -96,6 +104,47 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                         }
                     }
                 });
+
+        chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer c) {
+                elapsedMillis = SystemClock.elapsedRealtime() - c.getBase();
+                if (elapsedMillis > 3600000L) {
+                    c.setFormat("0%s");
+                } else {
+                    c.setFormat("00:%s");
+                }
+
+                secs = ((int) (elapsedMillis)) / 1000;
+                currentmin = secs / 60;
+
+                //Check if we need to speak the minutes
+                //@ the moment it's every minute
+                String alertTime = ((SessionActivity) getActivity()).AlertTime;
+                if (alertTime.equals("30s")) {
+                    if (secs % 30 == 0) {
+                        speakText();
+                    }
+                } else if (alertTime.equals("1m")) {
+                    if (lastmin != currentmin) {
+                        speakText();
+                    }
+                    lastmin = currentmin;
+                } else if (alertTime.equals("5m")) {
+                    if (lastmin != currentmin && (currentmin % 5) == 0) {
+                        speakText();
+                    }
+                    lastmin = currentmin;
+
+                } else if (alertTime.equals("10m")) {
+                    if (lastmin != currentmin && (currentmin % 10) == 0) {
+                        speakText();
+                    }
+                    lastmin = currentmin;
+                }
+            }
+        });
+
         return view;
     }
 
@@ -104,7 +153,14 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnStart:
-                startClick();
+                chrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                chrono.start();
+                showStopButton();
+                break;
+            case R.id.btnPauze:
+                timeWhenStopped = chrono.getBase() - SystemClock.elapsedRealtime();
+                chrono.stop();
+                hideStopButton();
                 break;
             case R.id.btnStop:
                 QustomDialogBuilder stopAlert = new QustomDialogBuilder(v.getContext(), AlertDialog.THEME_HOLO_DARK);
@@ -121,45 +177,19 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 stopAlert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        stopClick();
+                        chrono.stop();
+                        savePicture();
+                        new MyAsyncTask().execute();
                     }
                 });
                 stopAlert.create().show();
                 break;
             case R.id.btnReset:
-                resetClick();
+                chrono.setBase(SystemClock.elapsedRealtime());
+                timeWhenStopped = 0;
+                chrono.stop();
                 break;
         }
-    }
-
-    public void startClick() {
-        showStopButton();
-        start = true;
-        stop = false;
-        if (stopped) {
-            startTime = System.currentTimeMillis() - elapsedTime;
-        } else {
-            startTime = System.currentTimeMillis();
-        }
-        mHandler.removeCallbacks(startTimer);
-        mHandler.postDelayed(startTimer, 0);
-    }
-
-    public void stopClick() {
-        start = false;
-        stop = true;
-        mHandler.removeCallbacks(startTimer);
-        stopped = true;
-        savePicture();
-        new MyAsyncTask().execute();
-
-    }
-
-    public void resetClick() {
-        stopped = false;
-        start = false;
-        stop = false;
-        ((TextView) getView().findViewById(R.id.timer)).setText("00:00:00");
     }
 
     private void showStopButton() {
@@ -167,138 +197,64 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         txtStart.setVisibility(View.GONE);
         resetButton.setVisibility(View.GONE);
         txtReset.setVisibility(View.GONE);
+        pauzeButton.setVisibility(View.VISIBLE);
+        txtPauze.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.VISIBLE);
         txtStop.setVisibility(View.VISIBLE);
     }
 
-
-    private void updateTimer(float time) {
-        secs = (long) (time / 1000);
-        mins = (long) ((time / 1000) / 60);
-        hrs = (long) (((time / 1000) / 60) / 60);
-
-		/* Convert the seconds to String
-         * and format to ensure it has
-		 * a leading zero when required
-		 */
-
-        secs = secs % 60;
-        seconds = String.valueOf(secs);
-        if (secs == 0) {
-            seconds = "00";
-        }
-        if (secs < 10 && secs > 0) {
-            seconds = "0" + seconds;
-        }
-
-		/* Convert the minutes to String and format the String */
-
-        mins = mins % 60;
-        minutes = String.valueOf(mins);
-        if (mins == 0) {
-            minutes = "00";
-        }
-        if (mins < 10 && mins > 0) {
-            minutes = "0" + minutes;
-        }
-
-    	/* Convert the hours to String and format the String */
-
-        hours = String.valueOf(hrs);
-        if (hrs == 0) {
-            hours = "00";
-        }
-        if (hrs < 10 && hrs > 0) {
-            hours = "0" + hours;
-        }
-
-		/* Set the timer text to the elapsed time */
-        ((TextView) view.findViewById(R.id.timer)).setText(hours + ":" + minutes + ":" + seconds);
-
-
-        //Check if we need to speak the minutes
-        //@ the moment it's every minute
-        String alertTime = ((SessionActivity) getActivity()).AlertTime;
-        if (alertTime.equals("30s")) {
-            if (secs == 0  || secs == 30) {
-                speakText();
-            }
-        } else if (alertTime.equals("1m")) {
-            currentmin = String.valueOf(mins);
-            if (lastmin != currentmin) {
-                speakText();
-            }
-            lastmin = currentmin;
-        } else if (alertTime.equals("5m")) {
-            currentmin = String.valueOf(mins);
-            if (lastmin != currentmin && (mins % 5) == 0) {
-                speakText();
-            }
-            lastmin = currentmin;
-
-        } else if (alertTime.equals("10m")) {
-            currentmin = String.valueOf(mins);
-            if (lastmin != currentmin && (mins % 10) == 0) {
-                speakText();
-            }
-            lastmin = currentmin;
-        }
+    private void hideStopButton() {
+        startButton.setVisibility(View.VISIBLE);
+        txtStart.setVisibility(View.VISIBLE);
+        resetButton.setVisibility(View.VISIBLE);
+        txtReset.setVisibility(View.VISIBLE);
+        pauzeButton.setVisibility(View.GONE);
+        txtPauze.setVisibility(View.GONE);
+        stopButton.setVisibility(View.GONE);
+        txtStop.setVisibility(View.GONE);
     }
-
-
-    private Runnable startTimer = new Runnable() {
-        public void run() {
-            elapsedTime = System.currentTimeMillis() - startTime;
-            updateTimer(elapsedTime);
-            mHandler.postDelayed(this, REFRESH_RATE);
-        }
-    };
 
     public void speakText() {
 
         String toSpeak = "";
 
-        if (secs == 30) {
-            if (mins == 0) {
-                toSpeak = "You have been climbing for " + String.valueOf(secs) + " seconds";
-            } else if (mins == 1) {
-                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute and " + String.valueOf(secs) + " seconds";
-            } else
-                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute and " + String.valueOf(secs) + " seconds";
-        } else if (secs == 0) {
-            if (mins == 0) {
-                Random r = new Random();
-                int fun = r.nextInt(6);//random number from 0-5
-                switch (fun){
-                    case 0:
-                        toSpeak = "Happy Climbing";
-                        break;
-                    case 1:
-                        toSpeak = "Have fun climbing";
-                        break;
-                    case 2:
-                        toSpeak = "Let's climb";
-                        break;
-                    case 3:
-                        toSpeak = "Enjoy your climb";
-                        break;
-                    case 4:
-                        toSpeak = "You Will climb and I Will follow";
-                        break;
-                    case 5:
-                        toSpeak = "Let's go";
-                        break;
-                    default:
-                        break;
-
-                }
+        if (secs == 0 && currentmin == 0) {
+            Random r = new Random();
+            int fun = r.nextInt(6);//random number from 0-5
+            switch (fun) {
+                case 0:
+                    toSpeak = "Happy Climbing";
+                    break;
+                case 1:
+                    toSpeak = "Have fun climbing";
+                    break;
+                case 2:
+                    toSpeak = "Let's climb";
+                    break;
+                case 3:
+                    toSpeak = "Enjoy your climb";
+                    break;
+                case 4:
+                    toSpeak = "You Will climb and I Will follow";
+                    break;
+                case 5:
+                    toSpeak = "Let's go";
+                    break;
+                default:
+                    break;
             }
-            else if (mins == 1) {
-                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minute";
+        } else if (secs % 30 == 0 && secs % 60 != 0) {
+            if (currentmin == 0) {
+                toSpeak = "You have been climbing for " + "30" + " seconds";
+            } else if (currentmin == 1) {
+                toSpeak = "You have been climbing for " + String.valueOf(currentmin) + " minute and " + "30" + " seconds";
             } else
-                toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes";
-        } else
-            toSpeak = "You have been climbing for " + String.valueOf(mins) + " minutes and " + String.valueOf(secs) + " seconds";
+                toSpeak = "You have been climbing for " + String.valueOf(currentmin) + " minutes and " + "30" + " seconds";
+        } else if (currentmin == 1) {
+            toSpeak = "You have been climbing for " + String.valueOf(currentmin) + " minute";
+        } else {
+            toSpeak = "You have been climbing for " + String.valueOf(currentmin) + " minutes";
+        }
 
         SayTime.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
     }
@@ -308,7 +264,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             if (DatabaseData.PhotoString == null)
                 return;
 
-            String username =  DatabaseData.userData.getJSONObject("user").getString("name");
+            String username = DatabaseData.userData.getJSONObject("user").getString("name");
             String name = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
             File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
             Drawn.mkdirs();
@@ -363,14 +319,13 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             getActivity().sendBroadcast(mediaScanIntent);
             DatabaseData.PhotoString = Drawing.getPath();
 
-       } catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(getActivity().getApplicationContext(), "Unable to edit picture", Toast.LENGTH_SHORT).show();
         }
     }
 
     //Method used from someone else!
-    private int convertToPixels(Context context, int nDP)
-    {
+    private int convertToPixels(Context context, int nDP) {
         final float conversionScale = context.getResources().getDisplayMetrics().density;
         return (int) ((nDP * conversionScale) + 0.5f);
     }
@@ -387,12 +342,12 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                     MyAsyncTask.this.cancel(true);
                 }
             });
-            if (String.valueOf(DescriptionFragmentSession.loc) != null) {
+            if (DescriptionFragmentSession.loc != null) {
                 locatie = String.valueOf(DescriptionFragmentSession.loc);
             } else {
                 locatie = " ";
             }
-            if (String.valueOf(DescriptionFragmentSession.des) != null) {
+            if (DescriptionFragmentSession.des != null) {
                 descriptie = String.valueOf(DescriptionFragmentSession.des);
             } else {
                 descriptie = " ";
@@ -408,17 +363,15 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                 e.printStackTrace();
             }
 
-            if (WelcomeActivity.Username==null)
-            {
+            if (WelcomeActivity.Username == null) {
                 try {
-                    WelcomeActivity.Username=String.valueOf(DatabaseData.userData.getString("name"));
+                    WelcomeActivity.Username = String.valueOf(DatabaseData.userData.getString("name"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else {//gewoon zo laten :)
             }
-            else {//gewoon zo laten :)
-            }
-            DatabaseComClass.Session(Uid, locatie, descriptie, "0", String.valueOf(elapsedTime), DatabaseData.PhotoString, progressDialog);
+            DatabaseComClass.Session(Uid, locatie, descriptie, "0", String.valueOf(elapsedMillis), DatabaseData.PhotoString, progressDialog);
             return null;
         }
 
