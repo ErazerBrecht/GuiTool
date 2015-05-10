@@ -36,10 +36,14 @@ public class HistoryActivity extends ActionBarActivity {
     String tussenResultaat;
     ListView list;
     ArrayList<String> list1;
-    ArrayAdapter<String> adapter;
     JSONArray a = null;
     JSONObject o = null;
     Object test = null;
+
+    ArrayList<Session> sessions;
+    String date;
+    String place;
+    String day;
 
     public static final String TAG = HistoryActivity.class.getSimpleName();
 
@@ -51,6 +55,7 @@ public class HistoryActivity extends ActionBarActivity {
         list = (ListView) findViewById(R.id.list);
 
         list1 = new ArrayList<>();
+        sessions=new ArrayList<Session>();
 
 
         try {
@@ -59,35 +64,32 @@ public class HistoryActivity extends ActionBarActivity {
             e.printStackTrace();
         }
         final int arrSize = a.length();
-        List<String> datum = new ArrayList<String>(arrSize);
-        List<String> plaats = new ArrayList<String>(arrSize);
         for (int i = 0; i < arrSize; ++i) {
+
             try {
                 o = a.getJSONObject(i);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             try {
-                datum.clear();
-                datum.add(o.getString("datum").toString());
+                 date =o.getString("datum").toString();
+                String split[]= date.split(" ");
+                 day = split[0];
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             try {
-                plaats.clear();
-                plaats.add(o.getString("place").toString());
+
+                place=o.getString("place").toString();
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            tussenResultaat = String.valueOf(datum).replace('[', ' ').replace(']', ' ').trim() + "\n" + String.valueOf(plaats).replace('[', ' ').replace(']', ' ').trim();
-            list1.add(tussenResultaat);
+            sessions.add(new Session(date,place,day));
         }
-        adapter =  new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, list1);
 
-
+        SessionAdapter adapter = new SessionAdapter(this, sessions);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,7 +103,7 @@ public class HistoryActivity extends ActionBarActivity {
                 }
                 try {
                     for (int j = 0; j < arrSize; ++j) {
-                        if (list1.get(position).contains(a.getJSONObject(j).getString("datum"))) {
+                        if (sessions.get(position).Date.equals(a.getJSONObject(j).getString("datum"))) {
                             DatabaseData.Sid = a.getJSONObject(j).getString("sid").toString();
                         }
                     }
