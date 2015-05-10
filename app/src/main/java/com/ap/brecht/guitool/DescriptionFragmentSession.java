@@ -167,20 +167,31 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
             Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
             Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+            int x = 50;
+            int y = 75;
+            int size = 32;
             Canvas canvas = new Canvas(bitmap);
 
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(Color.RED); // Text Color
             paint.setTypeface(tf);
-            paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(convertToPixels(getActivity().getApplicationContext(), 84));
+            paint.setTextSize(convertToPixels(getActivity().getApplicationContext(), size));
 
             String text = "Testing";
             Rect textRect = new Rect();
             paint.getTextBounds(text, 0, text.length(), textRect);
 
-            canvas.drawText(text, 700, 150, paint);
+            canvas.drawText(text, x, y, paint);
+
+            //Add outline to text!
+            Paint stkPaint = new Paint();
+            stkPaint.setTypeface(tf);
+            stkPaint.setStyle(Paint.Style.STROKE);
+            stkPaint.setStrokeWidth(size / 10);
+            stkPaint.setColor(Color.BLACK);
+            stkPaint.setTextSize(convertToPixels(getActivity().getApplicationContext(), size));
+            canvas.drawText(text, x, y, stkPaint);
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
@@ -196,12 +207,11 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
         }
     }
 
+    //Method used from someone else!
     public static int convertToPixels(Context context, int nDP)
     {
         final float conversionScale = context.getResources().getDisplayMetrics().density;
-
-        return (int) ((nDP * conversionScale) + 0.5f) ;
-
+        return (int) ((nDP * conversionScale) + 0.5f);
     }
 
     @Override
@@ -215,16 +225,16 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
 
                 switch(orientation) {
                     case ExifInterface.ORIENTATION_ROTATE_90:
-                        photo = RotateBitmap(photo, 90);
+                        photo = RotateBitmap(photo, 90, 1000);
                         break;
                     case ExifInterface.ORIENTATION_ROTATE_180:
-                        photo = RotateBitmap(photo, 180);
+                        photo = RotateBitmap(photo, 180, 1000);
                         break;
                     // etc.
                 }
 
                 //If the bitmap is changed (rotated) we override the bitmap!
-                File f =new File(DatabaseData.PhotoString);
+                File f = new File(DatabaseData.PhotoString);
                 FileOutputStream fOut = new FileOutputStream(f);
                 photo.compress(Bitmap.CompressFormat.JPEG, 90, fOut);
                 fOut.flush();
@@ -238,8 +248,13 @@ public class DescriptionFragmentSession extends Fragment implements View.OnClick
         }
     }
 
-    private Bitmap RotateBitmap(Bitmap source, float angle)
+    private Bitmap RotateBitmap(Bitmap source, float angle, int maxwidth)
     {
+        //Resize bitmap
+        if(source.getWidth() > maxwidth) {
+            source = Bitmap.createScaledBitmap(source, maxwidth, source.getHeight() / (source.getWidth() / maxwidth), true);
+        }
+
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
