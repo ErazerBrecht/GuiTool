@@ -20,12 +20,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +37,9 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -326,7 +326,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
 
         if (secs == 0 && currentmin == 0) {
             Random r = new Random();
-            int fun = r.nextInt(6);//random number from 0-5
+            int fun = r.nextInt(7);//random number from 0-6
             switch (fun) {
                 case 0:
                     toSpeak = "Happy Climbing";
@@ -341,11 +341,13 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
                     toSpeak = "Enjoy your climb";
                     break;
                 case 4:
-                    toSpeak = "You Will climb and I Will follow";
+                    toSpeak = "You will climb and I will follow";
                     break;
                 case 5:
                     toSpeak = "Let's go";
                     break;
+                case 6:
+                    toSpeak = "Go hard, or go home";
                 default:
                     break;
             }
@@ -378,6 +380,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             FileOutputStream out = new FileOutputStream(Drawing);
 
             Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
+
+
             Typeface tf = Typeface.create("sans-serif-condensed", Typeface.BOLD);
             int x = 50;
             int y = 75;
@@ -422,15 +426,40 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             out.flush();
             out.close();
 
+
+
+
             //This part is used to add Generated picture to Album (Gallery)!
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             mediaScanIntent.setData(Uri.fromFile(Drawing));
             getActivity().sendBroadcast(mediaScanIntent);
             DatabaseData.PhotoString = Drawing.getPath();
 
+            final int COMPRESSION_QUALITY = 100;
+            ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                    byteArrayBitmapStream);
+            byte[] b = byteArrayBitmapStream.toByteArray();
+            DatabaseData.PhotoString = Base64.encodeToString(b, Base64.DEFAULT);
+
         } catch (Exception e) {
             Toast.makeText(getActivity().getApplicationContext(), "Unable to edit picture", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String getStringFromBitmap(Bitmap bitmapPicture) {
+ /*
+ * This functions converts Bitmap picture to a string which can be
+ * JSONified.
+ * */
+        final int COMPRESSION_QUALITY = 100;
+        String encodedImage;
+        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                byteArrayBitmapStream);
+        byte[] b = byteArrayBitmapStream.toByteArray();
+        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encodedImage;
     }
 
     //Method used from someone else!
