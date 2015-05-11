@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +47,9 @@ public class ImageFragment extends Fragment {
             }
             try {
                 if (o.getString("sid").equals(DatabaseData.Sid)) {
-                    Bitmap myBitmap = BitmapFactory.decodeFile(o.getString("path"));
-                    Picture.setImageBitmap(myBitmap);
+                    byte[] decodedString = Base64.decode(o.getString("image"), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    Picture.setImageBitmap(decodedByte);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

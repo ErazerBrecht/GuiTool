@@ -74,7 +74,7 @@ public class DatabaseComClass {
 
     }
 
-    public static void Session(String uid, String place, String description, double altitude, String duration, String path, ProgressDialog p) {
+    public static void Session(String uid, String place, String description, double altitude, String duration, String image, ProgressDialog p) {
         jsonArray.clear();
         jsonArray.add(new BasicNameValuePair("tag", "addSession"));
         jsonArray.add(new BasicNameValuePair("uid", uid));
@@ -82,7 +82,7 @@ public class DatabaseComClass {
         jsonArray.add(new BasicNameValuePair("description", description));
         jsonArray.add(new BasicNameValuePair("altitude", String.valueOf(altitude)));
         jsonArray.add(new BasicNameValuePair("duration", duration));
-        jsonArray.add(new BasicNameValuePair("path", path));
+        jsonArray.add(new BasicNameValuePair("image", image));
 
         Worker(p);
     }

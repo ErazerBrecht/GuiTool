@@ -380,6 +380,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             Drawn.mkdirs();
             File Drawing = new File(Drawn, name + ".jpg");
             FileOutputStream out = new FileOutputStream(Drawing);
+            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 
             Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
 
@@ -424,7 +425,10 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             canvas.drawText(text2, x, y + textRect.height(), stkPaint);
             canvas.drawText(text3, x, y + textRect.height() + textRect2.height(), stkPaint);
 
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, arrayOutputStream);
+            byte[] imageArray = arrayOutputStream.toByteArray();
             out.flush();
             out.close();
 
@@ -437,31 +441,12 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             getActivity().sendBroadcast(mediaScanIntent);
             DatabaseData.PhotoString = Drawing.getPath();
 
-            final int COMPRESSION_QUALITY = 100;
-            ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
-                    byteArrayBitmapStream);
-            byte[] b = byteArrayBitmapStream.toByteArray();
-            DatabaseData.PhotoString = Base64.encodeToString(b, Base64.DEFAULT);
+
+            DatabaseData.PhotoString = Base64.encodeToString(imageArray, Base64.DEFAULT);
 
         } catch (Exception e) {
             Toast.makeText(getActivity().getApplicationContext(), "Unable to edit picture", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private String getStringFromBitmap(Bitmap bitmapPicture) {
- /*
- * This functions converts Bitmap picture to a string which can be
- * JSONified.
- * */
-        final int COMPRESSION_QUALITY = 100;
-        String encodedImage;
-        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
-                byteArrayBitmapStream);
-        byte[] b = byteArrayBitmapStream.toByteArray();
-        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return encodedImage;
     }
 
     //Method used from someone else!
