@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/climb2"
+    android:background="@drawable/climb9"
     android:orientation="vertical">
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="250dp"
         android:paddingTop="10dp"
         android:text="Welcome"
         android:textColor="@color/white"
@@ -24,7 +24,6 @@
         android:layout_centerInParent="true"
         android:textColor="@color/white"
         android:layout_gravity="center"
-        android:paddingBottom="40dp"
         android:text="Brecht"
         android:textSize="30sp" />
 
@@ -32,29 +31,30 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center|bottom"
+        android:gravity="center"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/NewSession"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@android:color/transparent"
-            android:gravity="right"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/mybutton"
+            android:gravity="center"
             android:paddingRight="10dp"
-            android:text="New Session ➨"
+            android:text="New Session"
             android:textSize="25dp" />
 
         <Button
             android:id="@+id/History"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@android:color/transparent"
-            android:gravity="right"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/mybutton"
+            android:gravity="center"
             android:paddingRight="10dp"
-            android:text="History ➨"
+            android:text="History"
             android:textSize="25dp" />
     </LinearLayout>
 

@@ -98,7 +98,6 @@ public class RegisterActivity extends ActionBarActivity {
         Name = (EditText) findViewById(R.id.etName);
         Password = (EditText) findViewById(R.id.etPassword);
 
-        makeActionOverflowMenuShown();
     }
 
     @Override
@@ -108,35 +107,7 @@ public class RegisterActivity extends ActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void makeActionOverflowMenuShown() {
-        //Devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
-        //This code adds the overflow menu manually
-        try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
-            }
-        } catch (Exception e) {
-            Log.d(TAG, e.getLocalizedMessage());
-        }
-    }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 

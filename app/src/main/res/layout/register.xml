@@ -1,47 +1,79 @@
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:background="@drawable/begin">
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:paddingBottom="@dimen/activity_vertical_margin"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
+      android:paddingTop="@dimen/activity_vertical_margin"
+      android:background="@drawable/begin3"
+      >
 
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/user_tag"
-            android:textSize="20dp" />
+      <TextView
+          android:id="@+id/welcome"
+          android:layout_width="200dp"
+          android:layout_height="50dp"
+          android:text="Hello"
+          android:gravity="center"
+          android:textColor="@color/white"
+          android:layout_marginTop="50dp"
+          android:layout_centerHorizontal="true"
+          android:layout_alignParentTop="true"
+          android:textSize="40sp"/>
 
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+      <RelativeLayout
+          android:id="@+id/toplayout"
+          android:layout_width="wrap_content"
+          android:layout_height="fill_parent"
+          android:layout_centerVertical="true"
+          android:layout_centerHorizontal="true"
+          android:gravity="center"
+          >
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/user_password"
-            android:textSize="20dp" />
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:onClick="Register"
-            android:text="@string/register_button" />
+          <EditText
+              android:id="@+id/etName"
+              android:layout_width="200dp"
+              android:layout_height="50dp"
+              android:background="@drawable/mybutton2"
+              android:layout_below="@+id/welcome"
+              android:layout_marginBottom="10dp"
+              android:layout_centerHorizontal="true"
 
-    </LinearLayout>
+              android:hint="Username"
+              android:gravity="center"
+              />
+
+          <EditText
+              android:id="@+id/etPassword"
+              android:inputType="textPassword"
+              android:layout_width="200dp"
+              android:layout_height="50dp"
+              android:layout_marginBottom="10dp"
+              android:layout_centerHorizontal="true"
+              android:hint="Password"
+              android:gravity="center"
+              android:layout_below="@+id/etName"
+              android:background="@drawable/mybutton2"/>
+          <Button
+              android:id="@+id/btnRegister"
+              android:layout_width="200dp"
+              android:layout_height="50dp"
+              android:layout_below="@+id/etPassword"
+              android:layout_centerHorizontal="true"
+              android:onClick="Register"
+              android:text="@string/register_button"
+              android:background="@drawable/mybutton"/>
+
+
+
+      </RelativeLayout>
+
+
+
+  </RelativeLayout>
