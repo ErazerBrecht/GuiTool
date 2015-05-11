@@ -29,4 +29,11 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
+    <style name="Background" parent="@style/AppTheme">
+        <item name="android:windowBackground">@drawable/begin2</item>
+    </style>
+
+    <style name="Background2" parent="@style/AppTheme">
+        <item name="android:windowBackground">@drawable/begin3</item>
+    </style>
 </resources>
