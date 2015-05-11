@@ -12,6 +12,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,13 +47,46 @@ import java.util.Random;
 /**
  * Created by hannelore on 22/04/2015.
  */
-public class StopwatchFragment extends Fragment implements View.OnClickListener {
+public class StopwatchFragment extends Fragment implements View.OnClickListener, SensorEventListener {
 
+    //Sensor variables
+    private Sensor mSensor;
+    private SensorManager mSensorManager;
+
+    private AcceleroFilter xFilter = new AcceleroFilter();
+    private AcceleroFilter yFilter = new AcceleroFilter();
+    private AcceleroFilter zFilter = new AcceleroFilter();
+
+    private double xFiltered;
+    private double yFiltered;
+    private double zFiltered;
+
+    private float[] orientationValues = new float[3];
+    private float rotation[] = new float[16];
+
+    private double startTime;
+    private double elapsedTime;
+    private double oldElapsedTime;
+
+    private double velocity = 0;
+    private double oldVelocity = 0;
+    private double noVelocityCounter = 0;
+
+    private double correctedVelocity;
+    private double oldCorrectedVelocity = Double.NaN;
+    private double oldOldCorrectedVelocity = Double.NaN;
+
+    private double height;
+    private double oldHeight;
+
+    //Chrono variables
     private Chronometer chrono;
     long timeWhenStopped = 0;
+    long elapsedMillis;
+    int secs, currentmin, lastmin;
 
+    //GUI
     private View view;
-
     private ImageButton startButton;
     private TextView txtStart;
     private ImageButton pauzeButton;
@@ -61,18 +98,13 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     private TextView txtHeight;
     private TextView txtSnelheid;
 
-    long elapsedMillis;
-    int secs, currentmin, lastmin;
-
     private String locatie;
     private String descriptie;
     private String Uid;
 
     JSONObject jsonResponse;
 
-
     private TextToSpeech SayTime;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -178,6 +210,10 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         chrono.stop();
+                        if (mSensorManager != null) {
+                            mSensorManager.unregisterListener(StopwatchFragment.this, mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION));
+                            mSensorManager.unregisterListener(StopwatchFragment.this, mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR));
+                        }
                         savePicture();
                         new MyAsyncTask().execute();
                     }
@@ -193,6 +229,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
     }
 
     private void showStopButton() {
+        StartSensor();
         startButton.setVisibility(View.GONE);
         txtStart.setVisibility(View.GONE);
         resetButton.setVisibility(View.GONE);
@@ -214,7 +251,75 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
         txtStop.setVisibility(View.GONE);
     }
 
-    public void speakText() {
+    private void StartSensor()
+    {
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null){
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),  SensorManager.SENSOR_DELAY_GAME);
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),  SensorManager.SENSOR_DELAY_GAME);
+        }
+        else {
+            //DO SHIT
+        }
+
+        startTime = System.currentTimeMillis() / 1000;
+    }
+
+    @Override
+    public final void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Do something here if sensor accuracy changes.
+    }
+
+    public void onSensorChanged(SensorEvent event)
+    {
+        mSensor = event.sensor;
+
+        if (mSensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+            xFiltered = xFilter.Filter(event.values[0]);
+            yFiltered = yFilter.Filter(event.values[1]);
+            zFiltered = zFilter.Filter(event.values[2]);
+        }
+
+        else if(mSensor.getType() == Sensor.TYPE_ROTATION_VECTOR)
+        {
+            SensorManager.getRotationMatrixFromVector(rotation, event.values);
+            SensorManager.getOrientation(rotation, orientationValues);
+            double azimuth = Math.toDegrees(orientationValues[0]);
+            double pitch = Math.toDegrees(orientationValues[1]);
+            double roll = Math.toDegrees(orientationValues[2]);
+
+            double ax = xFiltered * Math.cos(Math.toRadians(roll)) + yFiltered * Math.cos(Math.toRadians(90) - Math.toRadians(roll));
+            double ay = yFiltered * Math.cos(Math.toRadians(90) + Math.toRadians(pitch)) + xFiltered * Math.cos(Math.toRadians(90) + Math.toRadians(roll)) + zFiltered * Math.cos(Math.toRadians(pitch)) * Math.cos(Math.toRadians(roll));
+
+            elapsedTime = (System.currentTimeMillis() / 1000.0) - startTime;
+
+            velocity = oldVelocity + (ay * (elapsedTime - oldElapsedTime));
+
+            if(ay < 0.6 && ay > -0.6 && velocity != 0)
+                noVelocityCounter++;
+            else
+                noVelocityCounter = 0;
+
+            if((noVelocityCounter > 2 && oldOldCorrectedVelocity < 0.3 && oldOldCorrectedVelocity > -0.3) || Double.isNaN(oldOldCorrectedVelocity))
+                correctedVelocity = 0;
+            else
+                correctedVelocity = oldCorrectedVelocity + (ay * (elapsedTime - oldElapsedTime)) * 1.2;
+
+            height = oldHeight + (correctedVelocity * (elapsedTime - oldElapsedTime));
+
+            oldElapsedTime = elapsedTime;
+            oldVelocity = velocity;
+            oldOldCorrectedVelocity = oldCorrectedVelocity;
+            oldCorrectedVelocity = correctedVelocity;
+            oldHeight= height;
+
+            //tvVelocity.setText(String.valueOf(velocity));
+            txtHeight.setText(String.valueOf(height));
+
+        }
+    }
+
+    private void speakText() {
 
         String toSpeak = "";
 
@@ -397,6 +502,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             Toast.makeText(getView().getContext(), "Can't login", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 }
 
