@@ -12,19 +12,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnRandom1"
+        <TextView
+            android:id="@+id/HoogteData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:padding="10dp"
-            android:text="Add Random Number" />
+            android:layout_alignParentLeft="true"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            />
 
         <TextView
-            android:id="@+id/heightData"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="HEIGHT"
+            android:textSize="20sp"
+            android:layout_below="@+id/HoogteData"
+            android:layout_gravity="center"
+            />
 
         <TextView
             android:id="@+id/Speed"

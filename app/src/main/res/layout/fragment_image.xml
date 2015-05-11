@@ -24,6 +24,7 @@
 
     <ImageView
         android:id="@+id/Picture"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/btnFacebook"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

@@ -32,8 +32,6 @@ public class GraphFragmentData extends Fragment {
     JSONArray a = null;
     JSONObject o = null;
 
-    Button btnRandom;
-
     GraphView graphView;
 
     LineGraphSeries<DataPoint> series;
@@ -49,22 +47,9 @@ public class GraphFragmentData extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_graph_data, container, false);
-        height = (TextView) view.findViewById(R.id.heightData);
+        height = (TextView) view.findViewById(R.id.HoogteData);
         speed = (TextView) view.findViewById(R.id.Speed);
 
-        btnRandom = (Button) view.findViewById(R.id.btnRandom1);
-        btnRandom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.btnRandom1:
-                        AddRandomNumber();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
         graphView = (GraphView) view.findViewById(R.id.graph1);
         oldDataPoint = new DataPoint(0, 0);
         series = new LineGraphSeries<DataPoint>(new DataPoint[]{
@@ -104,34 +89,6 @@ public class GraphFragmentData extends Fragment {
         }
         height.setText("Total height: " + hoogte);
         return view;
-    }
-
-
-    private void AddRandomNumber() {
-        DataPoint newDataPoint = new DataPoint(randInt(-20, 20), randInt(0, 40));
-        series = new LineGraphSeries<DataPoint>(new DataPoint[]
-                {
-                        oldDataPoint,
-                        newDataPoint
-                });
-
-        int color = Color.argb(255, randInt(100, 255), randInt(100, 255), randInt(100, 255));
-        series.setColor(color);
-        graphView.addSeries(series);
-        oldDataPoint = newDataPoint;
-    }
-
-    private static int randInt(int min, int max) {
-
-        // NOTE: Usually this should be a field rather than a method
-        // variable so that it is not re-seeded every call.
-        Random rand = new Random();
-
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-
-        return randomNum;
     }
 }
 
