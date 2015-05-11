@@ -74,13 +74,13 @@ public class DatabaseComClass {
 
     }
 
-    public static void Session(String uid, String place, String description, String altitude, String duration, String path, ProgressDialog p) {
+    public static void Session(String uid, String place, String description, double altitude, String duration, String path, ProgressDialog p) {
         jsonArray.clear();
         jsonArray.add(new BasicNameValuePair("tag", "addSession"));
         jsonArray.add(new BasicNameValuePair("uid", uid));
         jsonArray.add(new BasicNameValuePair("place", place));
         jsonArray.add(new BasicNameValuePair("description", description));
-        jsonArray.add(new BasicNameValuePair("altitude", altitude));
+        jsonArray.add(new BasicNameValuePair("altitude", String.valueOf(altitude)));
         jsonArray.add(new BasicNameValuePair("duration", duration));
         jsonArray.add(new BasicNameValuePair("path", path));
 

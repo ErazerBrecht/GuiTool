@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -314,7 +315,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             oldHeight= height;
 
             //tvVelocity.setText(String.valueOf(velocity));
-            txtHeight.setText(String.valueOf(height));
+            txtHeight.setText(String.format("%.2f", height) + "m");
 
         }
     }
@@ -472,7 +473,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
                 }
             } else {//gewoon zo laten :)
             }
-            DatabaseComClass.Session(Uid, locatie, descriptie, "0", String.valueOf(elapsedMillis), DatabaseData.PhotoString, progressDialog);
+
+            DatabaseComClass.Session(Uid, locatie, descriptie, Math.round(height * 100.0) / 100.0  ,String.valueOf(elapsedMillis), DatabaseData.PhotoString, progressDialog);
             return null;
         }
 
@@ -502,8 +504,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             Toast.makeText(getView().getContext(), "Can't login", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
 }
 
