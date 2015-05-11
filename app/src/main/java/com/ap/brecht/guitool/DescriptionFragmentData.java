@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 /**
  * Created by Airien on 29/04/2015.
  */
@@ -52,7 +54,18 @@ public class DescriptionFragmentData extends Fragment {
             try {
                 if (o.getString("sid").equals(DatabaseData.Sid)) {
                     height.setText(o.getString("altitude"));
-                    duration.setText(o.getString("duration"));
+
+                    int millis = Integer.valueOf(o.getString("duration"));
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(millis);
+
+                    int sec = calendar.get(Calendar.SECOND);
+                    int minutes = calendar.get(Calendar.MINUTE);
+                    int hours = calendar.get(Calendar.HOUR);
+
+                    String text = String.format("%02d", hours - 1) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", sec);
+
+                    duration.setText(text);
                     description.setText(o.getString("description"));
                     place.setText(o.getString("place"));
                     date.setText(o.getString("datum"));
