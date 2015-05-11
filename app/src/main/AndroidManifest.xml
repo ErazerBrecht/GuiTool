@@ -25,11 +25,13 @@
 
         <activity
             android:name=".Login"
+            android:windowSoftInputMode="|adjustResize"
             android:screenOrientation="portrait"
             android:icon="@drawable/icon"
             />
 
         <activity android:name=".RegisterActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
             android:parentActivityName=".Login"
             android:icon="@drawable/icon"

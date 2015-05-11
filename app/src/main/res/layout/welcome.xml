@@ -44,7 +44,7 @@
             android:gravity="center"
             android:paddingRight="10dp"
             android:text="New Session"
-            android:textSize="25dp" />
+            />
 
         <Button
             android:id="@+id/History"
@@ -55,7 +55,7 @@
             android:gravity="center"
             android:paddingRight="10dp"
             android:text="History"
-            android:textSize="25dp" />
+             />
     </LinearLayout>
 
 </LinearLayout>
