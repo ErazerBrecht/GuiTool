@@ -47,7 +47,7 @@
             android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:layout_gravity="center"
-            android:src="@drawable/border"
+            android:src="@drawable/camera"
             android:padding="1dp"
             />
 </LinearLayout>
