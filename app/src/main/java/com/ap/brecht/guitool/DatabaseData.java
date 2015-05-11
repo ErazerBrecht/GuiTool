@@ -1,5 +1,6 @@
 package com.ap.brecht.guitool;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import org.json.JSONObject;
@@ -11,7 +12,7 @@ import org.json.JSONObject;
 public class DatabaseData {
     static JSONObject userData;
     static String PhotoString;
-    static Uri foto;
+    static Bitmap Photo;
     static String Sid;
     static JSONObject image;
 }

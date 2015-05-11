@@ -47,7 +47,7 @@ public class ImageFragment extends Fragment {
             public void onClick(View v) {
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                sharingIntent.putExtra(Intent.EXTRA_STREAM, decodedByte);
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, DatabaseData.Photo);
                 sharingIntent.setType("image/jpg");
                 view.getContext().startActivity(Intent.createChooser(sharingIntent, "Send email using"));
 
@@ -62,14 +62,13 @@ public class ImageFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if(DatabaseData.image == null){
+            if(DatabaseData.Photo == null)
                 new MyAsyncTask().execute();
-            }
-            else{
-                new MyAsyncTask().execute();
+            else
+                Picture.setImageBitmap(DatabaseData.Photo);
             }
 
-        }
+
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -89,7 +88,6 @@ public class ImageFragment extends Fragment {
         protected Void doInBackground(Void... params) {
 
             DatabaseComClass.getImageSid(DatabaseData.Sid, progressDialog);
-
             return null;
         }
 
@@ -99,6 +97,7 @@ public class ImageFragment extends Fragment {
 
                 decodedString = Base64.decode(DatabaseData.image.getString("image"), Base64.DEFAULT);
                   decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                DatabaseData.Photo = decodedByte;
                 Picture.setImageBitmap(decodedByte);
 
             } catch (Exception e) {
