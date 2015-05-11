@@ -27,9 +27,15 @@ public class BackPressed {
         exitAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DatabaseData.userData = null;
+               // DatabaseData.userData = null;
                 DatabaseData.PhotoString = null;
-                Intent i = new Intent(activity, SplatchScreenActivity.class);
+                Intent i;
+                if(activity instanceof Login ||activity instanceof RegisterActivity||activity instanceof SplatchScreenActivity) {
+                    i = new Intent(activity, SplatchScreenActivity.class);
+                }
+                else {
+                    i = new Intent(activity, WelcomeActivity.class);
+                }
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 activity.startActivity(i);
                 Intent intent = new Intent(Intent.ACTION_MAIN);
