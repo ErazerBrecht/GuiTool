@@ -1,10 +1,13 @@
 package com.ap.brecht.guitool;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -123,60 +126,79 @@ public class HistoryActivity extends ActionBarActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        final int arrSize = a.length();
-        for (int i = 0; i < arrSize; ++i) {
 
-            try {
-                o = a.getJSONObject(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
-                date =o.getString("datum").toString();
-                String split[]= date.split(" ");
-                day = split[0];
+        if(a!=null) {
+            final int arrSize = a.length();
+            for (int i = 0; i < arrSize; ++i) {
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
-
-                place=o.getString("place").toString();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            sessions.add(new Session(date,place,day));
-        }
-
-        adapter = new SessionAdapter(this, sessions);
-        list.setAdapter(adapter);
-
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(HistoryActivity.this, HistoryDataActivity.class);
                 try {
-                    a = DatabaseData.userData.getJSONArray("session");
+                    o = a.getJSONObject(i);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 try {
-                    for (int j = 0; j < arrSize; ++j) {
-                        if (sessions.get(position).Date.equals(a.getJSONObject(j).getString("datum"))) {
-                            DatabaseData.image = null;
-                            DatabaseData.Sid = a.getJSONObject(j).getString("sid").toString();
-                        }
+                    date = o.getString("datum").toString();
+                    String split[] = date.split(" ");
+                    day = split[0];
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+
+                    place = o.getString("place").toString();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                sessions.add(new Session(date, place, day));
+            }
+
+            adapter = new SessionAdapter(this, sessions);
+            list.setAdapter(adapter);
+
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(HistoryActivity.this, HistoryDataActivity.class);
+                    try {
+                        a = DatabaseData.userData.getJSONArray("session");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    i.putExtra("sid", DatabaseData.Sid);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    try {
+                        for (int j = 0; j < arrSize; ++j) {
+                            if (sessions.get(position).Date.equals(a.getJSONObject(j).getString("datum"))) {
+                                DatabaseData.image = null;
+                                DatabaseData.Sid = a.getJSONObject(j).getString("sid").toString();
+                            }
+                        }
+                        i.putExtra("sid", DatabaseData.Sid);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    HistoryActivity.this.startActivity(i);
                 }
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                HistoryActivity.this.startActivity(i);
-            }
-        });
+            });
+        }
+        else
+        {
+            QustomDialogBuilder exitAlert = new QustomDialogBuilder(this, AlertDialog.THEME_HOLO_DARK);
+            exitAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(getResources().getColor(R.color.white) & 0x00ffffff) + ">You don't have any old sessions."));
+            exitAlert.setTitle("ClimbUP");
+            exitAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
+            exitAlert.setDividerColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
+            exitAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            exitAlert.setCancelable(true);
+            exitAlert.create().show();
+        }
     }
 
 }
