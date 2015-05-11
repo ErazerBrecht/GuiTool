@@ -58,7 +58,13 @@ public class DatabaseComClass {
             inputStream.close();
             result = sBuilder.toString();
 
-            DatabaseData.userData = new JSONObject(result);
+            JSONObject temp = new JSONObject(result);
+            if(temp.getString("tag").equals("addSession") || temp.getString("tag").equals("login")) {
+                DatabaseData.userData = new JSONObject(result);
+            }
+            else if(temp.getString("tag").equals("getImage")){
+                DatabaseData.image = new JSONObject(result);
+            }
         } catch (Exception e) {
             Log.e("StringBuilding", "Error converting result " + e.toString());
         }
@@ -119,11 +125,11 @@ public class DatabaseComClass {
 
         Worker(p);
     }
-    public static void getImageSid(String sid){
+    public static void getImageSid(String sid, ProgressDialog p){
         jsonArray.clear();
         jsonArray.add(new BasicNameValuePair("tag", "getImage"));
         jsonArray.add(new BasicNameValuePair("sid", sid));
 
-        Worker();
+        Worker(p);
     }
 }

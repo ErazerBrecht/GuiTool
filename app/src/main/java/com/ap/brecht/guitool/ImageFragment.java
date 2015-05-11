@@ -1,5 +1,7 @@
 package com.ap.brecht.guitool;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -32,25 +34,47 @@ public class ImageFragment extends Fragment {
 
         Picture = (ImageView) view.findViewById(R.id.Picture);
 
-        new MyAsyncTask().execute();
+
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if(DatabaseData.image == null){
+                new MyAsyncTask().execute();
+            }
+            else{
+
+            }
+
+        }
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
+        private ProgressDialog progressDialog = new ProgressDialog(getActivity());
         protected void onPreExecute() {
-
+            progressDialog.setMessage("Getting image");
+            progressDialog.show();
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                public void onCancel(DialogInterface arg0) {
+                    MyAsyncTask.this.cancel(true);
+                }
+            });
         }
 
         @Override
         protected Void doInBackground(Void... params) {
 
-            DatabaseComClass.getImageSid(DatabaseData.Sid);
+            DatabaseComClass.getImageSid(DatabaseData.Sid, progressDialog);
 
             return null;
         }
 
         protected void onPostExecute(Void v) {
+            this.progressDialog.dismiss();
             try {
 
                 byte[] decodedString = Base64.decode(DatabaseData.image.getString("image"), Base64.DEFAULT);

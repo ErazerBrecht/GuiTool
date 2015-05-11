@@ -1,24 +1,17 @@
 package com.ap.brecht.guitool;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +19,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Airien on 29/04/2015.
@@ -173,6 +165,7 @@ public class HistoryActivity extends ActionBarActivity {
                 try {
                     for (int j = 0; j < arrSize; ++j) {
                         if (sessions.get(position).Date.equals(a.getJSONObject(j).getString("datum"))) {
+                            DatabaseData.image = null;
                             DatabaseData.Sid = a.getJSONObject(j).getString("sid").toString();
                         }
                     }
