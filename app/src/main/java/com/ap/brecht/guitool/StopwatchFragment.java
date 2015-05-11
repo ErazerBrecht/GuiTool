@@ -161,18 +161,18 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
                         speakText();
                     }
                 } else if (alertTime.equals("1m")) {
-                    if (lastmin != currentmin) {
+                    if (lastmin != currentmin || (currentmin==0 && secs==0)) {
                         speakText();
                     }
                     lastmin = currentmin;
                 } else if (alertTime.equals("5m")) {
-                    if (lastmin != currentmin && (currentmin % 5) == 0) {
+                    if ((lastmin != currentmin && (currentmin % 5) == 0) || (currentmin==0 && secs==0)) {
                         speakText();
                     }
                     lastmin = currentmin;
 
                 } else if (alertTime.equals("10m")) {
-                    if (lastmin != currentmin && (currentmin % 10) == 0) {
+                    if ((lastmin != currentmin && (currentmin % 10) == 0) || (currentmin==0 && secs==0)) {
                         speakText();
                     }
                     lastmin = currentmin;

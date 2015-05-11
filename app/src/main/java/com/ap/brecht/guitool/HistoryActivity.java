@@ -57,6 +57,7 @@ public class HistoryActivity extends ActionBarActivity {
 
         sessions=new ArrayList<Session>();
 
+
         actionbar = getSupportActionBar();
         actionbar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Orange)));
         actionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
@@ -183,7 +184,6 @@ public class HistoryActivity extends ActionBarActivity {
                 HistoryActivity.this.startActivity(i);
             }
         });
-
     }
 
 }
