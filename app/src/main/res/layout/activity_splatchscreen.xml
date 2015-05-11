@@ -3,5 +3,5 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splashpagina"
+    android:background="@drawable/splashpagina0"
     tools:context="com.ap.brecht.splatchscreen.SplatchScreenActivity"></RelativeLayout>

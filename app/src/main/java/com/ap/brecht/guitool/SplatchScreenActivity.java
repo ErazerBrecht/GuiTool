@@ -20,7 +20,7 @@ public class SplatchScreenActivity extends Activity {
 
     private Handler mHandler = new Handler();
     private RelativeLayout layout;
-    int[] imgIds = {R.drawable.splashpagina0, R.drawable.splashpagina1, R.drawable.splashpagina2, R.drawable.splashpagina3, R.drawable.splashpagina4};
+    int[] imgIds = {R.drawable.splashpagina0, R.drawable.splashpagina1, R.drawable.splashpagina2, R.drawable.splashpagina3};
     int pointer = 1;
     int i = 1;
 
@@ -35,20 +35,18 @@ public class SplatchScreenActivity extends Activity {
 
         layout = (RelativeLayout) findViewById(R.id.background);
 
-        /*
-       mHandler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             public void run() {
                 RelativeLayout layout = (RelativeLayout) findViewById(R.id.background);
                 layout.setBackground(getResources().getDrawable(imgIds[pointer]));
                 pointer = pointer + (1 * i);
 
                 if (pointer > 3)
-                    i = -1;
-                else if (pointer < 1)
-                    i = 1;
+                    pointer = 0;
+
                 mHandler.postDelayed(this, 300);
             }
-        }, 300);*/
+        }, 300);
     }
 
     @Override
