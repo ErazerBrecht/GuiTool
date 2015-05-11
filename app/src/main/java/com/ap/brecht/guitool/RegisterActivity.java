@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -45,9 +46,12 @@ public class RegisterActivity extends ActionBarActivity {
     Button btnRegister;
 
 
+    Context context;
     EditText Name;
     EditText Password;
     JSONObject jsonResponse;
+    String username;
+    String userpassword;
 
     public static final String TAG = RegisterActivity.class.getSimpleName();
 
@@ -57,15 +61,37 @@ public class RegisterActivity extends ActionBarActivity {
 
         setContentView(R.layout.register);
 
+        context=this;
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
         Name = (EditText) findViewById(R.id.etName);
         Password = (EditText) findViewById(R.id.etPassword);
 
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MyAsyncTask().execute();
+                username=String.valueOf(Name.getText());
+                userpassword=String.valueOf(Password.getText());
+                if (username.equals("") || userpassword.equals("")){
+                    QustomDialogBuilder exitAlert = new QustomDialogBuilder(context, AlertDialog.THEME_HOLO_DARK);
+                    exitAlert.setMessage(Html.fromHtml("<font color=#" + Integer.toHexString(getResources().getColor(R.color.white) & 0x00ffffff) + ">Please enter a valid username and password?"));
+                    exitAlert.setTitle("ClimbUP");
+                    exitAlert.setTitleColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
+                    exitAlert.setDividerColor("#" + Integer.toHexString(getResources().getColor(R.color.Orange) & 0x00ffffff));
+                    exitAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    exitAlert.setCancelable(true);
+                    exitAlert.create().show();
+
+
+                }else
+                {new MyAsyncTask().execute();
+                }
             }
         });
 
@@ -137,8 +163,8 @@ public class RegisterActivity extends ActionBarActivity {
                 // Set up HTTP post
                 List<NameValuePair> jsonArray = new ArrayList<NameValuePair>();
                 jsonArray.add(new BasicNameValuePair("tag", "register"));
-                jsonArray.add(new BasicNameValuePair("name", String.valueOf(Name.getText())));
-                jsonArray.add(new BasicNameValuePair("password", String.valueOf(Password.getText())));
+                jsonArray.add(new BasicNameValuePair("name", username));
+                jsonArray.add(new BasicNameValuePair("password", userpassword));
 
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(url_select);

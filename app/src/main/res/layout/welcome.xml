@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/climb"
+    android:background="@drawable/climb2"
     android:orientation="vertical">
 
     <TextView
@@ -11,9 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
+        android:layout_marginTop="260dp"
         android:paddingTop="10dp"
         android:text="Welcome"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="40sp" />
 
     <TextView
@@ -21,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:textColor="@color/white"
         android:layout_gravity="center"
         android:paddingBottom="40dp"
         android:text="Brecht"
