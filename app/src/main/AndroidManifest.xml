@@ -25,7 +25,7 @@
 
         <activity
             android:name=".Login"
-            android:windowSoftInputMode="|adjustResize"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
             android:icon="@drawable/icon"
             />
