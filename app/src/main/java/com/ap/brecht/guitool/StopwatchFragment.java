@@ -370,6 +370,10 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
     }
 
     private void savePicture() {
+
+        locatie = DescriptionFragmentSession.getLocation();
+        descriptie = DescriptionFragmentSession.getDescription();
+
         try {
             if (DatabaseData.PhotoString == null)
                 return;
@@ -384,7 +388,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
 
             Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
 
-
             Typeface tf = Typeface.create("sans-serif-condensed", Typeface.BOLD);
             int x = 50;
             int y = 75;
@@ -396,9 +399,6 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             paint.setColor(Color.WHITE); // Text Color
             paint.setTypeface(tf);
             paint.setTextSize(convertToPixels(getActivity().getApplicationContext(), size));
-
-            locatie = DescriptionFragmentSession.getLocation();
-            descriptie = DescriptionFragmentSession.getDescription();
 
             String text = locatie;
             Rect textRect = new Rect();
