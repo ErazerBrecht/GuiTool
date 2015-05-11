@@ -64,6 +64,39 @@ public class DatabaseComClass {
         }
     }
 
+    private static void Worker() {
+
+        try {// Set up HTTP post
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url_select);
+            httpPost.setEntity(new UrlEncodedFormEntity(jsonArray));
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+
+            // Read content & Log
+            inputStream = httpEntity.getContent();
+        } catch (Exception e) {
+
+        }
+
+        try {
+            BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
+            StringBuilder sBuilder = new StringBuilder();
+
+            String line = null;
+            while ((line = bReader.readLine()) != null) {
+                sBuilder.append(line + "\n");
+            }
+
+            inputStream.close();
+            result = sBuilder.toString();
+
+            DatabaseData.image = new JSONObject(result);
+        } catch (Exception e) {
+            Log.e("StringBuilding", "Error converting result " + e.toString());
+        }
+    }
+
 
     public static void Login(String name, String password, ProgressDialog p) {
         jsonArray.add(new BasicNameValuePair("tag", "login"));
@@ -85,5 +118,12 @@ public class DatabaseComClass {
         jsonArray.add(new BasicNameValuePair("image", image));
 
         Worker(p);
+    }
+    public static void getImageSid(String sid){
+        jsonArray.clear();
+        jsonArray.add(new BasicNameValuePair("tag", "getImage"));
+        jsonArray.add(new BasicNameValuePair("sid", sid));
+
+        Worker();
     }
 }

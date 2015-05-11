@@ -2,6 +2,7 @@ package com.ap.brecht.guitool;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -32,30 +32,39 @@ public class ImageFragment extends Fragment {
 
         Picture = (ImageView) view.findViewById(R.id.Picture);
 
-        try {
-            a = DatabaseData.userData.getJSONArray("session");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        int arrSize = a.length();
-        for (int i = 0; i < arrSize; ++i) {
-            try {
-                o = a.getJSONObject(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (o.getString("sid").equals(DatabaseData.Sid)) {
-                    byte[] decodedString = Base64.decode(o.getString("image"), Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    Picture.setImageBitmap(decodedByte);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
+        new MyAsyncTask().execute();
         return view;
+    }
+
+    class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            DatabaseComClass.getImageSid(DatabaseData.Sid);
+
+            return null;
+        }
+
+        protected void onPostExecute(Void v) {
+            try {
+
+                byte[] decodedString = Base64.decode(DatabaseData.image.getString("image"), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Picture.setImageBitmap(decodedByte);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
     }
 }
