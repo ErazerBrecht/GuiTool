@@ -460,7 +460,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
         private ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
         protected void onPreExecute() {
-            progressDialog.setMessage("Writing");
+            progressDialog.setMessage("Adding to database");
             progressDialog.show();
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 public void onCancel(DialogInterface arg0) {
