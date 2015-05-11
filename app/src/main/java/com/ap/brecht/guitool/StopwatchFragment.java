@@ -408,7 +408,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             Rect textRect2 = new Rect();
             paint.getTextBounds(text2, 0, text2.length(), textRect2);
 
-            String text3 = "Testing3";
+            String text3 = String.format("%.2f", height) + "m";
 
             canvas.drawText(text, x, y, paint);
             canvas.drawText(text2, x, y + textRect.height(), paint);

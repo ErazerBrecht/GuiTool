@@ -153,6 +153,12 @@ public class DescriptionFragmentSession extends Fragment {
                     case ExifInterface.ORIENTATION_ROTATE_180:
                         photo = RotateBitmap(photo, 180, 1000);
                         break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        photo = RotateBitmap(photo, 270, 1000);
+                        break;
+                    case ExifInterface.ORIENTATION_NORMAL:
+                        photo = RotateBitmap(photo, 0, 1000);
+                        break;
                     // etc.
                 }
 
