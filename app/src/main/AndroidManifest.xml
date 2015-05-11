@@ -58,6 +58,7 @@
             android:icon="@drawable/icon"
             />
 
+
         <activity android:name=".HistoryDataActivity"
             android:parentActivityName=".HistoryActivity"
             android:screenOrientation="portrait"
@@ -67,6 +68,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+
 
 
 </manifest>

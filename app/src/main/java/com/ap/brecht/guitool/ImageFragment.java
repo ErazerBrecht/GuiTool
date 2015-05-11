@@ -2,6 +2,7 @@ package com.ap.brecht.guitool;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import org.json.JSONArray;
@@ -23,6 +25,11 @@ import org.json.JSONObject;
 public class ImageFragment extends Fragment {
     private View view;
     private ImageView Picture;
+    byte[] decodedString;
+    Bitmap decodedByte;
+
+    Button sharePicture;
+
 
     JSONArray a = null;
     JSONObject o = null;
@@ -34,6 +41,19 @@ public class ImageFragment extends Fragment {
 
         Picture = (ImageView) view.findViewById(R.id.Picture);
 
+        sharePicture=(Button) view.findViewById(R.id.btnFacebook);
+        sharePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, decodedByte);
+                sharingIntent.setType("image/jpg");
+                view.getContext().startActivity(Intent.createChooser(sharingIntent, "Send email using"));
+
+
+            }
+        });
 
         return view;
     }
@@ -46,7 +66,7 @@ public class ImageFragment extends Fragment {
                 new MyAsyncTask().execute();
             }
             else{
-
+                new MyAsyncTask().execute();
             }
 
         }
@@ -77,8 +97,8 @@ public class ImageFragment extends Fragment {
             this.progressDialog.dismiss();
             try {
 
-                byte[] decodedString = Base64.decode(DatabaseData.image.getString("image"), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                decodedString = Base64.decode(DatabaseData.image.getString("image"), Base64.DEFAULT);
+                  decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 Picture.setImageBitmap(decodedByte);
 
             } catch (Exception e) {
