@@ -138,6 +138,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
                     }
                 });
 
+        //Set start text to agreed notation
+        chrono.setText("00:00:00");
         chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer c) {
