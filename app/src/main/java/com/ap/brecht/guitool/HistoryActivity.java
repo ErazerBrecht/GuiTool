@@ -170,7 +170,7 @@ public class HistoryActivity extends ActionBarActivity {
                     try {
                         for (int j = 0; j < arrSize; ++j) {
                             if (sessions.get(position).Date.equals(a.getJSONObject(j).getString("datum"))) {
-                                DatabaseData.image = null;
+                                DatabaseData.Photo = null;
                                 DatabaseData.Sid = a.getJSONObject(j).getString("sid").toString();
                             }
                         }

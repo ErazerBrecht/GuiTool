@@ -14,5 +14,5 @@ public class DatabaseData {
     static String PhotoString;
     static Bitmap Photo;
     static String Sid;
-    static JSONObject image;
+    static String PhotoBinaryString;
 }

@@ -214,7 +214,7 @@ public class DescriptionFragmentSession extends Fragment {
 
     private File createImageFile() {
         try {
-            // Create an temporally image
+            // Create an temporally PhotoBinaryString
             String imageFileName = "temp";
             File storageDir = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/.temp");
             storageDir.mkdirs();

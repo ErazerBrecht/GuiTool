@@ -59,45 +59,11 @@ public class DatabaseComClass {
             result = sBuilder.toString();
 
             JSONObject temp = new JSONObject(result);
-            if(temp.getString("tag").equals("addSession") || temp.getString("tag").equals("login")) {
+            if (temp.getString("tag").equals("addSession") || temp.getString("tag").equals("login")) {
                 DatabaseData.userData = new JSONObject(result);
+            } else if (temp.getString("tag").equals("getImage")) {
+                DatabaseData.PhotoBinaryString = temp.getString("image");
             }
-            else if(temp.getString("tag").equals("getImage")){
-                DatabaseData.image = new JSONObject(result);
-            }
-        } catch (Exception e) {
-            Log.e("StringBuilding", "Error converting result " + e.toString());
-        }
-    }
-
-    private static void Worker() {
-
-        try {// Set up HTTP post
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url_select);
-            httpPost.setEntity(new UrlEncodedFormEntity(jsonArray));
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            HttpEntity httpEntity = httpResponse.getEntity();
-
-            // Read content & Log
-            inputStream = httpEntity.getContent();
-        } catch (Exception e) {
-
-        }
-
-        try {
-            BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
-            StringBuilder sBuilder = new StringBuilder();
-
-            String line = null;
-            while ((line = bReader.readLine()) != null) {
-                sBuilder.append(line + "\n");
-            }
-
-            inputStream.close();
-            result = sBuilder.toString();
-
-            DatabaseData.image = new JSONObject(result);
         } catch (Exception e) {
             Log.e("StringBuilding", "Error converting result " + e.toString());
         }
