@@ -378,14 +378,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             if (DatabaseData.PhotoString == null)
                 return;
 
-            String username = DatabaseData.userData.getJSONObject("user").getString("name");
-            String name = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
-            File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
-            Drawn.mkdirs();
-            File Drawing = new File(Drawn, name + ".jpg");
-            FileOutputStream out = new FileOutputStream(Drawing);
             ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-
             Bitmap bitmap = BitmapFactory.decodeFile(DatabaseData.PhotoString).copy(Bitmap.Config.RGB_565, true);
 
             Typeface tf = Typeface.create("sans-serif-condensed", Typeface.BOLD);
@@ -425,22 +418,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             canvas.drawText(text2, x, y + textRect.height(), stkPaint);
             canvas.drawText(text3, x, y + textRect.height() + textRect2.height(), stkPaint);
 
-
-
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, arrayOutputStream);
             byte[] imageArray = arrayOutputStream.toByteArray();
-            out.flush();
-            out.close();
-
-
-
-
-            //This part is used to add Generated picture to Album (Gallery)!
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            mediaScanIntent.setData(Uri.fromFile(Drawing));
-            getActivity().sendBroadcast(mediaScanIntent);
-            DatabaseData.PhotoString = Drawing.getPath();
-
 
             DatabaseData.PhotoString = Base64.encodeToString(imageArray, Base64.DEFAULT);
 

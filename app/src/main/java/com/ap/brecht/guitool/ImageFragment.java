@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -15,9 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by hannelore on 9/05/2015.
@@ -28,8 +36,8 @@ public class ImageFragment extends Fragment {
     byte[] decodedString;
     Bitmap decodedByte;
 
+    Button savePicture;
     Button sharePicture;
-
 
     JSONArray a = null;
     JSONObject o = null;
@@ -41,6 +49,13 @@ public class ImageFragment extends Fragment {
 
         Picture = (ImageView) view.findViewById(R.id.Picture);
 
+        savePicture = (Button) view.findViewById(R.id.btnSave);
+        savePicture.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                SaveImage();
+            }
+        });
+
         sharePicture=(Button) view.findViewById(R.id.btnFacebook);
         sharePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,8 +65,6 @@ public class ImageFragment extends Fragment {
                 sharingIntent.putExtra(Intent.EXTRA_STREAM, DatabaseData.Photo);
                 sharingIntent.setType("image/jpg");
                 view.getContext().startActivity(Intent.createChooser(sharingIntent, "Send email using"));
-
-
             }
         });
 
@@ -69,6 +82,36 @@ public class ImageFragment extends Fragment {
             }
 
 
+    }
+
+    private void SaveImage()
+    {
+        try {
+            String username = DatabaseData.userData.getJSONObject("user").getString("name");
+            String name = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+            File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
+            Drawn.mkdirs();
+            File Drawing = new File(Drawn, name + ".jpg");
+            FileOutputStream out = new FileOutputStream(Drawing);
+
+            Bitmap bitmap = DatabaseData.Photo.copy(Bitmap.Config.RGB_565, true);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+            out.flush();
+            out.close();
+
+            //This part is used to add Generated picture to Album (Gallery)!
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(Uri.fromFile(Drawing));
+            getActivity().sendBroadcast(mediaScanIntent);
+            DatabaseData.PhotoString = Drawing.getPath();
+
+            Toast.makeText(getActivity().getApplicationContext(), "Saved Image!", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getActivity().getApplicationContext(), "Couldn't save image!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -95,7 +138,7 @@ public class ImageFragment extends Fragment {
             this.progressDialog.dismiss();
             try {
 
-                decodedString = Base64.decode(DatabaseData.image.getString("image"), Base64.DEFAULT);
+                decodedString = Base64.decode(DatabaseData.PhotoBinaryString, Base64.DEFAULT);
                   decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 DatabaseData.Photo = decodedByte;
                 Picture.setImageBitmap(decodedByte);
