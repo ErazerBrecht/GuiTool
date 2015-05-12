@@ -53,54 +53,25 @@ public class ImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_image, container, false);
 
-        Picture = (ImageView) view.findViewById(R.id.Picture);
+               Picture = (ImageView) view.findViewById(R.id.Picture);
 
         savePicture = (Button) view.findViewById(R.id.btnSave);
         savePicture.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 SaveImage();
+                AddToGallary();
             }
         });
 
         sharePicture=(Button) view.findViewById(R.id.btnFacebook);
-
         sharePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = null;
-                try {
-                    username = DatabaseData.userData.getJSONObject("user").getString("name");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                String name = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
-                Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
-                Drawn.mkdirs();
-                Drawing = new File(Drawn, name + ".jpg");
-                FileOutputStream out = null;
-                try {
-                    out = new FileOutputStream(Drawing);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                Bitmap bitmap = DatabaseData.Photo.copy(Bitmap.Config.RGB_565, true);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-
-                try {
-                    out.flush();
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-
-
+                SaveImage();
                 a= Uri.parse("file://" + Drawing.getAbsolutePath());
 
+                //Facebook Part (Credits to Anja)
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-
                 sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 sharingIntent.putExtra(Intent.EXTRA_STREAM, a);
                 sharingIntent.setType("image/jpg");
@@ -150,18 +121,22 @@ public class ImageFragment extends Fragment {
             out.flush();
             out.close();
 
-            //This part is used to add Generated picture to Album (Gallery)!
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            mediaScanIntent.setData(Uri.fromFile(Drawing));
-            getActivity().sendBroadcast(mediaScanIntent);
-            DatabaseData.PhotoString = Drawing.getPath();
-
             Toast.makeText(getActivity().getApplicationContext(), "Saved Image!", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e)
         {
             Toast.makeText(getActivity().getApplicationContext(), "Couldn't save image!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    private void AddToGallary()
+    {
+        //This part is used to add Generated picture to Album (Gallery)!
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(Uri.fromFile(Drawing));
+        getActivity().sendBroadcast(mediaScanIntent);
+        DatabaseData.PhotoString = Drawing.getPath();
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void> {
