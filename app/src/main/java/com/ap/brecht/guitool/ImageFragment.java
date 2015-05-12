@@ -19,14 +19,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -44,6 +40,8 @@ public class ImageFragment extends Fragment {
 
     Button savePicture;
     Button sharePicture;
+
+    boolean uploadFB = false;
 
     Uri a = null;
     JSONObject o = null;
@@ -69,6 +67,7 @@ public class ImageFragment extends Fragment {
             public void onClick(View v) {
                 SaveImage();
                 a= Uri.parse("file://" + Drawing.getAbsolutePath());
+                uploadFB = true;
 
                 //Facebook Part (Credits to Anja)
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
@@ -87,8 +86,13 @@ public class ImageFragment extends Fragment {
 
         if (requestCode == 0) {
             if (resultCode == getActivity().RESULT_OK) {
-                Drawing.delete();
-                Drawn.delete();
+                if(uploadFB) {
+                    Drawing.delete();
+                    Drawn.delete();
+                    uploadFB = false;
+
+                }
+
             }
         }
     }
@@ -112,7 +116,7 @@ public class ImageFragment extends Fragment {
             String name = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
             File Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
             Drawn.mkdirs();
-            File Drawing = new File(Drawn, name + ".jpg");
+            Drawing = new File(Drawn, name + ".jpg");
             FileOutputStream out = new FileOutputStream(Drawing);
 
             Bitmap bitmap = DatabaseData.Photo.copy(Bitmap.Config.RGB_565, true);
