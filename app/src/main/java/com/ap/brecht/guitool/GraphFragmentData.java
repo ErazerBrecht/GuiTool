@@ -87,7 +87,7 @@ public class GraphFragmentData extends Fragment {
                 e.printStackTrace();
             }
         }
-        height.setText("Total height: " + hoogte);
+        height.setText(hoogte +"m");
         return view;
     }
 }

@@ -53,7 +53,7 @@ public class DescriptionFragmentData extends Fragment {
             }
             try {
                 if (o.getString("sid").equals(DatabaseData.Sid)) {
-                    height.setText(o.getString("altitude"));
+                    height.setText(o.getString("altitude") +"m");
 
                     int millis = Integer.valueOf(o.getString("duration"));
                     Calendar calendar = Calendar.getInstance();
