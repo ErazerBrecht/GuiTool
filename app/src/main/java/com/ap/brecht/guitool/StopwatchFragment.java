@@ -297,10 +297,14 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
             else
                 noVelocityCounter = 0;
 
-            if((noVelocityCounter > 2 && oldOldCorrectedVelocity < 0.5 && oldOldCorrectedVelocity > -0.5) || Double.isNaN(oldOldCorrectedVelocity))
+            if((noVelocityCounter > 2 && oldOldCorrectedVelocity < 0.5 && oldOldCorrectedVelocity > -0.5) ||  Math.abs(oldOldCorrectedVelocity) > 2 || Double.isNaN(oldOldCorrectedVelocity))
                 correctedVelocity = 0;
             else
                 correctedVelocity = oldCorrectedVelocity + (ay * (elapsedTime - oldElapsedTime)) * 1.2;
+
+            if (correctedVelocity > 2 || correctedVelocity < - 2)
+                correctedVelocity = 0;
+
 
             height = oldHeight + (correctedVelocity * (elapsedTime - oldElapsedTime));
 
