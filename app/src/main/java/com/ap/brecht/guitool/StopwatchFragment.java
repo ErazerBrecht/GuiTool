@@ -16,10 +16,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
@@ -38,10 +36,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
@@ -480,7 +474,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener,
                 this.progressDialog.dismiss();
                 if (DatabaseData.userData.optString("success").toString().equals("1")) {
                     super.onPostExecute(v);
-                    Toast.makeText(getActivity(), "test", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Saved data to database", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), WelcomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().startActivity(intent);
