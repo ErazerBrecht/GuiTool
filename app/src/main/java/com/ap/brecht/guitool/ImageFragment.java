@@ -20,10 +20,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -33,13 +36,16 @@ import java.util.Date;
 public class ImageFragment extends Fragment {
     private View view;
     private ImageView Picture;
+    File Drawn;
+    File Drawing;
+
     byte[] decodedString;
     Bitmap decodedByte;
 
     Button savePicture;
     Button sharePicture;
 
-    JSONArray a = null;
+    Uri a = null;
     JSONObject o = null;
 
 
@@ -57,12 +63,46 @@ public class ImageFragment extends Fragment {
         });
 
         sharePicture=(Button) view.findViewById(R.id.btnFacebook);
+
         sharePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String username = null;
+                try {
+                    username = DatabaseData.userData.getJSONObject("user").getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String name = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+                Drawn = new File(Environment.getExternalStorageDirectory().toString() + "/ClimbUP/" + username);
+                Drawn.mkdirs();
+                Drawing = new File(Drawn, name + ".jpg");
+                FileOutputStream out = null;
+                try {
+                    out = new FileOutputStream(Drawing);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                Bitmap bitmap = DatabaseData.Photo.copy(Bitmap.Config.RGB_565, true);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+                try {
+                    out.flush();
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+                a= Uri.parse("file://" + Drawing.getAbsolutePath());
+
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+
                 sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                sharingIntent.putExtra(Intent.EXTRA_STREAM, DatabaseData.Photo);
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, a);
                 sharingIntent.setType("image/jpg");
                 view.getContext().startActivity(Intent.createChooser(sharingIntent, "Send email using"));
             }
@@ -70,7 +110,17 @@ public class ImageFragment extends Fragment {
 
         return view;
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode, resultCode, intent);
 
+        if (requestCode == 0) {
+            if (resultCode == getActivity().RESULT_OK) {
+                Drawing.delete();
+                Drawn.delete();
+            }
+        }
+    }
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
